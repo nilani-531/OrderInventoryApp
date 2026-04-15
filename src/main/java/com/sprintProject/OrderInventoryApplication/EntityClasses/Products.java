@@ -10,15 +10,14 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "products")
+@Table(name = "Products")
 public class Products {
 	
 	@Id
-	@OneToMany
 	@NotNull
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int product_id;
-	@OneToMany
+	
 	@NotNull
 	private String product_name;
 	@NotNull

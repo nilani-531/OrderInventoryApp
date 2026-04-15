@@ -6,65 +6,74 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "order_items",
+@Table(name = "Order_Items",
        uniqueConstraints = @UniqueConstraint(columnNames = {"order_id", "product_id"}))
 public class Order_Items {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "line_item_id")
-    private int lineItemId;
+    private int line_item_id;
 
    
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
-    private Orders order;
+    private Orders order_id;
 
     
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
-    private Products product; 
+    private Products product_id; 
 
     
     @ManyToOne
     @JoinColumn(name = "shipment_id")
-    private Shipments shipment;
+    private Shipments shipment_id;
 
     @NotNull
     @Min(1)
     private int quantity;
+    @Column(name="unit_price")
+    private double unit_price;
+	public double getUnit_price() {
+		return unit_price;
+	}
+
+	public void setUnit_price(double unit_price) {
+		this.unit_price = unit_price;
+	}
 
 	public int getLineItemId() {
-		return lineItemId;
+		return line_item_id;
 	}
 
 	public void setLineItemId(int lineItemId) {
-		this.lineItemId = lineItemId;
+		this.line_item_id = lineItemId;
 	}
 
-	public Orders getOrder() 
+	public Orders getOrderId() 
 	{
-		return order;
+		return order_id;
 	}
 
-	public void setOrder(Orders order) {
-		this.order = order;
+	public void setOrderId(Orders order_id) {
+		this.order_id = order_id;
 	}
 
-	public Products getProduct() {
-		return product;
+	public Products getProductId() {
+		return product_id;
 	}
 
-	public void setProduct(Products product) {
-		this.product = product;
+	public void setProductId(Products product_id) {
+		this.product_id = product_id;
 	}
 
-	public Shipments getShipment() {
-		return shipment;
+	public Shipments getShipmentId() {
+		return shipment_id;
 	}
 
-	public void setShipment(Shipments shipment) {
-		this.shipment = shipment;
+	public void setShipmentId(Shipments shipment_id) {
+		this.shipment_id = shipment_id;
 	}
 
 	public int getQuantity() {

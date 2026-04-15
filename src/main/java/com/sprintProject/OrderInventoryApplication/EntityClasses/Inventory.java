@@ -4,23 +4,26 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "inventory")
+@Table(name = "Inventory")
 public class Inventory {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int inventory_id;
 	@ManyToOne
+	@JoinColumn(name="store_id")
 	@NotNull
 	private Stores store_id;
 	@ManyToOne
+	@JoinColumn(name="product_id")
 	@NotNull
-	private int produt_id;
+	private int product_id;
 	@NotNull
 	private int product_inventory;
 	public int getInventory_id() {
@@ -36,10 +39,10 @@ public class Inventory {
 		this.store_id = store_id;
 	}
 	public int getProdut_id() {
-		return produt_id;
+		return product_id;
 	}
-	public void setProdut_id(int produt_id) {
-		this.produt_id = produt_id;
+	public void setProduct_id(int product_id) {
+		this.product_id = product_id;
 	}
 	public int getProduct_inventory() {
 		return product_inventory;

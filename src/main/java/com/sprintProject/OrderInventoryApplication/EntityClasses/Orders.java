@@ -1,7 +1,6 @@
 package com.sprintProject.OrderInventoryApplication.EntityClasses;
 
 
-import jakarta.persistence.Entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
@@ -31,11 +30,19 @@ public class Orders {
 	@NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status")
-    private OrderStatus status;
+    private OrderStatus order_status;
 
     @Column(name = "order_tms")
-    private LocalDateTime orderTime;
+    private LocalDateTime order_tms;
 
+    
+    @PrePersist
+	public void setDefaultOrderStatus() {
+	    if ( order_status == null) {
+	    	order_status = OrderStatus.OPEN;
+	    }
+	}
+    
 	public int getOrder_id() {
 		return order_id;
 	}
@@ -61,19 +68,19 @@ public class Orders {
 	}
 
 	public OrderStatus getStatus() {
-		return status;
+		return order_status;
 	}
 
-	public void setStatus(OrderStatus status) {
-		this.status = status;
+	public void setStatus(OrderStatus order_status) {
+		this.order_status = order_status;
 	}
 
 	public LocalDateTime getOrderTime() {
-		return orderTime;
+		return order_tms;
 	}
 
-	public void setOrderTime(LocalDateTime orderTime) {
-		this.orderTime = orderTime;
+	public void setOrderTime(LocalDateTime order_tms) {
+		this.order_tms = order_tms;
 	}
 
 	
