@@ -15,7 +15,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
-@Table(name="shipments")
+@Table(name="Shipments")
 public class Shipments {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

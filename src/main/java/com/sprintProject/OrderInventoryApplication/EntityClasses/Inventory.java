@@ -23,7 +23,7 @@ public class Inventory {
 	@ManyToOne
 	@JoinColumn(name="product_id")
 	@NotNull
-	private int product_id;
+	private Products product_id;
 	@NotNull
 	private int product_inventory;
 	public int getInventory_id() {
@@ -38,10 +38,10 @@ public class Inventory {
 	public void setStore_id(Stores store_id) {
 		this.store_id = store_id;
 	}
-	public int getProdut_id() {
+	public Products getProdut_id() {
 		return product_id;
 	}
-	public void setProduct_id(int product_id) {
+	public void setProduct_id(Products product_id) {
 		this.product_id = product_id;
 	}
 	public int getProduct_inventory() {
