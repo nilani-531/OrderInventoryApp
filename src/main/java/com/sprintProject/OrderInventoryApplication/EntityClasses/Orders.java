@@ -1,5 +1,5 @@
 package com.sprintProject.OrderInventoryApplication.EntityClasses;
 
-public class Entity {
+public class Orders {
 
 }
