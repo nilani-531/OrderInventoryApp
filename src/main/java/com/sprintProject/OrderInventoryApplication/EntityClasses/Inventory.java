@@ -17,24 +17,22 @@ public class Inventory {
 	private int inventory_id;
 	@ManyToOne
 	@NotNull
-	private Store store_id;
+	private Stores store_id;
 	@ManyToOne
 	@NotNull
 	private int produt_id;
 	@NotNull
 	private int product_inventory;
-	
-	
 	public int getInventory_id() {
 		return inventory_id;
 	}
 	public void setInventory_id(int inventory_id) {
 		this.inventory_id = inventory_id;
 	}
-	public int getStore_id() {
+	public Stores getStore_id() {
 		return store_id;
 	}
-	public void setStore_id(int store_id) {
+	public void setStore_id(Stores store_id) {
 		this.store_id = store_id;
 	}
 	public int getProdut_id() {
@@ -49,6 +47,7 @@ public class Inventory {
 	public void setProduct_inventory(int product_inventory) {
 		this.product_inventory = product_inventory;
 	}
+	
 	
 
 }

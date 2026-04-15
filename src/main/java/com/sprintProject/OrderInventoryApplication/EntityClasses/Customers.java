@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotBlank;
 
 // To create the database table.
 @Entity
-public class Customer {
+public class Customers {
 	//To identify the key as primary key.
     @Id
     //To generate the id automatically.
