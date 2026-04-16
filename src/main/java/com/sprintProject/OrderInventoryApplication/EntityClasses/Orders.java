@@ -19,12 +19,12 @@ public class Orders {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", nullable = false)
     private Customers customers;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "store_id")
+    @JoinColumn(name = "store_id", nullable = false)
     private Stores  stores;
 
 	@NotNull
