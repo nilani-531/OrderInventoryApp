@@ -9,7 +9,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -26,12 +25,12 @@ public class Shipments {
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name="store_id", nullable=false)
-	private Stores store;
+	private Stores stores;
 	
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name="customer_id", nullable=false)
-	private Customers customer;
+	private Customers customers;
 	
 	@NotBlank
 	@Column(name="delivery_address", nullable=false, length=512)
@@ -55,17 +54,17 @@ public class Shipments {
 	public void setShipmentId(int shipmentId) {
 		this.shipmentId = shipmentId;
 	}
-	public Stores getStore() {
-		return store;
+	public Stores getStores() {
+		return stores;
 	}
-	public void setStore(Stores store) {
-		this.store = store;
+	public void setStores(Stores stores) {
+		this.stores = stores;
 	}
-	public Customers getCustomer() {
-		return customer;
+	public Customers getCustomers() {
+		return customers;
 	}
-	public void setCustomer(Customers customer) {
-		this.customer = customer;
+	public void setCustomers(Customers customers) {
+		this.customers = customers;
 	}
 	public String getDeliveryAddress() {
 		return deliveryAddress;

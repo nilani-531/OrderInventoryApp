@@ -45,8 +45,8 @@ class OrderInventoryApplicationTests {
 
         // 2. CREATE Order using the SAVED objects
         Orders order = new Orders();
-        order.setCustomer(savedCustomer); 
-        order.setStore(savedStore);      
+        order.setCustomers(savedCustomer); 
+        order.setStores(savedStore);      
         order.setOrderStatus(OrderStatus.OPEN);
         order.setOrderTms(LocalDateTime.now());
 
