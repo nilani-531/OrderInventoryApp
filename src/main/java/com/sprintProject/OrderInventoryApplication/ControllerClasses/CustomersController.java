@@ -40,17 +40,17 @@ public class CustomersController {
 	public Customers getCustomerById(@PathVariable int customerId) {
 		return customersService.getCustomerById(customerId);
 	}
-	@GetMapping("/{customerEmail}")
-	public Customers getCustomerByEmail(@PathVariable String customeremail) {
-		return customersService.getCustomerByEmail(customeremail);
+	@GetMapping("/email/{customerEmail}")
+	public Customers getCustomerByEmail(@PathVariable String customerEmail) {
+		return customersService.getCustomerByEmail(customerEmail);
 	}
-	@GetMapping("/{customerId}")
-	public List<Orders> getCustomerOrders(@PathVariable int CustomerId){
-		return customersService.getCustomerOrders(CustomerId);
+	@GetMapping("/{customerId}/orders")
+	public List<Orders> getCustomerOrders(@PathVariable int customerId){
+		return customersService.getCustomerOrders(customerId);
 	}
-	@GetMapping("/{customerId}")
-	public List<Shipments> getCustomerShipments(@PathVariable int CustomerId){
-		return customersService.getCustomerShipments(CustomerId);
+	@GetMapping("/{customerId}/shipments")
+	public List<Shipments> getCustomerShipments(@PathVariable int customerId){
+		return customersService.getCustomerShipments(customerId);
 	}
 	@PutMapping("/{customerId}")
 	public Customers updateCustomers(@PathVariable int customerId,@RequestBody Customers customers) {
