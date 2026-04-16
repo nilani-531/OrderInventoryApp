@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
@@ -20,7 +21,7 @@ public class Shipments {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="shipment_id")
-	private int shipment_id;
+	private int shipmentId;
 	
 	@NotNull
 	@ManyToOne
@@ -34,25 +35,25 @@ public class Shipments {
 	
 	@NotBlank
 	@Column(name="delivery_address", nullable=false, length=512)
-	private String delivery_address;
+	private String deliveryAddress;
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column(name="shipment_status",nullable=false, length=100)
-	private ShipmentStatus shipment_status;
+	private ShipmentStatus shipmentStatus;
 	
 	@PrePersist
 	public void setDefaultStatus() {
-	    if (shipment_status == null) {
-	        shipment_status = ShipmentStatus.CREATED;
+	    if (shipmentStatus == null) {
+	        shipmentStatus = ShipmentStatus.CREATED;
 	    }
 	}
-	
-	public int getShipment_id() {
-		return shipment_id;
+
+	public int getShipmentId() {
+		return shipmentId;
 	}
-	public void setShipment_id(int shipment_id) {
-		this.shipment_id = shipment_id;
+	public void setShipmentId(int shipmentId) {
+		this.shipmentId = shipmentId;
 	}
 	public Stores getStore() {
 		return store;
@@ -66,16 +67,16 @@ public class Shipments {
 	public void setCustomer(Customers customer) {
 		this.customer = customer;
 	}
-	public String getDelivery_address() {
-		return delivery_address;
+	public String getDeliveryAddress() {
+		return deliveryAddress;
 	}
-	public void setDelivery_address(String delivery_address) {
-		this.delivery_address = delivery_address;
+	public void setDeliveryAddress(String deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
 	}
-	public ShipmentStatus getShipment_status() {
-		return shipment_status;
+	public ShipmentStatus getShipmentStatus() {
+		return shipmentStatus;
 	}
-	public void setShipment_status(ShipmentStatus shipment_status) {
-		this.shipment_status = shipment_status;
+	public void setShipmentStatus(ShipmentStatus shipmentStatus) {
+		this.shipmentStatus = shipmentStatus;
 	}
 }
