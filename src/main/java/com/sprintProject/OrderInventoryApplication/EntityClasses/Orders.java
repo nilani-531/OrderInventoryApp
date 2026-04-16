@@ -15,73 +15,84 @@ public class Orders {
     @Id
     @Column(name = "order_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int order_id;
+    private int orderId;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    private Customers customer_id;
+    private Customers customers;
 
     @NotNull
     @ManyToOne
     @JoinColumn(name = "store_id")
-    private Stores  store_id;
+    private Stores  stores;
 
 	@NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status")
-    private OrderStatus order_status;
+    private OrderStatus orderStatusS;
 
     @Column(name = "order_tms")
-    private LocalDateTime order_tms;
+    private LocalDateTime orderTms;
 
     
     @PrePersist
 	public void setDefaultOrderStatus() {
-	    if ( order_status == null) {
-	    	order_status = OrderStatus.OPEN;
+	    if ( orderStatusS == null) {
+	    	orderStatusS = OrderStatus.OPEN;
 	    }
 	}
-    
-	public int getOrder_id() {
-		return order_id;
+
+
+	public int getOrderId() {
+		return orderId;
 	}
 
-	public void setOrder_id(int order_id) {
-		this.order_id = order_id;
+
+	public void setOrderId(int orderId) {
+		this.orderId = orderId;
 	}
 
-	public Customers getCustomer_id() {
-		return customer_id;
+
+	public Customers getCustomers() {
+		return customers;
 	}
 
-	public void setCustomer_id(Customers customer_id) {
-		this.customer_id = customer_id;
+
+	public void setCustomers(Customers customers) {
+		this.customers = customers;
 	}
 
-	public Stores getStore_id() {
-		return store_id;
+
+	public Stores getStores() {
+		return stores;
 	}
 
-	public void setStore_id(Stores store_id) {
-		this.store_id = store_id;
+
+	public void setStores(Stores stores) {
+		this.stores = stores;
 	}
 
-	public OrderStatus getStatus() {
-		return order_status;
+
+	public OrderStatus getOrderStatus() {
+		return orderStatusS;
 	}
 
-	public void setStatus(OrderStatus order_status) {
-		this.order_status = order_status;
+
+	public void setOrderStatus(OrderStatus orderStatusS) {
+		this.orderStatusS = orderStatusS;
 	}
 
-	public LocalDateTime getOrderTime() {
-		return order_tms;
+
+	public LocalDateTime getOrderTms() {
+		return orderTms;
 	}
 
-	public void setOrderTime(LocalDateTime order_tms) {
-		this.order_tms = order_tms;
+
+	public void setOrderTms(LocalDateTime orderTms) {
+		this.orderTms = orderTms;
 	}
+  
 
 	
 }
