@@ -12,6 +12,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.FluentQuery.FetchableFluentQuery;
 import org.springframework.stereotype.Service;
 
+import com.sprintProject.OrderInventoryApplication.CustomExceptions.CustomerEmailNotFoundException;
+import com.sprintProject.OrderInventoryApplication.CustomExceptions.CustomerIdNotFoundException;
+import com.sprintProject.OrderInventoryApplication.CustomExceptions.CustomerEmailAlreadyExistException;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Customers;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Orders;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Shipments;
@@ -28,10 +31,13 @@ public class CustomersService implements CustomersServiceInterface{
 	}
 	
 	public Customers getCustomerById(int customerId) {
-		return customersRepository.findById(customerId).orElse(null);
+		return customersRepository.findById(customerId).orElseThrow(() -> new CustomerIdNotFoundException("Customer not found with id: " + customerId));
 	}
 	
 	public Customers createCustomer(Customers customers) {
+		if (customersRepository.existsByEmailAddress(customers.getEmailAddress())) {
+		    throw new CustomerEmailAlreadyExistException("Customer email already exists ");
+		}
 		return customersRepository.save(customers);
 	}
 	
@@ -39,7 +45,7 @@ public class CustomersService implements CustomersServiceInterface{
 	    Customers existingCustomer = getCustomerById(customerId);
 	    if (!existingCustomer.getEmailAddress().equals(customers.getEmailAddress()) &&
 	        customersRepository.existsByEmailAddress(customers.getEmailAddress())) {
-	        throw new RuntimeException("Email already exists");
+	        throw new CustomerEmailAlreadyExistException("Customer email already exists");
 	    }
 	    existingCustomer.setFullName(customers.getFullName());
 	    existingCustomer.setEmailAddress(customers.getEmailAddress());
@@ -51,13 +57,16 @@ public class CustomersService implements CustomersServiceInterface{
 		customersRepository.delete(existingCustomer);
 	}
 	public Customers getCustomerByEmail(String customerEmail) {
-		return customersRepository.findByEmailAddress(customerEmail).orElse(null);
+	    return customersRepository.findByEmailAddress(customerEmail).orElseThrow(() -> new CustomerEmailNotFoundException( "Customer not found with email: " + customerEmail));
 	}
+
 	public List<Orders> getCustomerOrders (int customerId){
-		return getCustomerById(customerId).getOrders();
+		Customers existingCustomer= getCustomerById(customerId);
+		return existingCustomer.getOrders();
 	}
 	public List<Shipments> getCustomerShipments(int customerId){
-		return getCustomerById(customerId).getShipments();
+		Customers existingCustomer=getCustomerById(customerId);
+		return existingCustomer.getShipments();
 	}
 
 	
