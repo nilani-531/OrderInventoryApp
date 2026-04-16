@@ -1,6 +1,6 @@
 package com.sprintProject.OrderInventoryApplication.ControllerClasses;
 
-<<<<<<< HEAD
+
 
 
 
@@ -67,5 +67,4 @@ public class CustomersController {
 
 
 }
-=======
->>>>>>> 2493aef086be89de832e0d955f9db5a41a2f202d
+
