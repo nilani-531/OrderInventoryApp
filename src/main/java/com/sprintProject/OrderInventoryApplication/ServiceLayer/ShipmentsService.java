@@ -55,11 +55,11 @@ public class ShipmentsService implements ShipmentsServiceInterface{
     }
     @Override
     public List<Shipments> getShipmentByCustomerId(int customerId) {
-        return shipmentsRepository.findByCustomerCustomerId(customerId);
+        return shipmentsRepository.findByCustomersCustomerId(customerId);
     }
     @Override
     public List<Shipments> getShipmentByStoreId(int storeId) {
-        return shipmentsRepository.findByStoreStoreId(storeId);
+        return shipmentsRepository.findByStoresStoreId(storeId);
     }
     @Override
     public List<Shipments> getShipmentByStatus(ShipmentStatus status) {
