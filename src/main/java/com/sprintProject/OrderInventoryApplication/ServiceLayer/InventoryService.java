@@ -68,14 +68,6 @@ public class InventoryService implements InventoryServiceInterface {
 
 	}
 
-	@Override
-	public List<Inventory> getInventoryByStoreId(int storeId) {
-		 return inventoryRepository.findByStores_StoreId(storeId);
-	}
 
-	@Override
-	public List<Inventory> getInventoryByProductId(int productId) {
-		return inventoryRepository.findByProducts_ProductId(productId);
-	}
 
 }
