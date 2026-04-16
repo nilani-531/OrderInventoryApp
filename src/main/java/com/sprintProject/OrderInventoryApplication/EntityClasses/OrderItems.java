@@ -8,81 +8,69 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 @Table(name = "Order_Items",
        uniqueConstraints = @UniqueConstraint(columnNames = {"order_id", "product_id"}))
-public class Order_Items {
+public class OrderItems {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "line_item_id")
-    private int line_item_id;
+    private int lineItemId;
 
    
     @ManyToOne
     @JoinColumn(name = "order_id", nullable = false)
-    private Orders order_id;
+    private Orders orders;
 
     
     @ManyToOne
     @JoinColumn(name = "product_id", nullable = false)
-    private Products product_id; 
+    private Products products; 
 
     
     @ManyToOne
     @JoinColumn(name = "shipment_id")
-    private Shipments shipment_id;
+    private Shipments shipments;
 
     @NotNull
     @Min(1)
     private int quantity;
     @Column(name="unit_price")
-    private double unit_price;
-	public double getUnit_price() {
-		return unit_price;
-	}
-
-	public void setUnit_price(double unit_price) {
-		this.unit_price = unit_price;
-	}
-
+    private double unitPrice;
 	public int getLineItemId() {
-		return line_item_id;
+		return lineItemId;
 	}
-
 	public void setLineItemId(int lineItemId) {
-		this.line_item_id = lineItemId;
+		this.lineItemId = lineItemId;
 	}
-
-	public Orders getOrderId() 
-	{
-		return order_id;
+	public Orders getOrders() {
+		return orders;
 	}
-
-	public void setOrderId(Orders order_id) {
-		this.order_id = order_id;
+	public void setOrders(Orders orders) {
+		this.orders = orders;
 	}
-
-	public Products getProductId() {
-		return product_id;
+	public Products getProducts() {
+		return products;
 	}
-
-	public void setProductId(Products product_id) {
-		this.product_id = product_id;
+	public void setProducts(Products products) {
+		this.products = products;
 	}
-
-	public Shipments getShipmentId() {
-		return shipment_id;
+	public Shipments getShipments() {
+		return shipments;
 	}
-
-	public void setShipmentId(Shipments shipment_id) {
-		this.shipment_id = shipment_id;
+	public void setShipments(Shipments shipments) {
+		this.shipments = shipments;
 	}
-
 	public int getQuantity() {
 		return quantity;
 	}
-
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-
+	public double getUnitPrice() {
+		return unitPrice;
+	}
+	public void setUnitPrice(double unitPrice) {
+		this.unitPrice = unitPrice;
+	}
     
+	
 }
