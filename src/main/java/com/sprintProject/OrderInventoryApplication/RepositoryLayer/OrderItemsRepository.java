@@ -7,15 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.OrderItems;
 
-<<<<<<< HEAD
 @Repository
 public interface OrderItemsRepository extends JpaRepository<OrderItems, Integer> {
 
 }
-=======
-
-@Repository
-public interface OrderItemsRepository extends JpaRepository<OrderItems, Integer> {
-
-}
->>>>>>> master
