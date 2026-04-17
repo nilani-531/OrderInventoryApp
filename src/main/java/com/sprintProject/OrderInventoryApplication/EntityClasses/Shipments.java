@@ -64,12 +64,14 @@ public class Shipments {
 		this.stores = stores;
 	}
 
-	public Customers getCustomer() {
-		return customer;
+	
+
+	public Customers getCustomers() {
+		return customers;
 	}
 
-	public void setCustomer(Customers customer) {
-		this.customer = customer;
+	public void setCustomers(Customers customers) {
+		this.customers = customers;
 	}
 
 	public String getDeliveryAddress() {

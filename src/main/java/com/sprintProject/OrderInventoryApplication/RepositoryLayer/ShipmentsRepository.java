@@ -8,7 +8,7 @@ import com.sprintProject.OrderInventoryApplication.EntityClasses.ShipmentStatus;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Shipments;
 
 public interface ShipmentsRepository extends JpaRepository<Shipments,Integer>{
-	List<Shipments> findByCustomerCustomerId(int customerId);
+	List<Shipments> findByCustomersCustomerId(int customerId);
 	List<Shipments> findByStoresStoreId(int storeId);
 	List<Shipments> findByShipmentStatus(ShipmentStatus status);
 }
