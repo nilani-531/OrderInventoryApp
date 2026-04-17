@@ -5,6 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sprintProject.OrderInventoryApplication.CustomExceptions.InventoryNotFoundException;
+import com.sprintProject.OrderInventoryApplication.CustomExceptions.ProductNotFoundException;
+import com.sprintProject.OrderInventoryApplication.CustomExceptions.StoreNotFoundException;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Inventory;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Products;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Stores;
@@ -30,16 +33,16 @@ public class InventoryService implements InventoryServiceInterface {
 	@Override
 	public Inventory getInventoryById(int inventoryId) {
 		return inventoryRepository.findById(inventoryId)
-                .orElseThrow(() -> new RuntimeException("Inventory not found"));
+                .orElseThrow(() -> new InventoryNotFoundException("Inventory not found with id: " + inventoryId));
 	}
 
 	@Override
 	public Inventory createInventory(Inventory inventory) {
 		Stores stores = storesRepository.findById(inventory.getStores().getStoreId())
-		        .orElseThrow(() -> new RuntimeException("Store not found"));
+		        .orElseThrow(() -> new StoreNotFoundException("Store not found with id: " + inventory.getStores().getStoreId()));
 
 		Products products = productsRepository.findById(inventory.getProducts().getProductId())
-		        .orElseThrow(() -> new RuntimeException("Product not found"));
+		        .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + inventory.getProducts().getProductId()));
 
 		inventory.setStores(stores);
 		inventory.setProducts(products);
@@ -50,7 +53,7 @@ public class InventoryService implements InventoryServiceInterface {
 	@Override
 	public Inventory updateInventory(int inventoryId, Inventory inventory) {
 		Inventory existing = inventoryRepository.findById(inventoryId)
-                .orElseThrow(() -> new RuntimeException("Inventory not found"));
+                .orElseThrow(() -> new InventoryNotFoundException("Inventory not found with id: " + inventoryId));
 
         existing.setStores(inventory.getStores());
         existing.setProducts(inventory.getProducts());
@@ -62,12 +65,13 @@ public class InventoryService implements InventoryServiceInterface {
 	@Override
 	public void deleteInventory(int inventoryId) {
 		Inventory inventory = inventoryRepository.findById(inventoryId)
-                .orElseThrow(() -> new RuntimeException("Inventory not found"));
+                .orElseThrow(() -> new InventoryNotFoundException("Inventory not found with id: " + inventoryId));
 
         inventoryRepository.delete(inventory);
 
 	}
 
 
+	
 
 }
