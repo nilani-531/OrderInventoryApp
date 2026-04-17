@@ -1,4 +1,4 @@
-package com.sprintProject.OrderInventoryApplication.CustomException;
+package com.sprintProject.OrderInventoryApplication.CustomExceptions;
 
 public class StoreNotFoundException extends RuntimeException {
 
