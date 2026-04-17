@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sprintProject.OrderInventoryApplication.CustomException.ProductNotFoundException;
+import com.sprintProject.OrderInventoryApplication.CustomExceptions.ProductNotFoundException;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Products;
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.ProductsRepository;
 

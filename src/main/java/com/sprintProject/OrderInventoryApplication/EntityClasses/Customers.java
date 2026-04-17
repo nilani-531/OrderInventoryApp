@@ -36,7 +36,7 @@ public class Customers {
     @OneToMany (mappedBy = "customers")
     private List<Orders> orders;
     
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "customers")
     private List<Shipments> shipments;
     
 	public List<Orders> getOrders() {
