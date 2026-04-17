@@ -18,7 +18,7 @@ public class OrdersController {
     @Autowired
     private OrdersService service;
 
-    // ✅ CREATE
+    //  CREATE
     @PostMapping
     public ResponseStructure<OrdersResponseDto> createOrder(@RequestBody OrdersRequestDto dto) {
 
@@ -32,7 +32,7 @@ public class OrdersController {
         return rs;
     }
 
-    // ✅ GET ALL
+    // GET ALL
     @GetMapping
     public ResponseStructure<List<OrdersResponseDto>> getAllOrders() {
 
@@ -46,7 +46,7 @@ public class OrdersController {
         return rs;
     }
 
-    // ✅ GET BY ID
+    // GET BY ID
     @GetMapping("/{orderId}")
     public ResponseStructure<OrdersResponseDto> getOrder(@PathVariable int orderId) {
 
@@ -60,7 +60,7 @@ public class OrdersController {
         return rs;
     }
 
-    // ✅ DELETE
+    //  DELETE
     @DeleteMapping("/{orderId}")
     public ResponseStructure<String> deleteOrder(@PathVariable int orderId) {
 
@@ -74,7 +74,7 @@ public class OrdersController {
         return rs;
     }
 
-    // ✅ UPDATE STATUS
+    //  UPDATE STATUS
     @PutMapping("/{orderId}/status")
     public ResponseStructure<OrdersResponseDto> updateStatus(
             @PathVariable int orderId,
