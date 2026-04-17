@@ -51,31 +51,43 @@ public class Shipments {
 	public int getShipmentId() {
 		return shipmentId;
 	}
+
 	public void setShipmentId(int shipmentId) {
 		this.shipmentId = shipmentId;
 	}
+
 	public Stores getStores() {
 		return stores;
 	}
+
 	public void setStores(Stores stores) {
 		this.stores = stores;
 	}
-	public Customers getCustomers() {
-		return customers;
+
+	public Customers getCustomer() {
+		return customer;
 	}
-	public void setCustomers(Customers customers) {
-		this.customers = customers;
+
+	public void setCustomer(Customers customer) {
+		this.customer = customer;
 	}
+
 	public String getDeliveryAddress() {
 		return deliveryAddress;
 	}
+
 	public void setDeliveryAddress(String deliveryAddress) {
 		this.deliveryAddress = deliveryAddress;
 	}
+
 	public ShipmentStatus getShipmentStatus() {
 		return shipmentStatus;
 	}
+
 	public void setShipmentStatus(ShipmentStatus shipmentStatus) {
 		this.shipmentStatus = shipmentStatus;
 	}
+
+	
+
 }

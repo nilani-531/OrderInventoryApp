@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.sprintProject.OrderInventoryApplication.CustomException.ProductNotFoundException;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Products;
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.ProductsRepository;
 
@@ -22,7 +23,7 @@ public class ProductsService implements ProductsServiceInterface{
 	public Products getProductById(int productId) {
 
         return productsRepository.findById(productId)
-                .orElseThrow(() -> new RuntimeException("Product not found with id: " + productId));
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
 	}
 
 	@Override
@@ -31,9 +32,9 @@ public class ProductsService implements ProductsServiceInterface{
 	}
 
 	@Override
-	public Products updateProduct(int product_id, Products product) {
-		Products exProduct = productsRepository.findById(product_id)
-                .orElseThrow(() -> new RuntimeException("Product not found with id: " + product_id));
+	public Products updateProduct(int productId, Products product) {
+		Products exProduct = productsRepository.findById(productId)
+                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
 
         if (product.getProductName() != null)
         	exProduct.setProductName(product.getProductName());
@@ -54,9 +55,9 @@ public class ProductsService implements ProductsServiceInterface{
 	}
 
 	@Override
-	public void deleteProduct(int product_id) {
-		 Products product = productsRepository.findById(product_id)
-	                .orElseThrow(() -> new RuntimeException("Product not found with id: " + product_id));
+	public void deleteProduct(int productId) {
+		 Products product = productsRepository.findById(productId)
+	                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
 
 	        productsRepository.delete(product);
 		

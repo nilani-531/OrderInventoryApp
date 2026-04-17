@@ -17,8 +17,5 @@ public interface InventoryServiceInterface {
 
 	    void deleteInventory(int inventoryId);
 
-	    List<Inventory> getInventoryByStoreId(int storeId);
-
-	    List<Inventory> getInventoryByProductId(int productId);
 	
 }
