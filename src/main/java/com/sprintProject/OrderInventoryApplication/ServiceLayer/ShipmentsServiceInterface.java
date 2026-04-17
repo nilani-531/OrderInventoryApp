@@ -4,17 +4,19 @@ import java.util.List;
 
 import com.sprintProject.OrderInventoryApplication.EntityClasses.ShipmentStatus;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Shipments;
+import com.sprintProject.OrderInventoryApplication.dto.requestDto.ShipmentsRequestDto;
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.ShipmentsResponseDto;
 
 public interface ShipmentsServiceInterface {
-	List<Shipments> getAllShipments();
+	List<ShipmentsResponseDto> getAllShipments();
 	
-	Shipments getShipmentById(int shipmentId);
+	ShipmentsResponseDto getShipmentById(int shipmentId);
 	
-	Shipments createShipment(Shipments shipment);
+	ShipmentsResponseDto createShipment(ShipmentsRequestDto shipment);
 
-	Shipments updateShipment(int shipmentId, Shipments shipment);
+	ShipmentsResponseDto updateShipment(int shipmentId, ShipmentsRequestDto shipment);
 	
-	void deleteShipment(int shipmentId);
+	String deleteShipment(int shipmentId);
 	
 	List<Shipments> getShipmentByCustomerId(int customerId);
 	
