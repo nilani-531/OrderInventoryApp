@@ -1,50 +1,31 @@
-package com.sprintProject.OrderInventoryApplication.EntityClasses;
-
-import jakarta.persistence.*;
-
-import jakarta.validation.constraints.NotBlank;
+package com.sprintProject.OrderInventoryApplication.dto.requestDto;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Objects;
 
-@Entity
-@Table(name = "stores")
-public class Stores {
+public class StoresRequestDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "store_id")
     private int storeId;
 
-    @NotBlank
-    @Column(name = "store_name",unique = true)
     private String storeName;
 
-    @Column(name = "web_address")
     private String webAddress;
 
-    @Column(name = "physical_address")
     private String physicalAddress;
 
-    @Column(name = "latitude")
     private Double latitude;
 
-    @Column(name = "longitude")
     private Double longitude;
 
-    @Lob
-    @Column(name = "logo")
     private byte[] logo;
 
-    @Column(name = "logo_mime_type")
     private String logoMimeType;
 
-    @Column(name = "logo_filename")
     private String logoFilename;
 
-    @Column(name = "logo_charset")
     private String logoCharset;
 
-    @Column(name = "logo_last_updated")
     private LocalDate logoLastUpdated;
 
 
@@ -135,4 +116,18 @@ public class Stores {
     public void setLogoLastUpdated(LocalDate logoLastUpdated) {
         this.logoLastUpdated = logoLastUpdated;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        StoresRequestDto that = (StoresRequestDto) o;
+        return storeId == that.storeId && Objects.equals(storeName, that.storeName) && Objects.equals(webAddress, that.webAddress) && Objects.equals(physicalAddress, that.physicalAddress) && Objects.equals(latitude, that.latitude) && Objects.equals(longitude, that.longitude) && Objects.deepEquals(logo, that.logo) && Objects.equals(logoMimeType, that.logoMimeType) && Objects.equals(logoFilename, that.logoFilename) && Objects.equals(logoCharset, that.logoCharset) && Objects.equals(logoLastUpdated, that.logoLastUpdated);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(storeId, storeName, webAddress, physicalAddress, latitude, longitude, Arrays.hashCode(logo), logoMimeType, logoFilename, logoCharset, logoLastUpdated);
+    }
+
+
 }
