@@ -5,23 +5,24 @@ import java.util.List;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Customers;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Orders;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Shipments;
+import com.sprintProject.OrderInventoryApplication.dto.requestDto.CustomersRequestDto;
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.CustomersResponseDto;
 
 public interface CustomersServiceInterface {
    
-	List<Customers> getAllCustomers();
+	List<CustomersResponseDto> getAllCustomers();
 	
-	Customers getCustomerById(int customer_id);
+	CustomersResponseDto getCustomerById(int customerId);
 	
-	Customers createCustomer(Customers customers);
+	CustomersResponseDto createCustomer(CustomersRequestDto customersRequestDto);
 	
-	Customers updateCustomer(int customer_id, Customers customers);
+	CustomersResponseDto updateCustomer(int customerId, CustomersRequestDto customersRequestDto);
 	
-	void deleteCustomer(int customer_id);
+	void deleteCustomer(int customerId);
 	
-	Customers getCustomerByEmail(String customer_email); 
+	CustomersResponseDto getCustomerByEmail(String customerEmail); 
 	
-	List<Orders> getCustomerOrders(int customer_id);
+	List<Orders> getCustomerOrders(int customerId);
 	
-
-	List<Shipments> getCustomerShipments(int customer_id);
+    List<Shipments> getCustomerShipments(int customerId);
 }

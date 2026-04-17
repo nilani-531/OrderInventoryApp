@@ -50,4 +50,6 @@ public class GlobalExceptionHandler {
     public String handleGeneric(Exception ex) {
         return "Something went wrong";
     }
+    
+    
 }
