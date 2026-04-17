@@ -9,47 +9,75 @@ import com.sprintProject.OrderInventoryApplication.EntityClasses.OrderItems;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Orders;
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.OrderItemsRepository;
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.OrdersRepository;
+import com.sprintProject.OrderInventoryApplication.dto.requestDto.OrderItemsRequestDto;
 
-	@Service
-	public class OrderItemsService implements OrderItemsServiceInterface {
+@Service
+public class OrderItemsService implements OrderItemsServiceInterface {
 
-	    @Autowired
-	    private OrderItemsRepository itemRepo;
+    @Autowired
+    private OrderItemsRepository itemRepo;
 
-	    @Autowired
-	    private OrdersRepository orderRepo;
+    @Autowired
+    private OrdersRepository orderRepo;
 
-	   
+    // ADD ITEM
+    @Override
+    public OrderItems addItem(int orderId, OrderItemsRequestDto dto) {
 
-	    // ADD ITEM
-	    @Override
-	    public OrderItems addItem(int orderId, OrderItems item) {
+        Orders order = orderRepo.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
 
-	        Orders order = orderRepo.findById(orderId)
-	                .orElseThrow(() -> new RuntimeException("Order not found"));
+        OrderItems item = new OrderItems();
 
-	        item.setOrders(order);
-	        return itemRepo.save(item);
-	    }
+        // Relationships
+        item.setOrders(order); // from path variable
+        item.setProducts(dto.getProducts());
+        item.setShipments(dto.getShipments());
 
-	    // UPDATE ITEM
-	    @Override
-	    public OrderItems updateItem(int orderId, int lineItemId, OrderItems updated) {
+        // Fields
+        item.setQuantity(dto.getQuantity());
+        item.setUnitPrice(dto.getUnitPrice());
 
-	        OrderItems item = itemRepo.findById(lineItemId)
-	                .orElseThrow(() -> new RuntimeException("Item not found"));
+        return itemRepo.save(item);
+    }
 
-	        item.setQuantity(updated.getQuantity());
-	        item.setUnitPrice(updated.getUnitPrice());
+    // UPDATE ITEM
+    @Override
+    public OrderItems updateItem(int orderId, int lineItemId, OrderItemsRequestDto dto) {
 
-	        return itemRepo.save(item);
-	    }
+        OrderItems item = itemRepo.findById(lineItemId)
+                .orElseThrow(() -> new RuntimeException("Item not found"));
 
-	    // DELETE ITEM
-	    @Override
-	    public void deleteItem(int orderId, int lineItemId) {
-	        itemRepo.deleteById(lineItemId);
-	    }
+        // Optional check (good practice)
+        if (item.getOrders().getOrderId() != orderId) {
+            throw new RuntimeException("Item does not belong to given order");
+        }
 
-		
-	}
+        //  Update relationships
+        item.setProducts(dto.getProducts());
+        item.setShipments(dto.getShipments());
+
+        //  Update fields
+        item.setQuantity(dto.getQuantity());
+        item.setUnitPrice(dto.getUnitPrice());
+
+        return itemRepo.save(item);
+    }
+
+    //  DELETE ITEM
+    @Override
+    public void deleteItem(int orderId, int lineItemId) {
+
+        OrderItems item = itemRepo.findById(lineItemId)
+                .orElseThrow(() -> new RuntimeException("Item not found"));
+
+        // Safety check
+        if (item.getOrders().getOrderId() != orderId) {
+            throw new RuntimeException("Item does not belong to given order");
+        }
+
+        itemRepo.delete(item);
+    }
+
+  
+}
