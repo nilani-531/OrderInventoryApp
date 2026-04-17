@@ -2,15 +2,17 @@ package com.sprintProject.OrderInventoryApplication.ServiceLayer;
 
 import java.util.List;
 
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Products;
+import com.sprintProject.OrderInventoryApplication.dto.ResponseStructure;
+import com.sprintProject.OrderInventoryApplication.dto.requestDto.ProductsRequestDto;
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.ProductsResponseDto;
 
 public interface ProductsServiceInterface {
 	
-    List<Products> getAllProducts();
-    Products getProductById(int productId);
-    Products createProduct(Products product);
-    Products updateProduct(int productId, Products product);
-    void deleteProduct(int productId);
+    ResponseStructure<List<ProductsResponseDto>> getAllProducts();
+    ResponseStructure<ProductsResponseDto> getProductById(int productId);
+    ResponseStructure<ProductsResponseDto> createProduct(ProductsRequestDto productRequestDto);
+    ResponseStructure<ProductsResponseDto> updateProduct(int productId, ProductsRequestDto productRequestDto);
+    ResponseStructure<String> deleteProduct(int productId);
 }
 
 
