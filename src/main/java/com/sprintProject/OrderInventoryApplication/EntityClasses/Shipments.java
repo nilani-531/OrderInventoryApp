@@ -20,62 +20,76 @@ public class Shipments {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="shipment_id")
-	private int shipment_id;
+	private int shipmentId;
 	
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name="store_id", nullable=false)
-	private Stores store;
+	private Stores stores;
 	
 	@NotNull
 	@ManyToOne
 	@JoinColumn(name="customer_id", nullable=false)
-	private Customers customer;
+	private Customers customers;
 	
 	@NotBlank
 	@Column(name="delivery_address", nullable=false, length=512)
-	private String delivery_address;
+	private String deliveryAddress;
 	
 	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column(name="shipment_status",nullable=false, length=100)
-	private ShipmentStatus shipment_status;
+	private ShipmentStatus shipmentStatus;
 	
 	@PrePersist
 	public void setDefaultStatus() {
-	    if (shipment_status == null) {
-	        shipment_status = ShipmentStatus.CREATED;
+	    if (shipmentStatus == null) {
+	        shipmentStatus = ShipmentStatus.CREATED;
 	    }
 	}
+
+	public int getShipmentId() {
+		return shipmentId;
+	}
+
+	public void setShipmentId(int shipmentId) {
+		this.shipmentId = shipmentId;
+	}
+
+	public Stores getStores() {
+		return stores;
+	}
+
+	public void setStores(Stores stores) {
+		this.stores = stores;
+	}
+
 	
-	public int getShipment_id() {
-		return shipment_id;
+
+	public Customers getCustomers() {
+		return customers;
 	}
-	public void setShipment_id(int shipment_id) {
-		this.shipment_id = shipment_id;
+
+	public void setCustomers(Customers customers) {
+		this.customers = customers;
 	}
-	public Stores getStore() {
-		return store;
+
+	public String getDeliveryAddress() {
+		return deliveryAddress;
 	}
-	public void setStore(Stores store) {
-		this.store = store;
+
+	public void setDeliveryAddress(String deliveryAddress) {
+		this.deliveryAddress = deliveryAddress;
 	}
-	public Customers getCustomer() {
-		return customer;
+
+	public ShipmentStatus getShipmentStatus() {
+		return shipmentStatus;
 	}
-	public void setCustomer(Customers customer) {
-		this.customer = customer;
+
+	public void setShipmentStatus(ShipmentStatus shipmentStatus) {
+		this.shipmentStatus = shipmentStatus;
 	}
-	public String getDelivery_address() {
-		return delivery_address;
-	}
-	public void setDelivery_address(String delivery_address) {
-		this.delivery_address = delivery_address;
-	}
-	public ShipmentStatus getShipment_status() {
-		return shipment_status;
-	}
-	public void setShipment_status(ShipmentStatus shipment_status) {
-		this.shipment_status = shipment_status;
-	}
+
+	
+
 }

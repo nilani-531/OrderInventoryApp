@@ -1,9 +1,15 @@
 package com.sprintProject.OrderInventoryApplication.RepositoryLayer;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
-
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import com.sprintProject.OrderInventoryApplication.EntityClasses.OrderStatus;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Orders;
 
-public interface OrdersRepository  extends JpaRepository<Orders,Integer>{
+@Repository
+public interface OrdersRepository extends JpaRepository<Orders, Integer> {
 
 }

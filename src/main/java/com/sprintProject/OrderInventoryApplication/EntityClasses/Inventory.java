@@ -12,45 +12,51 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 @Table(name = "Inventory")
 public class Inventory {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int inventory_id;
+	private int inventoryId;
 	@ManyToOne
-	@JoinColumn(name="store_id")
+	@JoinColumn(name = "store_id" ,nullable = false)
 	@NotNull
-	private Stores store_id;
+	private Stores stores;
 	@ManyToOne
-	@JoinColumn(name="product_id")
+	@JoinColumn(name = "product_id",nullable = false)
 	@NotNull
-	private Products product_id;
+	private Products products;
 	@NotNull
-	private int product_inventory;
-	public int getInventory_id() {
-		return inventory_id;
+	private int productInventory;
+
+	public int getInventoryId() {
+		return inventoryId;
 	}
-	public void setInventory_id(int inventory_id) {
-		this.inventory_id = inventory_id;
+
+	public void setInventoryId(int inventoryId) {
+		this.inventoryId = inventoryId;
 	}
-	public Stores getStore_id() {
-		return store_id;
+
+	public int getProductInventory() {
+		return productInventory;
 	}
-	public void setStore_id(Stores store_id) {
-		this.store_id = store_id;
+
+	public void setProductInventory(int productInventory) {
+		this.productInventory = productInventory;
 	}
-	public Products getProdut_id() {
-		return product_id;
+
+	public Stores getStores() {
+		return stores;
 	}
-	public void setProduct_id(Products product_id) {
-		this.product_id = product_id;
+
+	public void setStores(Stores stores) {
+		this.stores = stores;
 	}
-	public int getProduct_inventory() {
-		return product_inventory;
+
+	public Products getProducts() {
+		return products;
 	}
-	public void setProduct_inventory(int product_inventory) {
-		this.product_inventory = product_inventory;
+
+	public void setProducts(Products products) {
+		this.products = products;
 	}
-	
-	
 
 }
