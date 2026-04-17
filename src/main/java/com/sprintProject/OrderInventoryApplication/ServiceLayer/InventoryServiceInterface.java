@@ -12,7 +12,7 @@ public interface InventoryServiceInterface {
 
 	    InventoryResponseDto getInventoryById(int inventoryId);
 
-	    InventoryResponseDto createInventory(InventoryRequestDto inventoryRequestDto);
+	    InventoryResponseDto createInventory(int storeId, int productId,InventoryRequestDto inventoryRequestDto)
 
 	    InventoryResponseDto updateInventory(int inventoryId, InventoryRequestDto inventoryRequestDto);
 
