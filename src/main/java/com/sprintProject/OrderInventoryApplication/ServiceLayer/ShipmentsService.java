@@ -78,6 +78,7 @@ public class ShipmentsService implements ShipmentsServiceInterface{
         if (shipmentsRequestDto.getStoreId() != 0) {
             Stores store = storesRepository.findById(shipmentsRequestDto.getStoreId())
                     .orElseThrow(() -> new ShipmentNotFoundException("Store not found: " + shipmentsRequestDto.getStoreId()));
+
             existingShipment.setStores(store);
         }
 
