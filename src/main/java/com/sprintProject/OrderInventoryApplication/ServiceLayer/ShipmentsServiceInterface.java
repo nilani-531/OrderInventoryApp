@@ -14,7 +14,7 @@ public interface ShipmentsServiceInterface {
 
 	Shipments updateShipment(int shipmentId, Shipments shipment);
 	
-	String deleteShipment(int shipmentId);
+	void deleteShipment(int shipmentId);
 	
 	List<Shipments> getShipmentByCustomerId(int customerId);
 	
