@@ -28,31 +28,56 @@ public class ProductsController {
 	// Get all products
 	@GetMapping
 	public ResponseStructure<List<ProductsResponseDto>> getAllProducts() {
-		return productsService.getAllProducts();
+		List<ProductsResponseDto> list = productsService.getAllProducts();
+        ResponseStructure<List<ProductsResponseDto>> rs = new ResponseStructure<>();
+        rs.setStatus(200);
+        rs.setMsg("Products fetched successfully");
+        rs.setData(list);
+		return rs;
 	}
 
 	// Get product by ID
 	@GetMapping("/{productId}")
 	public  ResponseStructure<ProductsResponseDto> getProductById(@PathVariable int productId) {
-		return productsService.getProductById(productId);
+		ProductsResponseDto response = productsService.getProductById(productId);
+        ResponseStructure<ProductsResponseDto> rs = new ResponseStructure<>();
+        rs.setStatus(200);
+        rs.setMsg("Product fetched successfully");
+        rs.setData(response);
+		return rs;
 	}
 
 	// Create new product
 	@PostMapping
 	public ResponseStructure<ProductsResponseDto> createProduct(@RequestBody ProductsRequestDto product) {
-		return productsService.createProduct(product);
+		ProductsResponseDto response = productsService.createProduct(product);
+        ResponseStructure<ProductsResponseDto> rs = new ResponseStructure<>();
+        rs.setStatus(201);
+        rs.setMsg("Product created successfully");
+        rs.setData(response);
+		return rs;
 	}
 
 	// Update product
 	@PutMapping("/{productId}")
 	public ResponseStructure<ProductsResponseDto> updateProduct(@PathVariable int productId, @RequestBody ProductsRequestDto product) {
-		return productsService.updateProduct(productId, product);
+		ProductsResponseDto response = productsService.updateProduct(productId, product);
+        ResponseStructure<ProductsResponseDto> rs = new ResponseStructure<>();
+        rs.setStatus(200);
+        rs.setMsg("Product updated successfully");
+        rs.setData(response);
+		return rs;
 	}
 
 	// Delete product
 	@DeleteMapping("/{productId}")
 	public ResponseStructure<String> deleteProduct(@PathVariable int productId) {
-		return productsService.deleteProduct(productId);
+		productsService.deleteProduct(productId);
+        ResponseStructure<String> rs = new ResponseStructure<>();
+        rs.setStatus(200);
+        rs.setMsg("Product deleted successfully");
+        rs.setData("Product deleted successfully with id: " + productId);
+		return rs;
 	}
 
 }

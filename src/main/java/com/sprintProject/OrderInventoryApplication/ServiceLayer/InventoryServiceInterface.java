@@ -2,22 +2,21 @@ package com.sprintProject.OrderInventoryApplication.ServiceLayer;
 
 import java.util.List;
 
-import com.sprintProject.OrderInventoryApplication.dto.responseDto.ResponseStructure;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.InventoryRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.InventoryResponseDto;
 
 public interface InventoryServiceInterface {
 	
 
-	    ResponseStructure<List<InventoryResponseDto>> getAllInventory();
+	    List<InventoryResponseDto> getAllInventory();
 
-	    ResponseStructure<InventoryResponseDto> getInventoryById(int inventoryId);
+	    InventoryResponseDto getInventoryById(int inventoryId);
 
-	    ResponseStructure<InventoryResponseDto> createInventory(InventoryRequestDto inventoryRequestDto);
+	    InventoryResponseDto createInventory(int storeId, int productId,InventoryRequestDto inventoryRequestDto)
 
-	    ResponseStructure<InventoryResponseDto> updateInventory(int inventoryId, InventoryRequestDto inventoryRequestDto);
+	    InventoryResponseDto updateInventory(int inventoryId, InventoryRequestDto inventoryRequestDto);
 
-	    ResponseStructure<String> deleteInventory(int inventoryId);
+	    String deleteInventory(int inventoryId);
 
 	
 }
