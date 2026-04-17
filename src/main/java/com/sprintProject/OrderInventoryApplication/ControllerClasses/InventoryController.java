@@ -49,8 +49,8 @@ public class InventoryController {
 
 	// Create new inventory
 	@PostMapping
-	public ResponseStructure<InventoryResponseDto> createInventory(@RequestBody InventoryRequestDto inventory) {
-		InventoryResponseDto response = inventoryService.createInventory(inventory);
+	public ResponseStructure<InventoryResponseDto> createInventory(@org.springframework.web.bind.annotation.RequestParam int storeId, @org.springframework.web.bind.annotation.RequestParam int productId, @RequestBody InventoryRequestDto inventory) {
+		InventoryResponseDto response = inventoryService.createInventory(storeId, productId, inventory);
         ResponseStructure<InventoryResponseDto> rs = new ResponseStructure<>();
         rs.setStatus(201);
         rs.setMsg("Inventory created successfully");
@@ -60,8 +60,8 @@ public class InventoryController {
 
 	// Update inventory
 	@PutMapping("/{inventoryId}")
-	public ResponseStructure<InventoryResponseDto> updateInventory(@PathVariable int inventoryId, @RequestBody InventoryRequestDto inventory) {
-		InventoryResponseDto response = inventoryService.updateInventory(inventoryId, inventory);
+	public ResponseStructure<InventoryResponseDto> updateInventory(@PathVariable int inventoryId, @org.springframework.web.bind.annotation.RequestParam int storeId, @org.springframework.web.bind.annotation.RequestParam int productId, @RequestBody InventoryRequestDto inventory) {
+		InventoryResponseDto response = inventoryService.updateInventory(inventoryId, storeId, productId, inventory);
         ResponseStructure<InventoryResponseDto> rs = new ResponseStructure<>();
         rs.setStatus(200);
         rs.setMsg("Inventory updated successfully");
