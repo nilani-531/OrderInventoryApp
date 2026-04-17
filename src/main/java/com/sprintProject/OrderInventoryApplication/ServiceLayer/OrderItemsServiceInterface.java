@@ -3,13 +3,18 @@ package com.sprintProject.OrderInventoryApplication.ServiceLayer;
 import java.util.List;
 
 import com.sprintProject.OrderInventoryApplication.EntityClasses.OrderItems;
+import com.sprintProject.OrderInventoryApplication.dto.requestDto.OrderItemsRequestDto;
 
 public interface OrderItemsServiceInterface {
-	
 
-	    OrderItems addItem(int orderId, OrderItems item);
+    // ADD ITEM
+    OrderItems addItem(int orderId, OrderItemsRequestDto dto);
 
-	    OrderItems updateItem(int orderId, int lineItemId, OrderItems item);
+    // UPDATE ITEM
+    OrderItems updateItem(int orderId, int lineItemId, OrderItemsRequestDto dto);
 
-	    void deleteItem(int orderId, int lineItemId);
+    // DELETE ITEM
+    void deleteItem(int orderId, int lineItemId);
+
+ 
 }

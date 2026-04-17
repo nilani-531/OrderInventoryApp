@@ -29,7 +29,6 @@ public class OrderItems {
     @ManyToOne
     @JoinColumn(name = "shipment_id")
     private Shipments shipments;
-
     @NotNull
     @Min(1)
     private int quantity;
