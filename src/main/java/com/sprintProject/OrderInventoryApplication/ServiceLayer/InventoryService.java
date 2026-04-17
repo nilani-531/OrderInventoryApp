@@ -15,7 +15,7 @@ import com.sprintProject.OrderInventoryApplication.RepositoryLayer.InventoryRepo
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.ProductsRepository;
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.StoresRepository;
 
-import com.sprintProject.OrderInventoryApplication.dto.ResponseStructure;
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.ResponseStructure;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.InventoryRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.InventoryResponseDto;
 

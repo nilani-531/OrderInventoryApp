@@ -2,7 +2,7 @@ package com.sprintProject.OrderInventoryApplication.ServiceLayer;
 
 import java.util.List;
 
-import com.sprintProject.OrderInventoryApplication.dto.ResponseStructure;
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.ResponseStructure;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.ProductsRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.ProductsResponseDto;
 

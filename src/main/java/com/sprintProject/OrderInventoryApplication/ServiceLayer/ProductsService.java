@@ -9,7 +9,7 @@ import com.sprintProject.OrderInventoryApplication.CustomExceptions.ProductNotFo
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Products;
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.ProductsRepository;
 
-import com.sprintProject.OrderInventoryApplication.dto.ResponseStructure;
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.ResponseStructure;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.ProductsRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.ProductsResponseDto;
 

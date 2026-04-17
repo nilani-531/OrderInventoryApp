@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sprintProject.OrderInventoryApplication.dto.ResponseStructure;
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.ResponseStructure;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.ProductsRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.ProductsResponseDto;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Products;
