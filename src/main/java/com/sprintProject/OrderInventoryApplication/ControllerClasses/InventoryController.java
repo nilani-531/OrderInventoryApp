@@ -28,31 +28,56 @@ public class InventoryController {
 	// Get all inventory
 	@GetMapping
 	public ResponseStructure<List<InventoryResponseDto>> getAllInventory() {
-		return inventoryService.getAllInventory();
+		List<InventoryResponseDto> list = inventoryService.getAllInventory();
+        ResponseStructure<List<InventoryResponseDto>> rs = new ResponseStructure<>();
+        rs.setStatus(200);
+        rs.setMsg("Inventory fetched successfully");
+        rs.setData(list);
+		return rs;
 	}
 
 	// Get inventory by ID
 	@GetMapping("/{inventoryId}")
 	public ResponseStructure<InventoryResponseDto> getInventoryById(@PathVariable int inventoryId) {
-		return inventoryService.getInventoryById(inventoryId);
+		InventoryResponseDto response = inventoryService.getInventoryById(inventoryId);
+        ResponseStructure<InventoryResponseDto> rs = new ResponseStructure<>();
+        rs.setStatus(200);
+        rs.setMsg("Inventory fetched successfully");
+        rs.setData(response);
+		return rs;
 	}
 
 	// Create new inventory
 	@PostMapping
 	public ResponseStructure<InventoryResponseDto> createInventory(@RequestBody InventoryRequestDto inventory) {
-		return inventoryService.createInventory(inventory);
+		InventoryResponseDto response = inventoryService.createInventory(inventory);
+        ResponseStructure<InventoryResponseDto> rs = new ResponseStructure<>();
+        rs.setStatus(201);
+        rs.setMsg("Inventory created successfully");
+        rs.setData(response);
+		return rs;
 	}
 
 	// Update inventory
 	@PutMapping("/{inventoryId}")
 	public ResponseStructure<InventoryResponseDto> updateInventory(@PathVariable int inventoryId, @RequestBody InventoryRequestDto inventory) {
-		return inventoryService.updateInventory(inventoryId, inventory);
+		InventoryResponseDto response = inventoryService.updateInventory(inventoryId, inventory);
+        ResponseStructure<InventoryResponseDto> rs = new ResponseStructure<>();
+        rs.setStatus(200);
+        rs.setMsg("Inventory updated successfully");
+        rs.setData(response);
+		return rs;
 	}
 
 	// Delete inventory
 	@DeleteMapping("/{inventoryId}")
 	public ResponseStructure<String> deleteInventory(@PathVariable int inventoryId) {
-		return inventoryService.deleteInventory(inventoryId);
+		inventoryService.deleteInventory(inventoryId);
+        ResponseStructure<String> rs = new ResponseStructure<>();
+        rs.setStatus(200);
+        rs.setMsg("Inventory deleted successfully");
+        rs.setData("Inventory deleted successfully with id: " + inventoryId);
+		return rs;
 	}
 
 }

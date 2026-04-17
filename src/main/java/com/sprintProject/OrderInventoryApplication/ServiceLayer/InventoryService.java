@@ -15,7 +15,6 @@ import com.sprintProject.OrderInventoryApplication.RepositoryLayer.InventoryRepo
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.ProductsRepository;
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.StoresRepository;
 
-import com.sprintProject.OrderInventoryApplication.dto.responseDto.ResponseStructure;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.InventoryRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.InventoryResponseDto;
 
@@ -39,28 +38,19 @@ public class InventoryService implements InventoryServiceInterface {
 	}
 
 	@Override
-	public ResponseStructure<List<InventoryResponseDto>> getAllInventory() {
-		List<InventoryResponseDto> list = inventoryRepository.findAll().stream().map(this::mapToResponseDto).toList();
-		ResponseStructure<List<InventoryResponseDto>> response = new ResponseStructure<>();
-		response.setStatus(200);
-		response.setMsg("Inventory fetched successfully");
-		response.setData(list);
-		return response;
+	public List<InventoryResponseDto> getAllInventory() {
+		return inventoryRepository.findAll().stream().map(this::mapToResponseDto).toList();
 	}
 
 	@Override
-	public ResponseStructure<InventoryResponseDto> getInventoryById(int inventoryId) {
+	public InventoryResponseDto getInventoryById(int inventoryId) {
 		Inventory inventory = inventoryRepository.findById(inventoryId)
                 .orElseThrow(() -> new InventoryNotFoundException("Inventory not found with id: " + inventoryId));
-		ResponseStructure<InventoryResponseDto> response = new ResponseStructure<>();
-		response.setStatus(200);
-		response.setMsg("Inventory fetched successfully");
-		response.setData(mapToResponseDto(inventory));
-		return response;
+		return mapToResponseDto(inventory);
 	}
 
 	@Override
-	public ResponseStructure<InventoryResponseDto> createInventory(InventoryRequestDto inventory) {
+	public InventoryResponseDto createInventory(InventoryRequestDto inventory) {
 		Stores stores = storesRepository.findById(inventory.getStores().getStoreId())
 		        .orElseThrow(() -> new StoreNotFoundException("Store not found with id: " + inventory.getStores().getStoreId()));
 
@@ -73,16 +63,11 @@ public class InventoryService implements InventoryServiceInterface {
 		newInventory.setProductInventory(inventory.getProductInventory());
 
 	    Inventory saved = inventoryRepository.save(newInventory);
-
-		ResponseStructure<InventoryResponseDto> response = new ResponseStructure<>();
-		response.setStatus(201);
-		response.setMsg("Inventory created successfully");
-		response.setData(mapToResponseDto(saved));
-		return response;
+		return mapToResponseDto(saved);
 	}
 
 	@Override
-	public ResponseStructure<InventoryResponseDto> updateInventory(int inventoryId, InventoryRequestDto inventory) {
+	public InventoryResponseDto updateInventory(int inventoryId, InventoryRequestDto inventory) {
 		Inventory existing = inventoryRepository.findById(inventoryId)
                 .orElseThrow(() -> new InventoryNotFoundException("Inventory not found with id: " + inventoryId));
 
@@ -91,25 +76,17 @@ public class InventoryService implements InventoryServiceInterface {
         existing.setProductInventory(inventory.getProductInventory());
 
         Inventory saved = inventoryRepository.save(existing);
-		ResponseStructure<InventoryResponseDto> response = new ResponseStructure<>();
-		response.setStatus(200);
-		response.setMsg("Inventory updated successfully");
-		response.setData(mapToResponseDto(saved));
-		return response;
+		return mapToResponseDto(saved);
 	}
 
 	@Override
-	public ResponseStructure<String> deleteInventory(int inventoryId) {
+	public String deleteInventory(int inventoryId) {
 		Inventory inventory = inventoryRepository.findById(inventoryId)
                 .orElseThrow(() -> new InventoryNotFoundException("Inventory not found with id: " + inventoryId));
 
         inventoryRepository.delete(inventory);
 
-		ResponseStructure<String> response = new ResponseStructure<>();
-		response.setStatus(200);
-		response.setMsg("Inventory deleted successfully");
-		response.setData("Inventory deleted successfully with id: " + inventoryId);
-		return response;
+		return "Inventory deleted successfully with id: " + inventoryId;
 	}
 
 
