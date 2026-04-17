@@ -90,6 +90,4 @@ public class Shipments {
 		this.shipmentStatus = shipmentStatus;
 	}
 
-	
-
 }
