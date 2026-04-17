@@ -1,5 +1,12 @@
 package com.sprintProject.OrderInventoryApplication.dto.requestDto;
 
+<<<<<<< HEAD
+public class InventoryRequestDto {
+	private int inventoryId;
+
+	private int productInventory;
+
+=======
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Products;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Stores;
 
@@ -15,6 +22,7 @@ public class InventoryRequestDto {
 	
 	
 	
+>>>>>>> master
 	public int getInventoryId() {
 		return inventoryId;
 	}
@@ -23,6 +31,8 @@ public class InventoryRequestDto {
 		this.inventoryId = inventoryId;
 	}
 
+<<<<<<< HEAD
+=======
 	public Stores getStores() {
 		return stores;
 	}
@@ -39,6 +49,7 @@ public class InventoryRequestDto {
 		this.products = products;
 	}
 
+>>>>>>> master
 	public int getProductInventory() {
 		return productInventory;
 	}
@@ -47,6 +58,11 @@ public class InventoryRequestDto {
 		this.productInventory = productInventory;
 	}
 
+<<<<<<< HEAD
+}
+
+=======
 	private int productInventory;
 
 }
+>>>>>>> master
