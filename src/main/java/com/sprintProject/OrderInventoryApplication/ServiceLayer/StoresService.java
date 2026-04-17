@@ -1,10 +1,11 @@
 package com.sprintProject.OrderInventoryApplication.ServiceLayer;
 
-import com.sprintProject.OrderInventoryApplication.CustomExceptions.DuplicateResourceException;
-import com.sprintProject.OrderInventoryApplication.CustomExceptions.InvalidDataException;
-import com.sprintProject.OrderInventoryApplication.CustomExceptions.ResourceNotFoundException;
+import com.sprintProject.OrderInventoryApplication.CustomExceptions.*;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Stores;
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.StoresRepository;
+import com.sprintProject.OrderInventoryApplication.dto.requestDto.StoresRequestDto;
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.StoresResponseDto;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,80 +13,120 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Service
-public class StoresService implements StoresServiceInterface {
+public class StoresService {
 
     @Autowired
     private StoresRepository storeRepository;
 
-    @Override
-    public List<Stores> getAllStores() {
-        return storeRepository.findAll();
+    // -------- GET ALL --------
+    public List<StoresResponseDto> getAllStores() {
+        return storeRepository.findAll()
+                .stream()
+                .map(this::mapToResponseDto)
+                .toList();
     }
 
-    @Override
-    public Stores getStoreById(int id) {
-        return storeRepository.findById(id)
+    // -------- GET BY ID --------
+    public StoresResponseDto getStoreById(int id) {
+        Stores store = storeRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Store not found with id: " + id));
+
+        return mapToResponseDto(store);
     }
 
-    @Override
-    public Stores createStore(Stores store) {
+    // -------- CREATE --------
+    public StoresResponseDto createStore(StoresRequestDto dto) {
 
-        //  Unique store name
-        if (storeRepository.existsByStoreName(store.getStoreName())) {
+        if (storeRepository.existsByStoreName(dto.getStoreName())) {
             throw new DuplicateResourceException("Store name already exists");
         }
 
-        //  Either web OR physical address must exist
-        if ((store.getWebAddress() == null || store.getWebAddress().isEmpty()) &&
-                (store.getPhysicalAddress() == null || store.getPhysicalAddress().isEmpty())) {
-            throw new InvalidDataException("Either web address or physical address must be provided");
+        if ((dto.getWebAddress() == null || dto.getWebAddress().isEmpty()) &&
+                (dto.getPhysicalAddress() == null || dto.getPhysicalAddress().isEmpty())) {
+            throw new InvalidDataException("Either web or physical address required");
         }
 
-        //  Set logo last updated automatically
+        Stores store = mapToEntity(dto);
         store.setLogoLastUpdated(LocalDate.now());
 
-        return storeRepository.save(store);
+        Stores saved = storeRepository.save(store);
+
+        return mapToResponseDto(saved);
     }
 
-    @Override
-    public Stores updateStore(int id, Stores store) {
+    // -------- UPDATE --------
+    public StoresResponseDto updateStore(int id, StoresRequestDto dto) {
 
-        Stores existing = getStoreById(id);
+        Stores existing = storeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Store not found"));
 
-        //  Prevent duplicate name (except same record)
-        if (!existing.getStoreName().equals(store.getStoreName()) &&
-                storeRepository.existsByStoreName(store.getStoreName())) {
+        if (!existing.getStoreName().equals(dto.getStoreName()) &&
+                storeRepository.existsByStoreName(dto.getStoreName())) {
             throw new DuplicateResourceException("Store name already exists");
         }
 
-        // Address validation
-        if ((store.getWebAddress() == null || store.getWebAddress().isEmpty()) &&
-                (store.getPhysicalAddress() == null || store.getPhysicalAddress().isEmpty())) {
-            throw new InvalidDataException("Either web address or physical address must be provided");
+        if ((dto.getWebAddress() == null || dto.getWebAddress().isEmpty()) &&
+                (dto.getPhysicalAddress() == null || dto.getPhysicalAddress().isEmpty())) {
+            throw new InvalidDataException("Either web or physical address required");
         }
 
-        existing.setStoreName(store.getStoreName());
-        existing.setWebAddress(store.getWebAddress());
-        existing.setPhysicalAddress(store.getPhysicalAddress());
-        existing.setLatitude(store.getLatitude());
-        existing.setLongitude(store.getLongitude());
+        existing.setStoreName(dto.getStoreName());
+        existing.setWebAddress(dto.getWebAddress());
+        existing.setPhysicalAddress(dto.getPhysicalAddress());
+        existing.setLatitude(dto.getLatitude());
+        existing.setLongitude(dto.getLongitude());
 
-        // Update logo fields if present
-        if (store.getLogo() != null) {
-            existing.setLogo(store.getLogo());
-            existing.setLogoMimeType(store.getLogoMimeType());
-            existing.setLogoFilename(store.getLogoFilename());
-            existing.setLogoCharset(store.getLogoCharset());
+        if (dto.getLogo() != null) {
+            existing.setLogo(dto.getLogo());
+            existing.setLogoMimeType(dto.getLogoMimeType());
+            existing.setLogoFilename(dto.getLogoFilename());
+            existing.setLogoCharset(dto.getLogoCharset());
             existing.setLogoLastUpdated(LocalDate.now());
         }
 
-        return storeRepository.save(existing);
+        return mapToResponseDto(storeRepository.save(existing));
     }
 
-    @Override
+    // -------- DELETE --------
     public void deleteStore(int id) {
-        Stores store = getStoreById(id);
+        Stores store = storeRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Store not found"));
+
         storeRepository.delete(store);
+    }
+
+    // -------- MAPPERS --------
+    private StoresResponseDto mapToResponseDto(Stores store) {
+        StoresResponseDto dto = new StoresResponseDto();
+
+        dto.setStoreId(store.getStoreId());
+        dto.setStoreName(store.getStoreName());
+        dto.setWebAddress(store.getWebAddress());
+        dto.setPhysicalAddress(store.getPhysicalAddress());
+        dto.setLatitude(store.getLatitude());
+        dto.setLongitude(store.getLongitude());
+        dto.setLogo(store.getLogo());
+        dto.setLogoMimeType(store.getLogoMimeType());
+        dto.setLogoFilename(store.getLogoFilename());
+        dto.setLogoCharset(store.getLogoCharset());
+        dto.setLogoLastUpdated(store.getLogoLastUpdated());
+
+        return dto;
+    }
+
+    private Stores mapToEntity(StoresRequestDto dto) {
+        Stores store = new Stores();
+
+        store.setStoreName(dto.getStoreName());
+        store.setWebAddress(dto.getWebAddress());
+        store.setPhysicalAddress(dto.getPhysicalAddress());
+        store.setLatitude(dto.getLatitude());
+        store.setLongitude(dto.getLongitude());
+        store.setLogo(dto.getLogo());
+        store.setLogoMimeType(dto.getLogoMimeType());
+        store.setLogoFilename(dto.getLogoFilename());
+        store.setLogoCharset(dto.getLogoCharset());
+
+        return store;
     }
 }
