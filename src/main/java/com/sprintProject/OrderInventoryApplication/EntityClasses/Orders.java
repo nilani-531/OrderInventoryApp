@@ -19,12 +19,24 @@ public class Orders {
 
     @NotNull
     @ManyToOne
+<<<<<<< HEAD
     @JoinColumn(name = "customer_id", nullable = false)
+=======
+
+    @JoinColumn(name = "customer_id", nullable = false)
+
+>>>>>>> master
     private Customers customers;
 
     @NotNull
     @ManyToOne
+<<<<<<< HEAD
     @JoinColumn(name = "store_id", nullable = false)
+=======
+
+    @JoinColumn(name = "store_id", nullable = false)
+
+>>>>>>> master
     private Stores  stores;
 
 	@NotNull
