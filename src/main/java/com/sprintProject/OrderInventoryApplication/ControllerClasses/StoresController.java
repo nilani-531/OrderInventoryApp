@@ -4,7 +4,7 @@ import com.sprintProject.OrderInventoryApplication.ServiceLayer.StoresService;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.StoresRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.ResponseStructure;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.StoresResponseDto;
-
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.ResponseStructure;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
