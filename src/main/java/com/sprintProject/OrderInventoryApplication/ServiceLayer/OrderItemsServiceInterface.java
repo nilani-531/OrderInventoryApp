@@ -6,12 +6,6 @@ import com.sprintProject.OrderInventoryApplication.dto.requestDto.OrderItemsRequ
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.OrderItemsResponseDto;
 
 public interface OrderItemsServiceInterface {
-    List<OrderItemsResponseDto> getItemsByOrderId(int orderId);
-
-    OrderItemsResponseDto addItem(int orderId, int productId, OrderItemsRequestDto dto);
-
-    OrderItemsResponseDto updateItem(int orderId, int lineItemId, OrderItemsRequestDto dto);
-
 
     // GET all items for a given order
     List<OrderItemsResponseDto> getItemsByOrderId(int orderId);
@@ -23,6 +17,5 @@ public interface OrderItemsServiceInterface {
     OrderItemsResponseDto updateItem(int orderId, int lineItemId, OrderItemsRequestDto dto);
 
     // DELETE ITEM from an order
-
     void deleteItem(int orderId, int lineItemId);
 }
