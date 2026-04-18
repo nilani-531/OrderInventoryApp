@@ -4,6 +4,7 @@ public class OrderItemsResponseDto {
 
     private int lineItemId;
 
+
     private int orderId;
     private int productId;
 
@@ -42,11 +43,41 @@ public class OrderItemsResponseDto {
         this.quantity = quantity;
     }
 
+public class OrderItemsResponseDto {
+	 private int lineItemId;
+     private double unitPrice;
+	 public int getLineItemId() {
+		 return lineItemId;
+	 }
+	 private int quantity;
+
+
     public double getUnitPrice() {
         return unitPrice;
     }
+
 
     public void setUnitPrice(double unitPrice) {
         this.unitPrice = unitPrice;
     }
 }
+
+ public void setQuantity(int quantity) {
+	     this.quantity = quantity;
+	 }
+	 public void setLineItemId(int lineItemId) {
+		 this.lineItemId = lineItemId;
+	 }
+	 public double getUnitPrice() {
+		 return unitPrice;
+	 }
+	 public void setUnitPrice(double unitPrice) {
+		 this.unitPrice = unitPrice;
+	 }
+	 @Override
+	 public String toString() {
+		return "OrderItemsResponseDto [lineItemId=" + lineItemId +  ", unitPrice=" + unitPrice + "]";
+	 }
+	 
+}
+
