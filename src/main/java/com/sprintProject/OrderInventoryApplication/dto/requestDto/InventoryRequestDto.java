@@ -1,22 +1,9 @@
 package com.sprintProject.OrderInventoryApplication.dto.requestDto;
 
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Products;
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Stores;
-
 public class InventoryRequestDto {
 	private int inventoryId;
 
-	
-	private Stores stores;
-	
-	private Products products;
-	
 	private int productInventory;
-	
-	
-
-
-	
 
 	public int getInventoryId() {
 		return inventoryId;
