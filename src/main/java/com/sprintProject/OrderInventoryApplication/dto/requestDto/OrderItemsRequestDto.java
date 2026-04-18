@@ -1,5 +1,9 @@
 package com.sprintProject.OrderInventoryApplication.dto.requestDto;
 
+import com.sprintProject.OrderInventoryApplication.EntityClasses.Orders;
+import com.sprintProject.OrderInventoryApplication.EntityClasses.Products;
+import com.sprintProject.OrderInventoryApplication.EntityClasses.Shipments;
+
 public class OrderItemsRequestDto {
 
 
