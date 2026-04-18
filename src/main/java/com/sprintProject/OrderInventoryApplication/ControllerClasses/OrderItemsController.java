@@ -59,13 +59,7 @@ public class OrderItemsController {
 
     // 🔹 PUT
     @PutMapping("/{orderId}/items/{lineItemId}")
-
-    public ResponseStructure<OrderItemsResponseDto> updateItem(
-            @PathVariable int orderId,
-            @PathVariable int lineItemId,
-            @RequestBody OrderItemsRequestDto dto) {
-
-    public ResponseStructure<OrderItemsResponseDto> updateItem(@PathVariable int orderId,
+   public ResponseStructure<OrderItemsResponseDto> updateItem(@PathVariable int orderId,
                                                                @PathVariable int lineItemId,
                                                                @RequestBody OrderItemsRequestDto dto) {
 
