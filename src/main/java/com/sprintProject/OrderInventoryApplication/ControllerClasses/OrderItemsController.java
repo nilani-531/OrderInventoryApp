@@ -17,7 +17,7 @@ public class OrderItemsController {
     @Autowired
     private OrderItemsServiceInterface service;
 
-    // 🔹 GET
+    //  GET ITEMS BY ORDER ID
     @GetMapping("/{orderId}/items")
     public ResponseStructure<List<OrderItemsResponseDto>> getItems(@PathVariable int orderId) {
 
@@ -31,12 +31,14 @@ public class OrderItemsController {
         return rs;
     }
 
-    // 🔹 POST
-    @PostMapping("/{orderId}/items")
-    public ResponseStructure<OrderItemsResponseDto> addItem(@PathVariable int orderId,
-                                                            @RequestBody OrderItemsRequestDto dto) {
+    //  ADD ITEM (IMPORTANT FIX: productId added)
+    @PostMapping("/{orderId}/items/{productId}")
+    public ResponseStructure<OrderItemsResponseDto> addItem(
+            @PathVariable int orderId,
+            @PathVariable int productId,
+            @RequestBody OrderItemsRequestDto dto) {
 
-        OrderItemsResponseDto data = service.addItem(orderId, dto);
+        OrderItemsResponseDto data = service.addItem(orderId, productId, dto);
 
         ResponseStructure<OrderItemsResponseDto> rs = new ResponseStructure<>();
         rs.setStatus(201);
@@ -46,11 +48,12 @@ public class OrderItemsController {
         return rs;
     }
 
-    // 🔹 PUT
+    //  UPDATE ITEM
     @PutMapping("/{orderId}/items/{lineItemId}")
-    public ResponseStructure<OrderItemsResponseDto> updateItem(@PathVariable int orderId,
-                                                               @PathVariable int lineItemId,
-                                                               @RequestBody OrderItemsRequestDto dto) {
+    public ResponseStructure<OrderItemsResponseDto> updateItem(
+            @PathVariable int orderId,
+            @PathVariable int lineItemId,
+            @RequestBody OrderItemsRequestDto dto) {
 
         OrderItemsResponseDto data = service.updateItem(orderId, lineItemId, dto);
 
@@ -62,10 +65,11 @@ public class OrderItemsController {
         return rs;
     }
 
-    // 🔹 DELETE
+    //  DELETE ITEM
     @DeleteMapping("/{orderId}/items/{lineItemId}")
-    public ResponseStructure<String> deleteItem(@PathVariable int orderId,
-                                                @PathVariable int lineItemId) {
+    public ResponseStructure<String> deleteItem(
+            @PathVariable int orderId,
+            @PathVariable int lineItemId) {
 
         service.deleteItem(orderId, lineItemId);
 
