@@ -30,7 +30,7 @@ public class ShipmentsController {
 
     @GetMapping
     public ResponseStructure<List<ShipmentsResponseDto>> getAllShipments() {
-
+    	
         ResponseStructure<List<ShipmentsResponseDto>> responseStructure = new ResponseStructure<>();
         responseStructure.setStatus(200);
         responseStructure.setMsg("All shipments fetched successfully");
@@ -61,6 +61,7 @@ public class ShipmentsController {
         return responseStructure;
     }
 
+
     @PutMapping("/{shipmentId}")
     public ResponseStructure<ShipmentsResponseDto> updateShipment(@PathVariable int shipmentId, @RequestBody ShipmentsRequestDto request) {
 
@@ -84,7 +85,7 @@ public class ShipmentsController {
     }
 
     @PatchMapping("/{shipmentId}/shipmentStatus")
-    public ResponseStructure<ShipmentsResponseDto> updateShipmentStatus(@PathVariable int shipmentId, @RequestParam ShipmentStatus shipmentStatus) {
+    public ResponseStructure<ShipmentsResponseDto> updateStatus(@PathVariable int shipmentId, @RequestParam ShipmentStatus shipmentStatus) {
 
         ResponseStructure<ShipmentsResponseDto> responseStructure = new ResponseStructure<>();
         responseStructure.setStatus(200);
