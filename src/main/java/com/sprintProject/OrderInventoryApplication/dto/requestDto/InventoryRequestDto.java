@@ -12,7 +12,7 @@ public class InventoryRequestDto {
 	
 	private Products products;
 	
-	
+	private int productInventory;
 	
 	
 	public int getInventoryId() {
@@ -47,6 +47,6 @@ public class InventoryRequestDto {
 		this.productInventory = productInventory;
 	}
 
-	private int productInventory;
+	
 
 }
