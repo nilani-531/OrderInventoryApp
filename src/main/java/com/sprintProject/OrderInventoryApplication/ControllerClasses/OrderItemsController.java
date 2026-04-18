@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.sprintProject.OrderInventoryApplication.EntityClasses.OrderItems;
-import com.sprintProject.OrderInventoryApplication.ServiceLayer.OrderItemsServiceInterface;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.OrderItemsRequestDto;
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.OrderItemsResponseDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.ResponseStructure;
+import com.sprintProject.OrderInventoryApplication.ServiceLayer.OrderItemsServiceInterface;
 
 @RestController
 @RequestMapping("/api/orders")
@@ -17,50 +17,63 @@ public class OrderItemsController {
     @Autowired
     private OrderItemsServiceInterface service;
 
+    // 🔹 GET
+    @GetMapping("/{orderId}/items")
+    public ResponseStructure<List<OrderItemsResponseDto>> getItems(@PathVariable int orderId) {
 
-    //  ADD ITEM
+        List<OrderItemsResponseDto> data = service.getItemsByOrderId(orderId);
+
+        ResponseStructure<List<OrderItemsResponseDto>> rs = new ResponseStructure<>();
+        rs.setStatus(200);
+        rs.setMsg("Items fetched successfully");
+        rs.setData(data);
+
+        return rs;
+    }
+
+    // 🔹 POST
     @PostMapping("/{orderId}/items")
-    public ResponseStructure<OrderItems> addItem(@PathVariable int orderId,
-                                                @RequestBody OrderItemsRequestDto dto) {
+    public ResponseStructure<OrderItemsResponseDto> addItem(@PathVariable int orderId,
+                                                            @RequestBody OrderItemsRequestDto dto) {
 
-        OrderItems item = service.addItem(orderId, dto);
+        OrderItemsResponseDto data = service.addItem(orderId, dto);
 
-        ResponseStructure<OrderItems> response = new ResponseStructure<>();
-        response.setStatus(201);
-        response.setMsg("Item added successfully");
-        response.setData(item);
+        ResponseStructure<OrderItemsResponseDto> rs = new ResponseStructure<>();
+        rs.setStatus(201);
+        rs.setMsg("Item added successfully");
+        rs.setData(data);
 
-        return response;
+        return rs;
     }
 
-    //  UPDATE ITEM
+    // 🔹 PUT
     @PutMapping("/{orderId}/items/{lineItemId}")
-    public ResponseStructure<OrderItems> updateItem(@PathVariable int orderId,
-                                                   @PathVariable int lineItemId,
-                                                   @RequestBody OrderItemsRequestDto dto) {
+    public ResponseStructure<OrderItemsResponseDto> updateItem(@PathVariable int orderId,
+                                                               @PathVariable int lineItemId,
+                                                               @RequestBody OrderItemsRequestDto dto) {
 
-        OrderItems item = service.updateItem(orderId, lineItemId, dto);
+        OrderItemsResponseDto data = service.updateItem(orderId, lineItemId, dto);
 
-        ResponseStructure<OrderItems> response = new ResponseStructure<>();
-        response.setStatus(200);
-        response.setMsg("Item updated successfully");
-        response.setData(item);
+        ResponseStructure<OrderItemsResponseDto> rs = new ResponseStructure<>();
+        rs.setStatus(200);
+        rs.setMsg("Item updated successfully");
+        rs.setData(data);
 
-        return response;
+        return rs;
     }
 
-    //  DELETE ITEM
+    // 🔹 DELETE
     @DeleteMapping("/{orderId}/items/{lineItemId}")
     public ResponseStructure<String> deleteItem(@PathVariable int orderId,
-                                               @PathVariable int lineItemId) {
+                                                @PathVariable int lineItemId) {
 
         service.deleteItem(orderId, lineItemId);
 
-        ResponseStructure<String> response = new ResponseStructure<>();
-        response.setStatus(200);
-        response.setMsg("Item deleted successfully");
-        response.setData("Deleted");
+        ResponseStructure<String> rs = new ResponseStructure<>();
+        rs.setStatus(200);
+        rs.setMsg("Item deleted successfully");
+        rs.setData("Deleted item with id: " + lineItemId);
 
-        return response;
+        return rs;
     }
 }
