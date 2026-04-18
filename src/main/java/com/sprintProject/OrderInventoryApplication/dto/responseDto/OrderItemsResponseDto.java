@@ -12,9 +12,6 @@ import jakarta.validation.constraints.NotNull;
 
 public class OrderItemsResponseDto {
 	 private int lineItemId;
-     private Orders orders;	    
-	 private Products products; 
-     private Shipments shipments;
      private double unitPrice;
 	 public int getLineItemId() {
 		 return lineItemId;
@@ -31,24 +28,6 @@ public class OrderItemsResponseDto {
 	 public void setLineItemId(int lineItemId) {
 		 this.lineItemId = lineItemId;
 	 }
-	 public Orders getOrders() {
-		 return orders;
-	 }
-	 public void setOrders(Orders orders) {
-		 this.orders = orders;
-	 }
-	 public Products getProducts() {
-		 return products;
-	 }
-	 public void setProducts(Products products) {
-		 this.products = products;
-	 }
-	 public Shipments getShipments() {
-		 return shipments;
-	 }
-	 public void setShipments(Shipments shipments) {
-		 this.shipments = shipments;
-	 }
 	 public double getUnitPrice() {
 		 return unitPrice;
 	 }
@@ -57,8 +36,7 @@ public class OrderItemsResponseDto {
 	 }
 	 @Override
 	 public String toString() {
-		return "OrderItemsResponseDto [lineItemId=" + lineItemId + ", orders=" + orders + ", products=" + products
-				+ ", shipments=" + shipments + ", unitPrice=" + unitPrice + "]";
+		return "OrderItemsResponseDto [lineItemId=" + lineItemId +  ", unitPrice=" + unitPrice + "]";
 	 }
 	 
 }
