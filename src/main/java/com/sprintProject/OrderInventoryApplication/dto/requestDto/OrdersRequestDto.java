@@ -42,8 +42,4 @@ public class OrdersRequestDto {
     public void setOrderTms(LocalDateTime orderTms) {
         this.orderTms = orderTms;
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 0f5d0f5 (Committing Day5 Task)
