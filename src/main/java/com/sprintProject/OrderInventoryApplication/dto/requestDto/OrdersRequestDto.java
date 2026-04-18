@@ -2,58 +2,44 @@ package com.sprintProject.OrderInventoryApplication.dto.requestDto;
 
 import java.time.LocalDateTime;
 
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Customers;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.OrderStatus;
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Stores;
 
 public class OrdersRequestDto {
-	private int orderId;
 
-	private Customers customers;
+    private int customerId;
+    private int storeId;
+    private OrderStatus orderStatusS;
+    private LocalDateTime orderTms;
 
-	private Stores stores;
+    public int getCustomerId() {
+        return customerId;
+    }
 
-	private OrderStatus orderStatusS;
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
 
-	private LocalDateTime orderTms;
+    public int getStoreId() {
+        return storeId;
+    }
 
-	public int getOrderId() {
-		return orderId;
-	}
+    public void setStoreId(int storeId) {
+        this.storeId = storeId;
+    }
 
-	public void setOrderId(int orderId) {
-		this.orderId = orderId;
-	}
+    public OrderStatus getOrderStatusS() {
+        return orderStatusS;
+    }
 
-	public Customers getCustomers() {
-		return customers;
-	}
+    public void setOrderStatusS(OrderStatus orderStatusS) {
+        this.orderStatusS = orderStatusS;
+    }
 
-	public void setCustomers(Customers customers) {
-		this.customers = customers;
-	}
+    public LocalDateTime getOrderTms() {
+        return orderTms;
+    }
 
-	public Stores getStores() {
-		return stores;
-	}
-
-	public void setStores(Stores stores) {
-		this.stores = stores;
-	}
-
-	public OrderStatus getOrderStatusS() {
-		return orderStatusS;
-	}
-
-	public void setOrderStatusS(OrderStatus orderStatusS) {
-		this.orderStatusS = orderStatusS;
-	}
-
-	public LocalDateTime getOrderTms() {
-		return orderTms;
-	}
-
-	public void setOrderTms(LocalDateTime orderTms) {
-		this.orderTms = orderTms;
-	}
+    public void setOrderTms(LocalDateTime orderTms) {
+        this.orderTms = orderTms;
+    }
 }
