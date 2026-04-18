@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
+
 import com.sprintProject.OrderInventoryApplication.EntityClasses.OrderStatus;
-import com.sprintProject.OrderInventoryApplication.ServiceLayer.OrdersService;
+import com.sprintProject.OrderInventoryApplication.ServiceLayer.OrdersServiceInterface;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.OrdersRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.OrdersResponseDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.ResponseStructure;
@@ -16,11 +18,11 @@ import com.sprintProject.OrderInventoryApplication.dto.responseDto.ResponseStruc
 public class OrdersController {
 
     @Autowired
-    private OrdersService service;
+    private OrdersServiceInterface service;
 
-    // ✅ CREATE
+    // CREATE ORDER
     @PostMapping
-    public ResponseStructure<OrdersResponseDto> createOrder(@RequestBody OrdersRequestDto dto) {
+    public ResponseStructure<OrdersResponseDto> createOrder(@Valid @RequestBody OrdersRequestDto dto) {
 
         OrdersResponseDto response = service.createOrder(dto);
 
@@ -32,7 +34,7 @@ public class OrdersController {
         return rs;
     }
 
-    // ✅ GET ALL
+    // GET ALL ORDERS
     @GetMapping
     public ResponseStructure<List<OrdersResponseDto>> getAllOrders() {
 
@@ -46,7 +48,7 @@ public class OrdersController {
         return rs;
     }
 
-    // ✅ GET BY ID
+    // GET ORDER BY ID
     @GetMapping("/{orderId}")
     public ResponseStructure<OrdersResponseDto> getOrder(@PathVariable int orderId) {
 
@@ -60,7 +62,7 @@ public class OrdersController {
         return rs;
     }
 
-    // ✅ DELETE
+    // DELETE ORDER
     @DeleteMapping("/{orderId}")
     public ResponseStructure<String> deleteOrder(@PathVariable int orderId) {
 
@@ -74,7 +76,7 @@ public class OrdersController {
         return rs;
     }
 
-    // ✅ UPDATE STATUS
+    // UPDATE ORDER STATUS
     @PutMapping("/{orderId}/status")
     public ResponseStructure<OrdersResponseDto> updateStatus(
             @PathVariable int orderId,
@@ -84,7 +86,7 @@ public class OrdersController {
 
         ResponseStructure<OrdersResponseDto> rs = new ResponseStructure<>();
         rs.setStatus(200);
-        rs.setMsg("Order status updated");
+        rs.setMsg("Order status updated successfully");
         rs.setData(response);
 
         return rs;
