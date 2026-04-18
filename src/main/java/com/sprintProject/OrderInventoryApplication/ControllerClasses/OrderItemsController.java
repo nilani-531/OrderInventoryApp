@@ -87,9 +87,6 @@ public class OrderItemsController {
             @PathVariable int orderId,
             @PathVariable int lineItemId) {
 
-    public ResponseStructure<String> deleteItem(@PathVariable int orderId,
-                                                @PathVariable int lineItemId) {
-
 
         service.deleteItem(orderId, lineItemId);
 
