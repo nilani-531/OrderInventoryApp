@@ -9,10 +9,6 @@ import com.sprintProject.OrderInventoryApplication.CustomExceptions.ProductNotFo
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Products;
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.ProductsRepository;
 
-<<<<<<< HEAD
-=======
-import com.sprintProject.OrderInventoryApplication.dto.responseDto.ResponseStructure;
->>>>>>> master
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.ProductsRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.ProductsResponseDto;
 
@@ -34,7 +30,6 @@ public class ProductsService implements ProductsServiceInterface{
 	}
 
 	@Override
-<<<<<<< HEAD
 	public List<ProductsResponseDto> getAllProducts() {
 		return productsRepository.findAll().stream().map(this::mapToResponseDto).toList();
 	}
@@ -48,30 +43,6 @@ public class ProductsService implements ProductsServiceInterface{
 
 	@Override
 	public ProductsResponseDto createProduct(ProductsRequestDto productRequestDto) {
-=======
-	public ResponseStructure<List<ProductsResponseDto>> getAllProducts() {
-		List<ProductsResponseDto> list = productsRepository.findAll().stream().map(this::mapToResponseDto).toList();
-		ResponseStructure<List<ProductsResponseDto>> response = new ResponseStructure<>();
-		response.setStatus(200);
-		response.setMsg("Products fetched successfully");
-		response.setData(list);
-		return response;
-	}
-
-	@Override
-	public ResponseStructure<ProductsResponseDto> getProductById(int productId) {
-        Products product = productsRepository.findById(productId)
-                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
-		ResponseStructure<ProductsResponseDto> response = new ResponseStructure<>();
-		response.setStatus(200);
-		response.setMsg("Product fetched successfully");
-		response.setData(mapToResponseDto(product));
-		return response;
-	}
-
-	@Override
-	public ResponseStructure<ProductsResponseDto> createProduct(ProductsRequestDto productRequestDto) {
->>>>>>> master
 		Products product = new Products();
 		product.setProductName(productRequestDto.getProductName());
 		product.setUnitPrice(productRequestDto.getUnitPrice());
@@ -81,24 +52,11 @@ public class ProductsService implements ProductsServiceInterface{
 		product.setRating(productRequestDto.getRating());
 		
 		Products saved = productsRepository.save(product);
-<<<<<<< HEAD
 		return mapToResponseDto(saved);
 	}
 
 	@Override
 	public ProductsResponseDto updateProduct(int productId, ProductsRequestDto productRequestDto) {
-=======
-		
-		ResponseStructure<ProductsResponseDto> response = new ResponseStructure<>();
-		response.setStatus(201);
-		response.setMsg("Product created successfully");
-		response.setData(mapToResponseDto(saved));
-		return response;
-	}
-
-	@Override
-	public ResponseStructure<ProductsResponseDto> updateProduct(int productId, ProductsRequestDto productRequestDto) {
->>>>>>> master
 		Products exProduct = productsRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
 
@@ -118,35 +76,15 @@ public class ProductsService implements ProductsServiceInterface{
         	exProduct.setSize(productRequestDto.getSize());
 
         Products updated = productsRepository.save(exProduct);
-<<<<<<< HEAD
 		return mapToResponseDto(updated);
 	}
 
 	@Override
 	public String deleteProduct(int productId) {
-=======
-		ResponseStructure<ProductsResponseDto> response = new ResponseStructure<>();
-		response.setStatus(200);
-		response.setMsg("Product updated successfully");
-		response.setData(mapToResponseDto(updated));
-		return response;
-	}
-
-	@Override
-	public ResponseStructure<String> deleteProduct(int productId) {
->>>>>>> master
 		 Products product = productsRepository.findById(productId)
 	                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
 
 	        productsRepository.delete(product);
-<<<<<<< HEAD
 		return "Product deleted successfully with id: " + productId;
-=======
-		ResponseStructure<String> response = new ResponseStructure<>();
-		response.setStatus(200);
-		response.setMsg("Product deleted successfully");
-		response.setData("Product deleted successfully with id: " + productId);
-		return response;
->>>>>>> master
 	}
 }

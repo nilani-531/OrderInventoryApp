@@ -12,9 +12,10 @@ public interface InventoryServiceInterface {
 
 	    InventoryResponseDto getInventoryById(int inventoryId);
 
-	    InventoryResponseDto createInventory(int storeId, int productId,InventoryRequestDto inventoryRequestDto)
+	    InventoryResponseDto createInventory(int storeId, int productId,InventoryRequestDto inventoryRequestDto);
 
-	    InventoryResponseDto updateInventory(int inventoryId, InventoryRequestDto inventoryRequestDto);
+	    InventoryResponseDto updateInventory(int inventoryId, int storeId,
+	            int productId ,InventoryRequestDto inventoryRequestDto);
 
 	    String deleteInventory(int inventoryId);
 
