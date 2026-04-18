@@ -1,14 +1,47 @@
 package com.sprintProject.OrderInventoryApplication.dto.responseDto;
 
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Orders;
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Products;
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Shipments;
+public class OrderItemsResponseDto {
 
-import jakarta.persistence.Column;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
+    private int lineItemId;
+
+
+    private int orderId;
+    private int productId;
+
+    private int quantity;
+    private double unitPrice;
+
+    public int getLineItemId() {
+        return lineItemId;
+    }
+
+    public void setLineItemId(int lineItemId) {
+        this.lineItemId = lineItemId;
+    }
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
+
+    public int getProductId() {
+        return productId;
+    }
+
+    public void setProductId(int productId) {
+        this.productId = productId;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
 
 public class OrderItemsResponseDto {
 	 private int lineItemId;
@@ -18,11 +51,18 @@ public class OrderItemsResponseDto {
 	 }
 	 private int quantity;
 
-	 public int getQuantity() {
-	     return quantity;
-	 }
 
-	 public void setQuantity(int quantity) {
+    public double getUnitPrice() {
+        return unitPrice;
+    }
+
+
+    public void setUnitPrice(double unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+}
+
+ public void setQuantity(int quantity) {
 	     this.quantity = quantity;
 	 }
 	 public void setLineItemId(int lineItemId) {
@@ -40,3 +80,4 @@ public class OrderItemsResponseDto {
 	 }
 	 
 }
+

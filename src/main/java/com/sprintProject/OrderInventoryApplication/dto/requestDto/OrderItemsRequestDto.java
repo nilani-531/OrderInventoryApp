@@ -1,17 +1,33 @@
 package com.sprintProject.OrderInventoryApplication.dto.requestDto;
 
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Orders;
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Products;
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Shipments;
-
 public class OrderItemsRequestDto {
+
+
 	 private int lineItemId;
      private double unitPrice;
      private int quantity;
 
-     public int getQuantity() {
-         return quantity;
-     }
+
+    private int quantity;
+    private double unitPrice;
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getUnitPrice() {
+        return unitPrice;
+    }
+
+
+    public void setUnitPrice(double unitPrice) {
+        this.unitPrice = unitPrice;
+    }
+}
 
      public void setQuantity(int quantity) {
          this.quantity = quantity;
@@ -30,3 +46,4 @@ public class OrderItemsRequestDto {
 		 this.unitPrice = unitPrice;
 	 }
 }
+

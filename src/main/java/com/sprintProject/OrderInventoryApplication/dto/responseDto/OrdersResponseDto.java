@@ -2,75 +2,58 @@ package com.sprintProject.OrderInventoryApplication.dto.responseDto;
 
 import java.time.LocalDateTime;
 
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Customers;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.OrderStatus;
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Stores;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.NotNull;
 
 public class OrdersResponseDto {
-	private int orderId;
 
-	private Customers customers;
+    private int orderId;
 
-	private Stores stores;
+    private int customerId;
+   
+    private int storeId;
+       
+    private OrderStatus orderStatusS;
 
-	private OrderStatus orderStatusS;
+    private LocalDateTime orderTms;
 
-	private LocalDateTime orderTms;
+    public int getOrderId() {
+        return orderId;
+    }
 
-	public int getOrderId() {
-		return orderId;
-	}
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
+    }
 
-	public void setOrderId(int orderId) {
-		this.orderId = orderId;
-	}
+    public int getCustomerId() {
+        return customerId;
+    }
 
-	public Customers getCustomers() {
-		return customers;
-	}
+    public void setCustomerId(int customerId) {
+        this.customerId = customerId;
+    }
 
-	public void setCustomers(Customers customers) {
-		this.customers = customers;
-	}
+  
+    public int getStoreId() {
+        return storeId;
+    }
 
-	public Stores getStores() {
-		return stores;
-	}
+    public void setStoreId(int storeId) {
+        this.storeId = storeId;
+    }
 
-	public void setStores(Stores stores) {
-		this.stores = stores;
-	}
+    public OrderStatus getOrderStatusS() {
+        return orderStatusS;
+    }
 
-	public OrderStatus getOrderStatusS() {
-		return orderStatusS;
-	}
+    public void setOrderStatusS(OrderStatus orderStatusS) {
+        this.orderStatusS = orderStatusS;
+    }
 
-	public void setOrderStatusS(OrderStatus orderStatusS) {
-		this.orderStatusS = orderStatusS;
-	}
+    public LocalDateTime getOrderTms() {
+        return orderTms;
+    }
 
-	public LocalDateTime getOrderTms() {
-		return orderTms;
-	}
-
-	public void setOrderTms(LocalDateTime orderTms) {
-		this.orderTms = orderTms;
-	}
-
-	@Override
-	public String toString() {
-		return "OrdersResponseDto [orderId=" + orderId + ", customers=" + customers + ", stores=" + stores
-				+ ", orderStatusS=" + orderStatusS + ", orderTms=" + orderTms + "]";
-	}
-	
-	
-	
-
+    public void setOrderTms(LocalDateTime orderTms) {
+        this.orderTms = orderTms;
+    }
 }
