@@ -7,15 +7,11 @@ import com.sprintProject.OrderInventoryApplication.dto.responseDto.OrderItemsRes
 
 public interface OrderItemsServiceInterface {
 
-    // GET all items for a given order
     List<OrderItemsResponseDto> getItemsByOrderId(int orderId);
 
-    // ADD ITEM to an order
-    OrderItemsResponseDto addItem(int orderId, OrderItemsRequestDto dto);
+    OrderItemsResponseDto addItem(int orderId, int productId, OrderItemsRequestDto dto);
 
-    // UPDATE ITEM in an order
     OrderItemsResponseDto updateItem(int orderId, int lineItemId, OrderItemsRequestDto dto);
 
-    // DELETE ITEM from an order
     void deleteItem(int orderId, int lineItemId);
 }
