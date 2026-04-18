@@ -9,57 +9,82 @@ import com.sprintProject.OrderInventoryApplication.CustomExceptions.ProductNotFo
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Products;
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.ProductsRepository;
 
+import com.sprintProject.OrderInventoryApplication.dto.requestDto.ProductsRequestDto;
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.ProductsResponseDto;
+
 @Service
 public class ProductsService implements ProductsServiceInterface{
 	@Autowired
 	private ProductsRepository productsRepository;
 
-	@Override
-	public List<Products> getAllProducts() {
-		return productsRepository.findAll();
+	private ProductsResponseDto mapToResponseDto(Products product) {
+		ProductsResponseDto dto = new ProductsResponseDto();
+		dto.setProductId(product.getProductId());
+		dto.setProductName(product.getProductName());
+		dto.setUnitPrice(product.getUnitPrice());
+		dto.setColour(product.getColour());
+		dto.setBrand(product.getBrand());
+		dto.setSize(product.getSize());
+		dto.setRating(product.getRating());
+		return dto;
 	}
 
 	@Override
-	public Products getProductById(int productId) {
+	public List<ProductsResponseDto> getAllProducts() {
+		return productsRepository.findAll().stream().map(this::mapToResponseDto).toList();
+	}
 
-        return productsRepository.findById(productId)
+	@Override
+	public ProductsResponseDto getProductById(int productId) {
+        Products product = productsRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
+		return mapToResponseDto(product);
 	}
 
 	@Override
-	public Products createProduct(Products product) {
-		 return productsRepository.save(product);
+	public ProductsResponseDto createProduct(ProductsRequestDto productRequestDto) {
+		Products product = new Products();
+		product.setProductName(productRequestDto.getProductName());
+		product.setUnitPrice(productRequestDto.getUnitPrice());
+		product.setColour(productRequestDto.getColour());
+		product.setBrand(productRequestDto.getBrand());
+		product.setSize(productRequestDto.getSize());
+		product.setRating(productRequestDto.getRating());
+		
+		Products saved = productsRepository.save(product);
+		return mapToResponseDto(saved);
 	}
 
 	@Override
-	public Products updateProduct(int productId, Products product) {
+	public ProductsResponseDto updateProduct(int productId, ProductsRequestDto productRequestDto) {
 		Products exProduct = productsRepository.findById(productId)
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
 
-        if (product.getProductName() != null)
-        	exProduct.setProductName(product.getProductName());
+        if (productRequestDto.getProductName() != null)
+        	exProduct.setProductName(productRequestDto.getProductName());
 
-        exProduct.setUnitPrice(product.getUnitPrice());
-        exProduct.setRating(product.getRating());
+        exProduct.setUnitPrice(productRequestDto.getUnitPrice());
+        exProduct.setRating(productRequestDto.getRating());
 
-        if (product.getColour() != null)
-        	exProduct.setColour(product.getColour());
+        if (productRequestDto.getColour() != null)
+        	exProduct.setColour(productRequestDto.getColour());
 
-        if (product.getBrand() != null)
-        	exProduct.setBrand(product.getBrand());
+        if (productRequestDto.getBrand() != null)
+        	exProduct.setBrand(productRequestDto.getBrand());
 
-        if (product.getSize() != null)
-        	exProduct.setSize(product.getSize());
+        if (productRequestDto.getSize() != null)
+        	exProduct.setSize(productRequestDto.getSize());
 
-        return productsRepository.save(exProduct);
+        Products updated = productsRepository.save(exProduct);
+		return mapToResponseDto(updated);
 	}
 
 	@Override
-	public void deleteProduct(int productId) {
+	public String deleteProduct(int productId) {
 		 Products product = productsRepository.findById(productId)
 	                .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + productId));
 
 	        productsRepository.delete(product);
-		
+		return "Product deleted successfully with id: " + productId;
 	}
 }

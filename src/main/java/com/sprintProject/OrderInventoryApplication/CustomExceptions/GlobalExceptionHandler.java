@@ -1,6 +1,7 @@
 package com.sprintProject.OrderInventoryApplication.CustomExceptions;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestControllerAdvice
@@ -49,5 +50,20 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public String handleGeneric(Exception ex) {
         return "Something went wrong";
+    }
+
+    @ExceptionHandler(CustomerEmailAlreadyExistException.class)
+    public ResponseEntity<String> handleEmailAlreadyExists(CustomerEmailAlreadyExistException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(CustomerEmailNotFoundException.class)
+    public ResponseEntity<String> handleEmailNotFound(CustomerEmailNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(CustomerIdNotFoundException.class)
+    public ResponseEntity<String> handleIdNotFound(CustomerIdNotFoundException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

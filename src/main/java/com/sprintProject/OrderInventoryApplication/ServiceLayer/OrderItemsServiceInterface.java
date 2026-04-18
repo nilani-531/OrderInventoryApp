@@ -2,14 +2,16 @@ package com.sprintProject.OrderInventoryApplication.ServiceLayer;
 
 import java.util.List;
 
-import com.sprintProject.OrderInventoryApplication.EntityClasses.OrderItems;
+import com.sprintProject.OrderInventoryApplication.dto.requestDto.OrderItemsRequestDto;
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.OrderItemsResponseDto;
 
 public interface OrderItemsServiceInterface {
-	
 
-	    OrderItems addItem(int orderId, OrderItems item);
+    List<OrderItemsResponseDto> getItemsByOrderId(int orderId);
 
-	    OrderItems updateItem(int orderId, int lineItemId, OrderItems item);
+    OrderItemsResponseDto addItem(int orderId, int productId, OrderItemsRequestDto dto);
 
-	    void deleteItem(int orderId, int lineItemId);
+    OrderItemsResponseDto updateItem(int orderId, int lineItemId, OrderItemsRequestDto dto);
+
+    void deleteItem(int orderId, int lineItemId);
 }
