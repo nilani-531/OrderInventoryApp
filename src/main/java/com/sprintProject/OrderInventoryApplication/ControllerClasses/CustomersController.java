@@ -121,32 +121,6 @@ public class CustomersController {
         return new ResponseEntity<>(structure, HttpStatus.OK);
     }
 	
-    @GetMapping("/orders/{customerId}")
-    public ResponseEntity<ResponseStructure<List<Orders>>> getCustomerOrders(
-            @PathVariable int customerId) {
 
-        List<Orders> orders = customersService.getCustomerOrders(customerId);
-
-        ResponseStructure<List<Orders>> structure = new ResponseStructure<>();
-        structure.setStatus(HttpStatus.OK.value());
-        structure.setMsg("Customer orders fetched successfully");
-        structure.setData(orders);
-
-        return new ResponseEntity<>(structure, HttpStatus.OK);
-    }
-    @GetMapping("/shipments/{customerId}")
-    public ResponseEntity<ResponseStructure<List<Shipments>>> getCustomerShipments(
-            @PathVariable int customerId) {
-
-        List<Shipments> shipments = customersService.getCustomerShipments(customerId);
-
-        ResponseStructure<List<Shipments>> structure = new ResponseStructure<>();
-        structure.setStatus(HttpStatus.OK.value());
-        structure.setMsg("Customer shipments fetched successfully");
-        structure.setData(shipments);
-
-        return new ResponseEntity<>(structure, HttpStatus.OK);
-    }
 
 }
-

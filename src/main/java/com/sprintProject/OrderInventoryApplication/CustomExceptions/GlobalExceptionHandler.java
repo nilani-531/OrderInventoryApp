@@ -107,6 +107,7 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
     
     // SHIPMENT NOT FOUND 
     @ExceptionHandler(ShipmentNotFoundException.class)
@@ -190,4 +191,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
     
+
+
+   
+
 }

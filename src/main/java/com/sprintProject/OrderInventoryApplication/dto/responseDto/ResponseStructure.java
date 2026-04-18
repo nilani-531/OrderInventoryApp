@@ -4,7 +4,11 @@ public class ResponseStructure<T>
 {
 private int status;
 private String msg;
+
 private T data;//T means here as all datatype accepted 
+
+
+
 public int getStatus() {
 	return status;
 }                 
