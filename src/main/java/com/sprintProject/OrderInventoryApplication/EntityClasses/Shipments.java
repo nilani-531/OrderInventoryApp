@@ -64,8 +64,6 @@ public class Shipments {
 		this.stores = stores;
 	}
 
-	
-
 	public Customers getCustomers() {
 		return customers;
 	}
