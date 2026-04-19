@@ -8,6 +8,7 @@ public class OrderItemsResponseDto {
     private int quantity;
     private double unitPrice;
 
+
     public int getLineItemId() {
         return lineItemId;
     }
@@ -53,3 +54,4 @@ public class OrderItemsResponseDto {
         return "OrderItemsResponseDto [lineItemId=" + lineItemId + ", orderId=" + orderId + ", productId=" + productId + ", quantity=" + quantity + ", unitPrice=" + unitPrice + "]";
     }
 }
+
