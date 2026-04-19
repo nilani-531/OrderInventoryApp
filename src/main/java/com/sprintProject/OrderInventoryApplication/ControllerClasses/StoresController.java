@@ -43,6 +43,19 @@ public class StoresController {
         return rs;
     }
 
+    // Get Store by Name
+    @GetMapping("/name/{name}")
+    public ResponseStructure<StoresResponseDto> getStoreByName(@PathVariable String name) {
+        StoresResponseDto response = service.getStoreByName(name);
+
+        ResponseStructure<StoresResponseDto> rs = new ResponseStructure<>();
+        rs.setStatus(200);
+        rs.setMsg("Store fetched successfully");
+        rs.setData(response);
+
+        return rs;
+    }
+
     // Get All Stores
     @GetMapping
     public ResponseStructure<List<StoresResponseDto>> getAllStores() {

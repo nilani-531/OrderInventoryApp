@@ -68,6 +68,21 @@ class StoresServiceTest {
         assertEquals("Test Store", res.getStoreName());
     }
 
+    // Test fetching store by name successfully
+    @Test
+    void getStoreByName_success() {
+
+        // Arrange: mock repository to return a store for given name
+        when(repository.findStoreByName("ABC Store")).thenReturn(store);
+
+        // Act: call service method
+        StoresResponseDto res = service.getStoreByName("ABC Store");
+
+        // Assert: verify response is correct
+        assertNotNull(res);
+        assertEquals("ABC Store", res.getStoreName());
+    }
+
     @Test
     void createStore_duplicateStore_shouldThrowException() {
         // Arrange: store already exists
