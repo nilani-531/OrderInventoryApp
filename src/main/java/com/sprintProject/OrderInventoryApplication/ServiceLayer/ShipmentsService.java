@@ -37,7 +37,7 @@ public class ShipmentsService implements ShipmentsServiceInterface{
     public ShipmentsResponseDto getShipmentById(int shipmentId) {
     	
         Shipments shipment= shipmentsRepository.findById(shipmentId)
-        		.orElseThrow(()-> new ShipmentNotFoundException("Shipment not found: "+shipmentId));
+        		.orElseThrow(()-> new ShipmentNotFoundException("Shipment not found: "+ shipmentId));
         
         return mapToResponse(shipment);
     }
@@ -45,12 +45,10 @@ public class ShipmentsService implements ShipmentsServiceInterface{
     public ShipmentsResponseDto createShipment(ShipmentsRequestDto shipmentsRequestDto) {
     	
     	Customers customer = customersRepository.findById(shipmentsRequestDto.getCustomerId())
-                .orElseThrow(() -> new ShipmentNotFoundException(
-                        "Customer not found: " + shipmentsRequestDto.getCustomerId()));
+                .orElseThrow(() -> new ShipmentNotFoundException("Customer not found: " + shipmentsRequestDto.getCustomerId()));
 
         Stores store = storesRepository.findById(shipmentsRequestDto.getStoreId())
-                .orElseThrow(() -> new ShipmentNotFoundException(
-                        "Store not found: " + shipmentsRequestDto.getStoreId()));
+                .orElseThrow(() -> new ShipmentNotFoundException("Store not found: " + shipmentsRequestDto.getStoreId()));
 
         Shipments shipment = new Shipments();
         shipment.setCustomers(customer);
@@ -58,30 +56,29 @@ public class ShipmentsService implements ShipmentsServiceInterface{
         shipment.setDeliveryAddress(shipmentsRequestDto.getDeliveryAddress());
         shipment.setShipmentStatus(ShipmentStatus.CREATED);
         Shipments savedShipment = shipmentsRepository.save(shipment);
+        
         return mapToResponse(savedShipment);
     }
    
-    public ShipmentsResponseDto updateShipment(int shipmentId, ShipmentsRequestDto request) {
+    public ShipmentsResponseDto updateShipment(int shipmentId, ShipmentsRequestDto shipmentsRequestDto) {
     	
     	Shipments existingShipment = shipmentsRepository.findById(shipmentId)
-                .orElseThrow(() -> new ShipmentNotFoundException(
-                        "Shipment not found: " + shipmentId));
+                .orElseThrow(() -> new ShipmentNotFoundException("Shipment not found: " + shipmentId));
 
-        if (request.getDeliveryAddress() != null) {
-        	existingShipment.setDeliveryAddress(request.getDeliveryAddress());
+        if (shipmentsRequestDto.getDeliveryAddress() != null) {
+        	existingShipment.setDeliveryAddress(shipmentsRequestDto.getDeliveryAddress());
         }
 
-        if (request.getCustomerId() != 0) {
-            Customers customer = customersRepository.findById(request.getCustomerId())
-                    .orElseThrow(() -> new ShipmentNotFoundException(
-                            "Customer not found: " + request.getCustomerId()));
+        if (shipmentsRequestDto.getCustomerId() != 0) {
+            Customers customer = customersRepository.findById(shipmentsRequestDto.getCustomerId())
+                    .orElseThrow(() -> new ShipmentNotFoundException("Customer not found: " + shipmentsRequestDto.getCustomerId()));
             existingShipment.setCustomers(customer);
         }
 
-        if (request.getStoreId() != 0) {
-            Stores store = storesRepository.findById(request.getStoreId())
-                    .orElseThrow(() -> new ShipmentNotFoundException(
-                            "Store not found: " + request.getStoreId()));
+        if (shipmentsRequestDto.getStoreId() != 0) {
+            Stores store = storesRepository.findById(shipmentsRequestDto.getStoreId())
+                    .orElseThrow(() -> new ShipmentNotFoundException("Store not found: " + shipmentsRequestDto.getStoreId()));
+
             existingShipment.setStores(store);
         }
 
@@ -99,22 +96,37 @@ public class ShipmentsService implements ShipmentsServiceInterface{
         return "Shipment deleted successfully with id: " + shipmentId;
     }
     
-    public List<Shipments> getShipmentByCustomerId(int customerId) {
-        return shipmentsRepository.findByCustomersCustomerId(customerId);
+    public ShipmentsResponseDto updateShipmentStatus(int shipmentId, ShipmentStatus shipmentStatus) {
+
+        Shipments shipment = shipmentsRepository.findById(shipmentId)
+                .orElseThrow(() -> new ShipmentNotFoundException("Shipment not found: " + shipmentId));
+
+        if (!shipment.getShipmentStatus().isValidTransition(shipmentStatus)) {
+            throw new InvalidStatusTransitionException("Cannot change status from " + shipment.getShipmentStatus() + " to " + shipmentStatus);
+        }
+
+        shipment.setShipmentStatus(shipmentStatus);
+
+        Shipments updatedShipments = shipmentsRepository.save(shipment);
+
+        return mapToResponse(updatedShipments);
     }
     
-    public List<Shipments> getShipmentByStoreId(int storeId) {
-        return shipmentsRepository.findByStoresStoreId(storeId);
+    public List<ShipmentsResponseDto> getShipmentByCustomerId(int customerId) {
+        return shipmentsRepository.findByCustomersCustomerId(customerId).stream().map(this::mapToResponse).toList();
     }
     
-    public List<Shipments> getShipmentByStatus(ShipmentStatus status) {
-        return shipmentsRepository.findByShipmentStatus(status);
+    public List<ShipmentsResponseDto> getShipmentByStoreId(int storeId) {
+        return shipmentsRepository.findByStoresStoreId(storeId).stream().map(this::mapToResponse).toList();
+    }
+    
+    public List<ShipmentsResponseDto> getShipmentByStatus(ShipmentStatus status) {
+        return shipmentsRepository.findByShipmentStatus(status).stream().map(this::mapToResponse).toList();
     }
     
     private ShipmentsResponseDto mapToResponse(Shipments shipment) {
 
         ShipmentsResponseDto dto = new ShipmentsResponseDto();
-
         dto.setShipmentId(shipment.getShipmentId());
         dto.setCustomerId(shipment.getCustomers().getCustomerId());
         dto.setStoreId(shipment.getStores().getStoreId());

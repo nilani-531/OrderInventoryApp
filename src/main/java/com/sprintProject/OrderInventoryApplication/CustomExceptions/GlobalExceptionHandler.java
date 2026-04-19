@@ -51,7 +51,6 @@ public class GlobalExceptionHandler {
     public String handleGeneric(Exception ex) {
         return "Something went wrong";
     }
-
     @ExceptionHandler(CustomerEmailAlreadyExistException.class)
     public ResponseEntity<String> handleEmailAlreadyExists(CustomerEmailAlreadyExistException ex) {
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
