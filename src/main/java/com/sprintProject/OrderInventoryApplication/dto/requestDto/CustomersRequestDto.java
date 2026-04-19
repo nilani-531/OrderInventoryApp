@@ -1,11 +1,12 @@
 package com.sprintProject.OrderInventoryApplication.dto.requestDto;
 
 public class CustomersRequestDto {
+	// DTO = Data Transfer Object → used to transfer data from client to server
 	
 	private String emailAddress;
 	private String fullName;
 	
-
+    //Getters & Setters
 	public String getEmailAddress() {
 		return emailAddress;
 	}
