@@ -11,17 +11,17 @@ import com.sprintProject.OrderInventoryApplication.dto.responseDto.ResponseStruc
 import com.sprintProject.OrderInventoryApplication.ServiceLayer.OrderItemsServiceInterface;
 
 @RestController
-@RequestMapping("/api/orders")
+@RequestMapping("/api/order-items")
 public class OrderItemsController {
 
     @Autowired
-    private OrderItemsServiceInterface service;
+    private OrderItemsServiceInterface orderItemsServiceInterface;
 
-    //  GET ITEMS BY ORDER ID
-    @GetMapping("/{orderId}/items")
-    public ResponseStructure<List<OrderItemsResponseDto>> getItems(@PathVariable int orderId) {
+    // Get item by Order id
+    @GetMapping("/order/{orderId}")
+    public ResponseStructure<List<OrderItemsResponseDto>> getItemsByOrder(@PathVariable int orderId) {
 
-        List<OrderItemsResponseDto> data = service.getItemsByOrderId(orderId);
+        List<OrderItemsResponseDto> data = orderItemsServiceInterface.getItemsByOrderId(orderId);
 
         ResponseStructure<List<OrderItemsResponseDto>> rs = new ResponseStructure<>();
         rs.setStatus(200);
@@ -31,14 +31,14 @@ public class OrderItemsController {
         return rs;
     }
 
-    //  ADD ITEM (IMPORTANT FIX: productId added)
-    @PostMapping("/{orderId}/items/{productId}")
+    // Add item by orderId, productId
+    @PostMapping("/order/{orderId}/product/{productId}")
     public ResponseStructure<OrderItemsResponseDto> addItem(
             @PathVariable int orderId,
             @PathVariable int productId,
             @RequestBody OrderItemsRequestDto dto) {
 
-        OrderItemsResponseDto data = service.addItem(orderId, productId, dto);
+        OrderItemsResponseDto data = orderItemsServiceInterface.addItem(orderId, productId, dto);
 
         ResponseStructure<OrderItemsResponseDto> rs = new ResponseStructure<>();
         rs.setStatus(201);
@@ -48,14 +48,14 @@ public class OrderItemsController {
         return rs;
     }
 
-    //  UPDATE ITEM
-    @PutMapping("/{orderId}/items/{lineItemId}")
+    // Update Item
+    @PutMapping("/order/{orderId}/item/{lineItemId}")
     public ResponseStructure<OrderItemsResponseDto> updateItem(
             @PathVariable int orderId,
             @PathVariable int lineItemId,
             @RequestBody OrderItemsRequestDto dto) {
 
-        OrderItemsResponseDto data = service.updateItem(orderId, lineItemId, dto);
+        OrderItemsResponseDto data = orderItemsServiceInterface.updateItem(orderId, lineItemId, dto);
 
         ResponseStructure<OrderItemsResponseDto> rs = new ResponseStructure<>();
         rs.setStatus(200);
@@ -65,13 +65,13 @@ public class OrderItemsController {
         return rs;
     }
 
-    //  DELETE ITEM
-    @DeleteMapping("/{orderId}/items/{lineItemId}")
+    // Delete item
+    @DeleteMapping("/order/{orderId}/item/{lineItemId}")
     public ResponseStructure<String> deleteItem(
             @PathVariable int orderId,
             @PathVariable int lineItemId) {
 
-        service.deleteItem(orderId, lineItemId);
+    	orderItemsServiceInterface.deleteItem(orderId, lineItemId);
 
         ResponseStructure<String> rs = new ResponseStructure<>();
         rs.setStatus(200);
@@ -80,4 +80,34 @@ public class OrderItemsController {
 
         return rs;
     }
+
+
+    // Get items by product id
+    @GetMapping("/product/{productId}")
+    public ResponseStructure<List<OrderItemsResponseDto>> getItemsByProduct(@PathVariable int productId) {
+
+        List<OrderItemsResponseDto> data = orderItemsServiceInterface.getItemsByProductId(productId);
+
+        ResponseStructure<List<OrderItemsResponseDto>> rs = new ResponseStructure<>();
+        rs.setStatus(200);
+        rs.setMsg("Items fetched by product");
+        rs.setData(data);
+
+        return rs;
+    }
+
+    // Get total quantity by product
+    @GetMapping("/product/{productId}/quantity")
+    public ResponseStructure<Integer> getTotalQuantity(@PathVariable int productId) {
+
+        Integer data = orderItemsServiceInterface.getTotalQuantityByProductId(productId);
+
+        ResponseStructure<Integer> rs = new ResponseStructure<>();
+        rs.setStatus(200);
+        rs.setMsg("Total quantity fetched");
+        rs.setData(data);
+
+        return rs;
+    }
+
 }
