@@ -11,5 +11,8 @@ import com.sprintProject.OrderInventoryApplication.EntityClasses.Orders;
 
 @Repository
 public interface OrdersRepository extends JpaRepository<Orders, Integer> {
-
+	
+	  // Get orders count by status
+	  @Query("SELECT COUNT(o) FROM Orders o WHERE o.orderStatusS = :status")
+	    long countOrdersByStatus(@Param("status") OrderStatus status);
 }
