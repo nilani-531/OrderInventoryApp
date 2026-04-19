@@ -1,56 +1,87 @@
 package com.sprintProject.OrderInventoryApplication.ControllerClasses;
 
-import com.sprintProject.OrderInventoryApplication.ServiceLayer.StoresService;
-import com.sprintProject.OrderInventoryApplication.dto.requestDto.StoresRequestDto;
-<<<<<<< HEAD
-import com.sprintProject.OrderInventoryApplication.dto.responseDto.ResponseStructure;
-=======
->>>>>>> 9e2634557661c18832da48215f125dbb9d1d5843
-import com.sprintProject.OrderInventoryApplication.dto.responseDto.StoresResponseDto;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import com.sprintProject.OrderInventoryApplication.ServiceLayer.StoresService;
+import com.sprintProject.OrderInventoryApplication.dto.requestDto.StoresRequestDto;
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.ResponseStructure;
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.StoresResponseDto;
+
 @RestController
-<<<<<<< HEAD
 @RequestMapping("/stores")
-=======
-@RequestMapping("stores")
->>>>>>> 9e2634557661c18832da48215f125dbb9d1d5843
 public class StoresController {
 
     @Autowired
     private StoresService service;
 
+    // Create Store
     @PostMapping
-    public ResponseEntity<StoresResponseDto> createStore(@RequestBody StoresRequestDto dto) {
-        return ResponseEntity.status(201).body(service.createStore(dto));
+    public ResponseStructure<StoresResponseDto> createStore(@RequestBody StoresRequestDto dto) {
+        StoresResponseDto response = service.createStore(dto);
+
+        ResponseStructure<StoresResponseDto> rs = new ResponseStructure<>();
+        rs.setStatus(201);
+        rs.setMsg("Store created successfully");
+        rs.setData(response);
+
+        return rs;
     }
 
+    // Get Store by ID
     @GetMapping("/{id}")
-    public ResponseEntity<StoresResponseDto> getStore(@PathVariable int id) {
-        return ResponseEntity.ok(service.getStoreById(id));
+    public ResponseStructure<StoresResponseDto> getStore(@PathVariable int id) {
+        StoresResponseDto response = service.getStoreById(id);
+
+        ResponseStructure<StoresResponseDto> rs = new ResponseStructure<>();
+        rs.setStatus(200);
+        rs.setMsg("Store fetched successfully");
+        rs.setData(response);
+
+        return rs;
     }
 
+    // Get All Stores
     @GetMapping
-    public ResponseEntity<List<StoresResponseDto>> getAllStores() {
-        return ResponseEntity.ok(service.getAllStores());
+    public ResponseStructure<List<StoresResponseDto>> getAllStores() {
+        List<StoresResponseDto> list = service.getAllStores();
+
+        ResponseStructure<List<StoresResponseDto>> rs = new ResponseStructure<>();
+        rs.setStatus(200);
+        rs.setMsg("Stores fetched successfully");
+        rs.setData(list);
+
+        return rs;
     }
 
+    // Update Store
     @PutMapping("/{id}")
-    public ResponseEntity<StoresResponseDto> updateStore(
+    public ResponseStructure<StoresResponseDto> updateStore(
             @PathVariable int id,
             @RequestBody StoresRequestDto dto) {
 
-        return ResponseEntity.ok(service.updateStore(id, dto));
+        StoresResponseDto response = service.updateStore(id, dto);
+
+        ResponseStructure<StoresResponseDto> rs = new ResponseStructure<>();
+        rs.setStatus(200);
+        rs.setMsg("Store updated successfully");
+        rs.setData(response);
+
+        return rs;
     }
 
+    // Delete Store
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteStore(@PathVariable int id) {
+    public ResponseStructure<String> deleteStore(@PathVariable int id) {
         service.deleteStore(id);
-        return ResponseEntity.ok("Store deleted successfully");
+
+        ResponseStructure<String> rs = new ResponseStructure<>();
+        rs.setStatus(200);
+        rs.setMsg("Store deleted successfully");
+        rs.setData("Store deleted successfully with id: " + id);
+
+        return rs;
     }
 }
