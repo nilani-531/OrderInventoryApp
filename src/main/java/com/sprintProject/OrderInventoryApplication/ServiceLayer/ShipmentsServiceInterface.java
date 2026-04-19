@@ -18,9 +18,11 @@ public interface ShipmentsServiceInterface {
 	
 	String deleteShipment(int shipmentId);
 	
-	List<Shipments> getShipmentByCustomerId(int customerId);
+	ShipmentsResponseDto updateShipmentStatus(int shipmentId, ShipmentStatus status);
 	
-	List<Shipments> getShipmentByStoreId(int storeId);
+	List<ShipmentsResponseDto> getShipmentByCustomerId(int customerId);
+	
+	List<ShipmentsResponseDto> getShipmentByStoreId(int storeId);
 
-	List<Shipments> getShipmentByStatus(ShipmentStatus status);
+	List<ShipmentsResponseDto> getShipmentByStatus(ShipmentStatus status);
 }

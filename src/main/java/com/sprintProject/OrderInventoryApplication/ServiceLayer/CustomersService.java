@@ -23,7 +23,7 @@ public class CustomersService implements CustomersServiceInterface {
 
   
     public List<CustomersResponseDto> getAllCustomers() {
-        return customersRepository.findAll().stream().map(this::mapToResponseDto).toList();
+        return customersRepository.findAll().stream().map(this::convertToResponseDto).toList();
     }
 
   
@@ -31,7 +31,7 @@ public class CustomersService implements CustomersServiceInterface {
         Customers customers= customersRepository.findById(customerId)
                 .orElseThrow(() -> new CustomerIdNotFoundException(
                         "Customer not found with id: " + customerId));
-      return mapToResponseDto(customers);
+      return convertToResponseDto(customers);
 //        CustomersResponseDto customersResponseDto=new CustomersResponseDto();
 //        customersResponseDto.setCustomerId(customers.getCustomerId());
 //        customersResponseDto.setFullName(customers.getFullName());
@@ -50,7 +50,7 @@ public class CustomersService implements CustomersServiceInterface {
         customers.setFullName(customersRequestDto.getFullName());
         customers.setEmailAddress(customersRequestDto.getEmailAddress());
         Customers newCustomers= customersRepository.save(customers);
-        return mapToResponseDto(newCustomers);
+        return convertToResponseDto(newCustomers);
 //        CustomersResponseDto customersResponseDto=new CustomersResponseDto();
 //        customersResponseDto.setCustomerId(newCustomers.getCustomerId());
 //        customersResponseDto.setFullName(newCustomers.getFullName());
@@ -73,7 +73,7 @@ public class CustomersService implements CustomersServiceInterface {
         existingCustomer.setEmailAddress(customersRequestDto.getEmailAddress());
 
         Customers updatedCustomer= customersRepository.save(existingCustomer);
-        return mapToResponseDto(updatedCustomer);
+        return convertToResponseDto(updatedCustomer);
 //        CustomersResponseDto customersResponseDto=new CustomersResponseDto();
 //        customersResponseDto.setCustomerId(updatedCustomer.getCustomerId());
 //        customersResponseDto.setFullName(updatedCustomer.getFullName());
@@ -86,14 +86,14 @@ public class CustomersService implements CustomersServiceInterface {
         Customers existingCustomer=customersRepository.findById(customerId).orElseThrow(()-> new CustomerIdNotFoundException("Customer not found with id:"+customerId));
         customersRepository.delete(existingCustomer);
         return "Account Removed successfully";
-    }
 
+    }
    
     public CustomersResponseDto  getCustomerByEmail(String customerEmail) {
        Customers customers= customersRepository.findByEmailAddress(customerEmail)
                 .orElseThrow(() -> new CustomerEmailNotFoundException(
                         "Customer not found with email: " + customerEmail));
-     return mapToResponseDto(customers);
+     return convertToResponseDto(customers);
 //       CustomersResponseDto customersResponseDto=new CustomersResponseDto();
 //       customersResponseDto.setCustomerId(customers.getCustomerId());
 //       customersResponseDto.setFullName(customers.getFullName());
@@ -113,7 +113,7 @@ public class CustomersService implements CustomersServiceInterface {
     }
     
 
-    private CustomersResponseDto mapToResponseDto(Customers customers) {
+    private CustomersResponseDto convertToResponseDto(Customers customers) {
     	CustomersResponseDto customersResponseDto=new CustomersResponseDto();
     	customersResponseDto.setCustomerId(customers.getCustomerId());
     	customersResponseDto.setEmailAddress(customers.getEmailAddress());
