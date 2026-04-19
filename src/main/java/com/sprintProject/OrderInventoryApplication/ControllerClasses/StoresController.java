@@ -2,7 +2,10 @@ package com.sprintProject.OrderInventoryApplication.ControllerClasses;
 
 import com.sprintProject.OrderInventoryApplication.ServiceLayer.StoresService;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.StoresRequestDto;
+<<<<<<< HEAD
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.ResponseStructure;
+=======
+>>>>>>> 9e2634557661c18832da48215f125dbb9d1d5843
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.StoresResponseDto;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+<<<<<<< HEAD
 @RequestMapping("/stores")
+=======
+@RequestMapping("stores")
+>>>>>>> 9e2634557661c18832da48215f125dbb9d1d5843
 public class StoresController {
 
     @Autowired
