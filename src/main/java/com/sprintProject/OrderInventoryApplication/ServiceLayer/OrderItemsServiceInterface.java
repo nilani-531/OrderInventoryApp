@@ -12,6 +12,7 @@ public interface OrderItemsServiceInterface {
     // ADD ITEM to an order
     OrderItemsResponseDto addItem(int orderId, int productId, OrderItemsRequestDto dto);
 
+    // UPDATE ITEM in an order
     OrderItemsResponseDto updateItem(int orderId, int lineItemId, OrderItemsRequestDto dto);
 
     // DELETE ITEM from an order

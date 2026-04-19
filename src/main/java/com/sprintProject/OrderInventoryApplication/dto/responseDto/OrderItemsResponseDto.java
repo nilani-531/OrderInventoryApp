@@ -7,8 +7,7 @@ public class OrderItemsResponseDto {
     private int productId;
     private int quantity;
     private double unitPrice;
-	
- 
+
 
     public int getLineItemId() {
         return lineItemId;
