@@ -1,6 +1,5 @@
 package com.sprintProject.OrderInventoryApplication.ServiceLayer;
 
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Stores;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.StoresRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.StoresResponseDto;
 
@@ -8,14 +7,13 @@ import java.util.List;
 
 public interface StoresServiceInterface {
 
-    List<Stores> getAllStores();
+    StoresResponseDto createStore(StoresRequestDto dto);
 
-    Stores getStoreById(int id);
+    StoresResponseDto getStoreById(int storeId);
 
-    Stores createStore(Stores store);
+    List<StoresResponseDto> getAllStores();
 
-    Stores updateStore(int id, Stores store);
+    StoresResponseDto updateStore(int storeId, StoresRequestDto dto);
 
-    void deleteStore(int id);
-
+    void deleteStore(int storeId);
 }

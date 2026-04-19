@@ -81,6 +81,7 @@ public class OrderItemsController {
         return rs;
     }
 
+
     // Get items by product id
     @GetMapping("/product/{productId}")
     public ResponseStructure<List<OrderItemsResponseDto>> getItemsByProduct(@PathVariable int productId) {
@@ -108,4 +109,5 @@ public class OrderItemsController {
 
         return rs;
     }
+
 }
