@@ -17,6 +17,7 @@ public class ProductsService implements ProductsServiceInterface{
 	@Autowired
 	private ProductsRepository productsRepository;
 
+	// Maps a Products entity to a ProductsResponseDto
 	private ProductsResponseDto mapToResponseDto(Products product) {
 		ProductsResponseDto dto = new ProductsResponseDto();
 		dto.setProductId(product.getProductId());
@@ -29,11 +30,13 @@ public class ProductsService implements ProductsServiceInterface{
 		return dto;
 	}
 
+	// Retrieves all products
 	@Override
 	public List<ProductsResponseDto> getAllProducts() {
 		return productsRepository.findAll().stream().map(this::mapToResponseDto).toList();
 	}
 
+	// Retrieves a product by its ID
 	@Override
 	public ProductsResponseDto getProductById(int productId) {
         Products product = productsRepository.findById(productId)
@@ -41,6 +44,7 @@ public class ProductsService implements ProductsServiceInterface{
 		return mapToResponseDto(product);
 	}
 
+	// Creates a new product
 	@Override
 	public ProductsResponseDto createProduct(ProductsRequestDto productRequestDto) {
 		Products product = new Products();
@@ -55,6 +59,7 @@ public class ProductsService implements ProductsServiceInterface{
 		return mapToResponseDto(saved);
 	}
 
+	// Updates an existing product
 	@Override
 	public ProductsResponseDto updateProduct(int productId, ProductsRequestDto productRequestDto) {
 		Products exProduct = productsRepository.findById(productId)
@@ -79,6 +84,7 @@ public class ProductsService implements ProductsServiceInterface{
 		return mapToResponseDto(updated);
 	}
 
+	// Deletes a product by its ID
 	@Override
 	public String deleteProduct(int productId) {
 		 Products product = productsRepository.findById(productId)
