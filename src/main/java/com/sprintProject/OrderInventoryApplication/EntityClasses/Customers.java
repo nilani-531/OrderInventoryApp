@@ -10,37 +10,53 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
+
+import jakarta.validation.constraints.Email;
+
 import jakarta.validation.constraints.Email;
 
 import jakarta.validation.constraints.NotBlank;
 
 
 @Entity
+//@Entity ->Marks this class as a database table
 public class Customers {
 	
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Id  
+    // Primary key
+    @GeneratedValue(strategy=GenerationType.IDENTITY)  
+    // Auto-increment ID in database
     @Column(name="customer_id")
+    // Column name in DB
+        
        private int customerId;
     
     @NotBlank
-
+    // Field cannot be empty
     @Email
-
+    // Must be valid email format
     @Column(name="email_address")
-	private String emailAddress;
+	
+        private String emailAddress;
     
     @NotBlank
     @Column(name="full_name")
-	private String fullName;
+	 
+        private String fullName;
     
     @OneToMany (mappedBy = "customers")
-    private List<Orders> orders;
+    // One customer → many orders
+    
+        private List<Orders> orders;
     
     @OneToMany(mappedBy = "customers")
-    private List<Shipments> shipments;
+    // One customer → many orders
     
-	public List<Orders> getOrders() {
+        private List<Shipments> shipments;
+    
+	//Getters & Setters
+    
+    public List<Orders> getOrders() {
 		return orders;
 	}
 	public void setOrders(List<Orders> orders) {

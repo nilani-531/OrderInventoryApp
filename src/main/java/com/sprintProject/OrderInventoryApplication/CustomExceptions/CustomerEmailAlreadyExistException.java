@@ -1,7 +1,10 @@
 package com.sprintProject.OrderInventoryApplication.CustomExceptions;
 
 public class CustomerEmailAlreadyExistException extends RuntimeException{
-   public CustomerEmailAlreadyExistException(String message) {
+	// Custom exception for "Customer duplicate email"
+	
+	public CustomerEmailAlreadyExistException(String message) {
        super(message);
+    // Passes error message to RuntimeException
 }
 }
