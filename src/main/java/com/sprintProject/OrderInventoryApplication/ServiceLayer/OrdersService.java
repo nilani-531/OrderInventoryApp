@@ -20,14 +20,15 @@ import com.sprintProject.OrderInventoryApplication.dto.responseDto.OrdersRespons
 @Service
 public class OrdersService implements OrdersServiceInterface {
 
+   
     @Autowired
-    private OrdersRepository repo;
+    private OrdersRepository ordersRepository;
+    
+    @Autowired
+    private CustomersRepository customersRepository;
 
     @Autowired
-    private CustomersRepository customerRepo;
-
-    @Autowired
-    private StoresRepository storeRepo;
+    private StoresRepository storesRepository;
 
     private OrdersResponseDto mapToResponse(Orders order) {
         OrdersResponseDto dto = new OrdersResponseDto();
@@ -37,13 +38,14 @@ public class OrdersService implements OrdersServiceInterface {
         return dto;
     }
 
+    //To Create the Order
     @Override
     public OrdersResponseDto createOrder(OrdersRequestDto dto) {
 
-        Customers customer = customerRepo.findById(dto.getCustomerId())
+        Customers customer = customersRepository.findById(dto.getCustomerId())
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
-        Stores store = storeRepo.findById(dto.getStoreId())
+        Stores store = storesRepository.findById(dto.getStoreId())
                 .orElseThrow(() -> new RuntimeException("Store not found"));
 
         Orders order = new Orders();
@@ -52,37 +54,42 @@ public class OrdersService implements OrdersServiceInterface {
         order.setOrderStatus(OrderStatus.OPEN);
         order.setOrderTms(LocalDateTime.now());
 
-        Orders saved = repo.save(order);
+        Orders saved = ordersRepository.save(order);
 
         return mapToResponse(saved);
     }
 
+    //To View All Orders
     @Override
     public List<OrdersResponseDto> getAllOrders() {
-        return repo.findAll()
+        return ordersRepository.findAll()
                 .stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
 
+    //Get By Order id
     @Override
     public OrdersResponseDto getOrderById(int orderId) {
 
-        Orders order = repo.findById(orderId)
+        Orders order = ordersRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
         return mapToResponse(order);
     }
 
+    
+   //Delete the Order
     @Override
     public void deleteOrder(int orderId) {
-        repo.deleteById(orderId);
+    	ordersRepository.deleteById(orderId);
     }
 
+    //Update Order status 
     @Override
     public OrdersResponseDto updateOrderStatus(int orderId, OrderStatus newStatus) {
 
-        Orders order = repo.findById(orderId)
+        Orders order = ordersRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
         OrderStatus current = order.getOrderStatus();
@@ -98,72 +105,87 @@ public class OrdersService implements OrdersServiceInterface {
             throw new RuntimeException("Invalid status transition");
         }
 
-        return mapToResponse(repo.save(order));
+        return mapToResponse(ordersRepository.save(order));
     }
-
+    //Update Order by Order id,Store id
     @Override
     public OrdersResponseDto updateOrderStore(int orderId, int storeId) {
 
-        Orders order = repo.findById(orderId)
+        Orders order = ordersRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
-        Stores store = storeRepo.findById(storeId)
+        Stores store = storesRepository.findById(storeId)
                 .orElseThrow(() -> new RuntimeException("Store not found"));
 
         order.setStores(store);
 
-        return mapToResponse(repo.save(order));
+        return mapToResponse(ordersRepository.save(order));
     }
 
+    // Update Order by Order id,Customer id
     @Override
     public OrdersResponseDto updateOrderCustomer(int orderId, int customerId) {
 
-        Orders order = repo.findById(orderId)
+        Orders order =ordersRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
-        Customers customer = customerRepo.findById(customerId)
+        Customers customer = customersRepository.findById(customerId)
                 .orElseThrow(() -> new RuntimeException("Customer not found"));
 
         order.setCustomers(customer);
 
-        return mapToResponse(repo.save(order));
+        return mapToResponse(ordersRepository.save(order));
     }
-
+     
+    //Get Order by Customer
     @Override
     public List<OrdersResponseDto> getOrdersByCustomerId(int customerId) {
 
-        return repo.findAll().stream()
+        return ordersRepository.findAll().stream()
                 .filter(o -> o.getCustomers().getCustomerId() == customerId)
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
-
+    
+  //Get Order by Store id 
     @Override
     public List<OrdersResponseDto> getOrdersByStoreId(int storeId) {
 
-        return repo.findAll().stream()
+        return ordersRepository.findAll().stream()
                 .filter(o -> o.getStores().getStoreId() == storeId)
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
-
+    
+  //Get Orders by Order status
     @Override
     public List<OrdersResponseDto> getOrdersByStatus(OrderStatus status) {
 
-        return repo.findAll().stream()
+        return ordersRepository.findAll().stream()
                 .filter(o -> o.getOrderStatus() == status)
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
-
+  //Get Orders between dates
     @Override
     public List<OrdersResponseDto> getOrdersBetweenDates(LocalDateTime start, LocalDateTime end) {
 
-        return repo.findAll().stream()
+        return ordersRepository.findAll().stream()
                 .filter(o -> o.getOrderTms() != null &&
                              o.getOrderTms().isAfter(start) &&
                              o.getOrderTms().isBefore(end))
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
+    }
+    
+    // Get orders count by status
+    @Override
+    public long getOrdersCountByStatus(OrderStatus status) {
+
+        if (status == null) {
+            throw new RuntimeException("Order status cannot be null");
+        }
+
+        return ordersRepository.countOrdersByStatus(status);
     }
 }
