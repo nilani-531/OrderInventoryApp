@@ -2,14 +2,17 @@ package com.sprintProject.OrderInventoryApplication.dto.requestDto;
 
 public class OrderItemsRequestDto {
 
-
-	 private int lineItemId;
-     private double unitPrice;
-     private int quantity;
-
-
-    private int quantity;
+    private int lineItemId;
     private double unitPrice;
+    private int quantity;
+
+    public int getLineItemId() {
+        return lineItemId;
+    }
+
+    public void setLineItemId(int lineItemId) {
+        this.lineItemId = lineItemId;
+    }
 
     public int getQuantity() {
         return quantity;
@@ -23,27 +26,7 @@ public class OrderItemsRequestDto {
         return unitPrice;
     }
 
-
     public void setUnitPrice(double unitPrice) {
         this.unitPrice = unitPrice;
     }
 }
-
-     public void setQuantity(int quantity) {
-         this.quantity = quantity;
-     }
-	 public int getLineItemId() {
-		 return lineItemId;
-	 }
-	 public void setLineItemId(int lineItemId) {
-		 this.lineItemId = lineItemId;
-	 }
-
-	 public double getUnitPrice() {
-		 return unitPrice;
-	 }
-	 public void setUnitPrice(double unitPrice) {
-		 this.unitPrice = unitPrice;
-	 }
-}
-

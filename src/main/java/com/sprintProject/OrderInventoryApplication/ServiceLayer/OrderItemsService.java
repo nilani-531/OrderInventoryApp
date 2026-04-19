@@ -16,16 +16,14 @@ import com.sprintProject.OrderInventoryApplication.dto.requestDto.OrderItemsRequ
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.OrderItemsResponseDto;
 import com.sprintProject.OrderInventoryApplication.CustomExceptions.*;
 
-
 @Service
 public class OrderItemsService implements OrderItemsServiceInterface {
 
     @Autowired
-    private OrderItemsRepository orderItemsRepository;
+    private OrderItemsRepository itemRepo;
 
     @Autowired
-    private OrdersRepository ordersRepository;
-
+    private OrdersRepository orderRepo;
 
     @Autowired
     private ProductsRepository productRepo;
@@ -33,10 +31,9 @@ public class OrderItemsService implements OrderItemsServiceInterface {
     // 🔹 GET ITEMS BY ORDER ID
     @Override
     public List<OrderItemsResponseDto> getItemsByOrderId(int orderId) {
-
         return itemRepo.findAll()
                 .stream()
-                .filter(item -> item.getOrders().getOrderId() == orderId)
+                .filter(item -> item.getOrders() != null && item.getOrders().getOrderId() == orderId)
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
@@ -44,28 +41,8 @@ public class OrderItemsService implements OrderItemsServiceInterface {
     // 🔹 ADD ITEM
     @Override
     public OrderItemsResponseDto addItem(int orderId, int productId, OrderItemsRequestDto dto) {
-
-    // 🔹 GET
-    @Override
-    public List<OrderItemsResponseDto> getItemsByOrderId(int orderId) {
-
-        // check order exists
-        ordersRepository.findById(orderId)
-                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
-
-        // filter manually
-        return orderItemsRepository.findAll()
-                .stream()
-                .filter(item -> item.getOrders().getOrderId() == orderId)
-                .map(this::mapToDto)
-                .collect(Collectors.toList());
-    }
-
-
-    // 🔹 ADD
-    @Override
-    public OrderItemsResponseDto addItem(int orderId, OrderItemsRequestDto dto) {
-
+        Orders order = orderRepo.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
 
         Products product = productRepo.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
@@ -80,44 +57,12 @@ public class OrderItemsService implements OrderItemsServiceInterface {
     }
 
     // 🔹 UPDATE ITEM
-
-        if (dto.getQuantity() <= 0) {
-            throw new InvalidDataException("Quantity must be greater than 0");
-        }
-
-        Orders order = ordersRepository.findById(orderId)
-                .orElseThrow(() -> new ResourceNotFoundException("Order not found"));
-
-        OrderItems item = new OrderItems();
-        item.setOrders(order);
-        item.setQuantity(dto.getQuantity());
-        item.setUnitPrice(dto.getUnitPrice());
-
-        // ⚠️ product NOT set (because DTO doesn't have productId)
-
-        return mapToDto(orderItemsRepository.save(item));
-    }
-
-    // 🔹 UPDATE
-
     @Override
     public OrderItemsResponseDto updateItem(int orderId, int lineItemId, OrderItemsRequestDto dto) {
+        OrderItems item = itemRepo.findById(lineItemId)
+                .orElseThrow(() -> new RuntimeException("Item not found"));
 
-        OrderItems item = orderItemsRepository.findById(lineItemId)
-                .orElseThrow(() -> new ResourceNotFoundException("Item not found"));
-
-        if (item.getOrders().getOrderId() != orderId) {
-
-            throw new RuntimeException("Item does not belong to this order");
-        }
-
-        item.setQuantity(dto.getQuantity());
-
-        return mapToResponse(itemRepo.save(item));
-    }
-
-    // 🔹 DELETE ITEM
-
+        if (item.getOrders() == null || item.getOrders().getOrderId() != orderId) {
             throw new InvalidDataException("Item does not belong to this order");
         }
 
@@ -126,56 +71,40 @@ public class OrderItemsService implements OrderItemsServiceInterface {
         }
 
         // unit price immutable if shipment exists
-        if (item.getShipments() != null &&
-                item.getUnitPrice() != dto.getUnitPrice()) {
-
+        if (item.getShipments() != null && item.getUnitPrice() != dto.getUnitPrice()) {
             throw new InvalidDataException("Unit price cannot be changed after shipment");
         }
 
         item.setQuantity(dto.getQuantity());
-
-        return mapToDto(orderItemsRepository.save(item));
-    }
-
-    // 🔹 DELETE
-
-    @Override
-    public void deleteItem(int orderId, int lineItemId) {
-
-        OrderItems item = orderItemsRepository.findById(lineItemId)
-                .orElseThrow(() -> new ResourceNotFoundException("Item not found"));
-
-        if (item.getOrders().getOrderId() != orderId) {
-
-            throw new RuntimeException("Item does not belong to this order");
-
-            throw new InvalidDataException("Item does not belong to this order");
-
+        // only change unit price if allowed
+        if (item.getShipments() == null) {
+            item.setUnitPrice(dto.getUnitPrice());
         }
 
-        orderItemsRepository.delete(item);
+        return mapToResponse(itemRepo.save(item));
     }
 
+    // 🔹 DELETE ITEM
+    @Override
+    public void deleteItem(int orderId, int lineItemId) {
+        OrderItems item = itemRepo.findById(lineItemId)
+                .orElseThrow(() -> new RuntimeException("Item not found"));
+
+        if (item.getOrders() == null || item.getOrders().getOrderId() != orderId) {
+            throw new InvalidDataException("Item does not belong to this order");
+        }
+
+        itemRepo.delete(item);
+    }
 
     // 🔹 MAPPER
     private OrderItemsResponseDto mapToResponse(OrderItems item) {
-
-        OrderItemsResponseDto dto = new OrderItemsResponseDto();
-
-        dto.setLineItemId(item.getLineItemId());
-        dto.setOrderId(item.getOrders().getOrderId());
-        dto.setProductId(item.getProducts().getProductId());
-        dto.setQuantity(item.getQuantity());
-        dto.setUnitPrice(item.getUnitPrice());
-
-
-    // 🔹 DTO MAPPER
-    private OrderItemsResponseDto mapToDto(OrderItems item) {
         OrderItemsResponseDto dto = new OrderItemsResponseDto();
         dto.setLineItemId(item.getLineItemId());
+        dto.setOrderId(item.getOrders() != null ? item.getOrders().getOrderId() : 0);
+        dto.setProductId(item.getProducts() != null ? item.getProducts().getProductId() : 0);
         dto.setQuantity(item.getQuantity());
         dto.setUnitPrice(item.getUnitPrice());
-
         return dto;
     }
 }
