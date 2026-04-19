@@ -28,6 +28,7 @@ public class InventoryService implements InventoryServiceInterface {
     @Autowired
     private ProductsRepository productsRepository;
 
+    // Maps an Inventory entity to an InventoryResponseDto
     private InventoryResponseDto mapToResponseDto(Inventory inventory) {
 
         InventoryResponseDto dto = new InventoryResponseDto();
@@ -37,6 +38,7 @@ public class InventoryService implements InventoryServiceInterface {
         return dto;
     }
 
+    // Retrieves all inventory records
     @Override
     public List<InventoryResponseDto> getAllInventory() {
 
@@ -46,6 +48,7 @@ public class InventoryService implements InventoryServiceInterface {
                 .toList();
     }
 
+    // Retrieves an inventory record by its ID
     @Override
     public InventoryResponseDto getInventoryById(int inventoryId) {
 
@@ -57,6 +60,7 @@ public class InventoryService implements InventoryServiceInterface {
         return mapToResponseDto(inventory);
     }
 
+    // Creates a new inventory record for a specific store and product
     @Override
     public InventoryResponseDto createInventory(int storeId, int productId,
             InventoryRequestDto inventoryRequestDto) {
@@ -82,6 +86,7 @@ public class InventoryService implements InventoryServiceInterface {
         return mapToResponseDto(savedInventory);
     }
 
+    // Updates an existing inventory record
     @Override
     public InventoryResponseDto updateInventory(int inventoryId, int storeId,
             int productId, InventoryRequestDto inventoryRequestDto) {
@@ -111,6 +116,7 @@ public class InventoryService implements InventoryServiceInterface {
         return mapToResponseDto(updatedInventory);
     }
 
+    // Deletes an inventory record by its ID
     @Override
     public String deleteInventory(int inventoryId) {
 
