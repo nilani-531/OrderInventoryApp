@@ -3,6 +3,7 @@ package com.sprintProject.OrderInventoryApplication.ControllerClasses;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -18,13 +19,13 @@ import com.sprintProject.OrderInventoryApplication.dto.responseDto.ResponseStruc
 public class OrdersController {
 
     @Autowired
-    private OrdersServiceInterface service;
+    private OrdersServiceInterface ordersServiceInterface;
 
-    // CREATE ORDER
+    // Create Order
     @PostMapping
     public ResponseStructure<OrdersResponseDto> createOrder(@Valid @RequestBody OrdersRequestDto dto) {
 
-        OrdersResponseDto response = service.createOrder(dto);
+        OrdersResponseDto response = ordersServiceInterface.createOrder(dto);
 
         ResponseStructure<OrdersResponseDto> rs = new ResponseStructure<>();
         rs.setStatus(201);
@@ -34,11 +35,17 @@ public class OrdersController {
         return rs;
     }
 
-    // GET ALL ORDERS
+    @GetMapping("/count/{status}")
+    public ResponseEntity<Long> getCount(@PathVariable OrderStatus status) {
+        long count = ordersServiceInterface.getOrdersCountByStatus(status);
+        return ResponseEntity.ok(count);
+    }
+    
+    // Get all Orders
     @GetMapping
     public ResponseStructure<List<OrdersResponseDto>> getAllOrders() {
 
-        List<OrdersResponseDto> list = service.getAllOrders();
+        List<OrdersResponseDto> list = ordersServiceInterface.getAllOrders();
 
         ResponseStructure<List<OrdersResponseDto>> rs = new ResponseStructure<>();
         rs.setStatus(200);
@@ -48,11 +55,11 @@ public class OrdersController {
         return rs;
     }
 
-    // GET ORDER BY ID
+    // Get Order by id 
     @GetMapping("/{orderId}")
     public ResponseStructure<OrdersResponseDto> getOrder(@PathVariable int orderId) {
 
-        OrdersResponseDto response = service.getOrderById(orderId);
+        OrdersResponseDto response = ordersServiceInterface.getOrderById(orderId);
 
         ResponseStructure<OrdersResponseDto> rs = new ResponseStructure<>();
         rs.setStatus(200);
@@ -62,11 +69,11 @@ public class OrdersController {
         return rs;
     }
 
-    // DELETE ORDER
+    // Delete Order
     @DeleteMapping("/{orderId}")
     public ResponseStructure<String> deleteOrder(@PathVariable int orderId) {
 
-        service.deleteOrder(orderId);
+    	ordersServiceInterface.deleteOrder(orderId);
 
         ResponseStructure<String> rs = new ResponseStructure<>();
         rs.setStatus(200);
@@ -76,13 +83,13 @@ public class OrdersController {
         return rs;
     }
 
-    // UPDATE ORDER STATUS
+    // Update Order status
     @PutMapping("/{orderId}/status")
     public ResponseStructure<OrdersResponseDto> updateStatus(
             @PathVariable int orderId,
             @RequestParam OrderStatus status) {
 
-        OrdersResponseDto response = service.updateOrderStatus(orderId, status);
+        OrdersResponseDto response = ordersServiceInterface.updateOrderStatus(orderId, status);
 
         ResponseStructure<OrdersResponseDto> rs = new ResponseStructure<>();
         rs.setStatus(200);
@@ -90,5 +97,20 @@ public class OrdersController {
         rs.setData(response);
 
         return rs;
+    }
+    
+ // Get orders count by status
+    @GetMapping("/count")
+    public ResponseStructure<Long> getOrdersCountByStatus(
+            @RequestParam OrderStatus status) {
+
+        long count = ordersServiceInterface.getOrdersCountByStatus(status);
+
+        ResponseStructure<Long> responseStructure = new ResponseStructure<>();
+        responseStructure.setStatus(200);
+        responseStructure.setMsg("Orders count fetched successfully");
+        responseStructure.setData(count);
+
+        return responseStructure;
     }
 }

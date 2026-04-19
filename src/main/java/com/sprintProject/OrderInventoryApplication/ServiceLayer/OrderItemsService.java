@@ -20,46 +20,48 @@ import com.sprintProject.OrderInventoryApplication.CustomExceptions.*;
 public class OrderItemsService implements OrderItemsServiceInterface {
 
     @Autowired
-    private OrderItemsRepository itemRepo;
+    private OrderItemsRepository orderItemsRepository;
 
     @Autowired
-    private OrdersRepository orderRepo;
+    private OrdersRepository ordersRepository;
 
     @Autowired
-    private ProductsRepository productRepo;
+    private ProductsRepository productsRepository;
 
-    // 🔹 GET ITEMS BY ORDER ID
+    //  Get items by Order id
     @Override
     public List<OrderItemsResponseDto> getItemsByOrderId(int orderId) {
-        return itemRepo.findAll()
+        return orderItemsRepository.findAll()
                 .stream()
                 .filter(item -> item.getOrders() != null && item.getOrders().getOrderId() == orderId)
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
 
-    // 🔹 ADD ITEM
+    //  Add item
     @Override
     public OrderItemsResponseDto addItem(int orderId, int productId, OrderItemsRequestDto dto) {
-        Orders order = orderRepo.findById(orderId)
+        Orders order = ordersRepository.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
-        Products product = productRepo.findById(productId)
+        Products product = productsRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found"));
 
         OrderItems item = new OrderItems();
         item.setOrders(order);
         item.setProducts(product);
-        item.setQuantity(dto.getQuantity());
+        if (dto.getQuantity() <= 0) {
+            throw new InvalidDataException("Quantity must be greater than 0");
+        }
         item.setUnitPrice(dto.getUnitPrice());
 
-        return mapToResponse(itemRepo.save(item));
+        return mapToResponse(orderItemsRepository.save(item));
     }
 
-    // 🔹 UPDATE ITEM
+    //  Update item
     @Override
     public OrderItemsResponseDto updateItem(int orderId, int lineItemId, OrderItemsRequestDto dto) {
-        OrderItems item = itemRepo.findById(lineItemId)
+        OrderItems item = orderItemsRepository.findById(lineItemId)
                 .orElseThrow(() -> new RuntimeException("Item not found"));
 
         if (item.getOrders() == null || item.getOrders().getOrderId() != orderId) {
@@ -81,23 +83,23 @@ public class OrderItemsService implements OrderItemsServiceInterface {
             item.setUnitPrice(dto.getUnitPrice());
         }
 
-        return mapToResponse(itemRepo.save(item));
+        return mapToResponse(orderItemsRepository.save(item));
     }
 
-    // 🔹 DELETE ITEM
+    //  Delete item
     @Override
     public void deleteItem(int orderId, int lineItemId) {
-        OrderItems item = itemRepo.findById(lineItemId)
+        OrderItems item = orderItemsRepository.findById(lineItemId)
                 .orElseThrow(() -> new RuntimeException("Item not found"));
 
         if (item.getOrders() == null || item.getOrders().getOrderId() != orderId) {
             throw new InvalidDataException("Item does not belong to this order");
         }
 
-        itemRepo.delete(item);
+        orderItemsRepository.delete(item);
     }
 
-    // 🔹 MAPPER
+    // Mapper
     private OrderItemsResponseDto mapToResponse(OrderItems item) {
         OrderItemsResponseDto dto = new OrderItemsResponseDto();
         dto.setLineItemId(item.getLineItemId());
@@ -106,5 +108,30 @@ public class OrderItemsService implements OrderItemsServiceInterface {
         dto.setQuantity(item.getQuantity());
         dto.setUnitPrice(item.getUnitPrice());
         return dto;
+    }
+    
+    // Get all items by productId
+    @Override
+    public List<OrderItemsResponseDto> getItemsByProductId(int productId) {
+
+        productsRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        return orderItemsRepository.findItemsByProductId(productId)
+                .stream()
+                .map(this::mapToResponse)
+                .collect(Collectors.toList());
+    }
+    
+    // Get total quantity of a product across all orders
+    @Override
+    public Integer getTotalQuantityByProductId(int productId) {
+
+        productsRepository.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Product not found"));
+
+        Integer total = orderItemsRepository.getTotalQuantityByProductId(productId);
+
+        return total != null ? total : 0;
     }
 }
