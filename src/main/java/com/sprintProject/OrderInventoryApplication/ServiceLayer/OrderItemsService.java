@@ -14,6 +14,7 @@ import com.sprintProject.OrderInventoryApplication.RepositoryLayer.OrdersReposit
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.ProductsRepository;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.OrderItemsRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.OrderItemsResponseDto;
+import com.sprintProject.OrderInventoryApplication.CustomExceptions.*;
 
 @Service
 public class OrderItemsService implements OrderItemsServiceInterface {
@@ -30,10 +31,9 @@ public class OrderItemsService implements OrderItemsServiceInterface {
     // 🔹 GET ITEMS BY ORDER ID
     @Override
     public List<OrderItemsResponseDto> getItemsByOrderId(int orderId) {
-
         return itemRepo.findAll()
                 .stream()
-                .filter(item -> item.getOrders().getOrderId() == orderId)
+                .filter(item -> item.getOrders() != null && item.getOrders().getOrderId() == orderId)
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }
@@ -41,7 +41,6 @@ public class OrderItemsService implements OrderItemsServiceInterface {
     // 🔹 ADD ITEM
     @Override
     public OrderItemsResponseDto addItem(int orderId, int productId, OrderItemsRequestDto dto) {
-
         Orders order = orderRepo.findById(orderId)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
 
@@ -60,15 +59,27 @@ public class OrderItemsService implements OrderItemsServiceInterface {
     // 🔹 UPDATE ITEM
     @Override
     public OrderItemsResponseDto updateItem(int orderId, int lineItemId, OrderItemsRequestDto dto) {
-
         OrderItems item = itemRepo.findById(lineItemId)
                 .orElseThrow(() -> new RuntimeException("Item not found"));
 
-        if (item.getOrders().getOrderId() != orderId) {
-            throw new RuntimeException("Item does not belong to this order");
+        if (item.getOrders() == null || item.getOrders().getOrderId() != orderId) {
+            throw new InvalidDataException("Item does not belong to this order");
+        }
+
+        if (dto.getQuantity() <= 0) {
+            throw new InvalidDataException("Quantity must be greater than 0");
+        }
+
+        // unit price immutable if shipment exists
+        if (item.getShipments() != null && item.getUnitPrice() != dto.getUnitPrice()) {
+            throw new InvalidDataException("Unit price cannot be changed after shipment");
         }
 
         item.setQuantity(dto.getQuantity());
+        // only change unit price if allowed
+        if (item.getShipments() == null) {
+            item.setUnitPrice(dto.getUnitPrice());
+        }
 
         return mapToResponse(itemRepo.save(item));
     }
@@ -76,12 +87,11 @@ public class OrderItemsService implements OrderItemsServiceInterface {
     // 🔹 DELETE ITEM
     @Override
     public void deleteItem(int orderId, int lineItemId) {
-
         OrderItems item = itemRepo.findById(lineItemId)
                 .orElseThrow(() -> new RuntimeException("Item not found"));
 
-        if (item.getOrders().getOrderId() != orderId) {
-            throw new RuntimeException("Item does not belong to this order");
+        if (item.getOrders() == null || item.getOrders().getOrderId() != orderId) {
+            throw new InvalidDataException("Item does not belong to this order");
         }
 
         itemRepo.delete(item);
@@ -89,15 +99,12 @@ public class OrderItemsService implements OrderItemsServiceInterface {
 
     // 🔹 MAPPER
     private OrderItemsResponseDto mapToResponse(OrderItems item) {
-
         OrderItemsResponseDto dto = new OrderItemsResponseDto();
-
         dto.setLineItemId(item.getLineItemId());
-        dto.setOrderId(item.getOrders().getOrderId());
-        dto.setProductId(item.getProducts().getProductId());
+        dto.setOrderId(item.getOrders() != null ? item.getOrders().getOrderId() : 0);
+        dto.setProductId(item.getProducts() != null ? item.getProducts().getProductId() : 0);
         dto.setQuantity(item.getQuantity());
         dto.setUnitPrice(item.getUnitPrice());
-
         return dto;
     }
 }
