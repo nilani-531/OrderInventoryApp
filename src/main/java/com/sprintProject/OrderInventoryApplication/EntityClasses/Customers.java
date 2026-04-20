@@ -45,11 +45,9 @@ public class Customers {
 	 
         private String fullName;
     
-<<<<<<< HEAD
-    @OneToMany (mappedBy = "customers",cascade = CascadeType.ALL)
-=======
+  
     @OneToMany (mappedBy = "customers", cascade = CascadeType.ALL)
->>>>>>> 7b04ccb (Order1 (#58))
+
     // One customer → many orders
     
         private List<Orders> orders;
