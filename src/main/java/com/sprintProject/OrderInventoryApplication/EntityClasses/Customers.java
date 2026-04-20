@@ -46,7 +46,7 @@ public class Customers {
     private String fullName;
     
 
-    @OneToMany (mappedBy = "customers",cascade = CascadeType.ALL)
+    @OneToMany (mappedBy = "customers", cascade = CascadeType.ALL)
     // One customer → many orders
     
     private List<Orders> orders;
