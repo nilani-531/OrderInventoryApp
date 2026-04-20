@@ -6,16 +6,21 @@ import com.sprintProject.OrderInventoryApplication.dto.requestDto.OrderItemsRequ
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.OrderItemsResponseDto;
 
 public interface OrderItemsServiceInterface {
-    // GET all items for a given order
+    // Get all items for a given order
     List<OrderItemsResponseDto> getItemsByOrderId(int orderId);
 
-    // ADD ITEM to an order
+    // Add item to an order
     OrderItemsResponseDto addItem(int orderId, int productId, OrderItemsRequestDto dto);
 
-    // UPDATE ITEM in an order
+    // Update in an order
     OrderItemsResponseDto updateItem(int orderId, int lineItemId, OrderItemsRequestDto dto);
 
-    // DELETE ITEM from an order
-
+    // Delete item from an order
     void deleteItem(int orderId, int lineItemId);
+    
+    // Get all items by productId
+    List<OrderItemsResponseDto> getItemsByProductId(int productId);
+
+    // Get total quantity of a product across all orders
+    Integer getTotalQuantityByProductId(int productId);
 }

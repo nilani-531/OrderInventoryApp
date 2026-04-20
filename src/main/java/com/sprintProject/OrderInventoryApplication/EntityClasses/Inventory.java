@@ -15,16 +15,20 @@ public class Inventory {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="inventory_id")
 	private int inventoryId;
 	@ManyToOne
 	@JoinColumn(name = "store_id" ,nullable = false)
 	@NotNull
+	@Column(name="store_id")
 	private Stores stores;
 	@ManyToOne
 	@JoinColumn(name = "product_id",nullable = false)
 	@NotNull
+	@Column(name="product_id")
 	private Products products;
 	@NotNull
+	@Column(name="product_inventory")
 	private int productInventory;
 
 	public int getInventoryId() {
