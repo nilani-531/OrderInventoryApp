@@ -30,7 +30,7 @@ public class Customers {
     @Column(name="customer_id")
     // Column name in DB
         
-       private int customerId;
+    private int customerId;
     
     @NotBlank
     // Field cannot be empty
@@ -38,26 +38,23 @@ public class Customers {
     // Must be valid email format
     @Column(name="email_address")
 	
-        private String emailAddress;
+    private String emailAddress;
     
     @NotBlank
     @Column(name="full_name")
 	 
-        private String fullName;
+    private String fullName;
     
-<<<<<<< HEAD
+
     @OneToMany (mappedBy = "customers",cascade = CascadeType.ALL)
-=======
-    @OneToMany (mappedBy = "customers", cascade = CascadeType.ALL)
->>>>>>> 7b04ccb (Order1 (#58))
     // One customer → many orders
     
-        private List<Orders> orders;
+    private List<Orders> orders;
     
     @OneToMany(mappedBy = "customers", cascade = CascadeType.ALL)
     // One customer → many orders
     
-        private List<Shipments> shipments;
+    private List<Shipments> shipments;
     
 	//Getters & Setters
     
