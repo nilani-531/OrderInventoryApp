@@ -1,5 +1,7 @@
 package com.sprintProject.OrderInventoryApplication.EntityClasses;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,11 +16,13 @@ public class Shipments {
 	
 	@NotNull
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name="store_id", nullable=false)
 	private Stores stores;
 	
 	@NotNull
 	@ManyToOne
+	@JsonIgnore
 	@JoinColumn(name="customer_id", nullable=false)
 	private Customers customers;
 	
