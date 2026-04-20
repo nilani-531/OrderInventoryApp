@@ -28,6 +28,7 @@ public class ShipmentsController {
 	@Autowired
     private ShipmentsServiceInterface shipmentsService;
 
+	// Fetch all shipments
     @GetMapping
     public ResponseStructure<List<ShipmentsResponseDto>> getAllShipments() {
     	
@@ -39,17 +40,20 @@ public class ShipmentsController {
         return responseStructure;
     }
 
+    // Fetch single shipment by ID 
     @GetMapping("/{shipmentId}")
     public ResponseStructure<ShipmentsResponseDto> getShipmentById(@PathVariable int shipmentId) {
 
         ResponseStructure<ShipmentsResponseDto> responseStructure = new ResponseStructure<>();
         responseStructure.setStatus(200);
         responseStructure.setMsg("Shipment fetched successfully");
+        // Calling service layer to get data
         responseStructure.setData(shipmentsService.getShipmentById(shipmentId));
 
         return responseStructure;
     }
 
+    // Create new shipment
     @PostMapping
     public ResponseStructure<ShipmentsResponseDto> createShipment(@RequestBody ShipmentsRequestDto request) {
 
@@ -61,18 +65,20 @@ public class ShipmentsController {
         return responseStructure;
     }
 
-
+    // Update shipment details
     @PutMapping("/{shipmentId}")
     public ResponseStructure<ShipmentsResponseDto> updateShipment(@PathVariable int shipmentId, @RequestBody ShipmentsRequestDto request) {
 
         ResponseStructure<ShipmentsResponseDto> responseStructure = new ResponseStructure<>();
         responseStructure.setStatus(200);
         responseStructure.setMsg("Shipment updated successfully");
+        // Pass request DTO to service
         responseStructure.setData(shipmentsService.updateShipment(shipmentId, request));
 
         return responseStructure;
     }
 
+    // Delete shipment
     @DeleteMapping("/{shipmentId}")
     public ResponseStructure<String> deleteShipment(@PathVariable int shipmentId) {
 
@@ -84,6 +90,7 @@ public class ShipmentsController {
         return responseStructure;
     }
 
+    // Update only shipment status
     @PatchMapping("/{shipmentId}/shipmentStatus")
     public ResponseStructure<ShipmentsResponseDto> updateStatus(@PathVariable int shipmentId, @RequestParam ShipmentStatus shipmentStatus) {
 
@@ -95,6 +102,7 @@ public class ShipmentsController {
         return responseStructure;
     }
     
+    // Fetch all shipments belonging to a specific customer
     @GetMapping("/customer/{customerId}")
     public ResponseStructure<List<ShipmentsResponseDto>> getShipmentsByCustomer(@PathVariable int customerId) {
 
@@ -106,6 +114,7 @@ public class ShipmentsController {
         return responseStructure;
     }
 
+    // Fetch all shipments handled by a specific store
     @GetMapping("/store/{storeId}")
     public ResponseStructure<List<ShipmentsResponseDto>> getShipmentsByStore(@PathVariable int storeId) {
 
@@ -117,6 +126,7 @@ public class ShipmentsController {
         return responseStructure;
     }
 
+    // Fetch shipments based on their current status
     @GetMapping("/status/{shipmentStatus}")
     public ResponseStructure<List<ShipmentsResponseDto>> getShipmentsByStatus(@PathVariable ShipmentStatus shipmentStatus) {
 
