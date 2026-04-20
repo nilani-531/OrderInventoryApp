@@ -32,7 +32,7 @@ public class Stores {
     private Double longitude;
 
     @Lob
-    @Column(name = "logo")
+    @Column(name = "logo" , columnDefinition = "BYTEA")
     private byte[] logo;
 
     @Column(name = "logo_mime_type")
