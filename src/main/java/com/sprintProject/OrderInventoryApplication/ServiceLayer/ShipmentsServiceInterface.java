@@ -8,21 +8,31 @@ import com.sprintProject.OrderInventoryApplication.dto.requestDto.ShipmentsReque
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.ShipmentsResponseDto;
 
 public interface ShipmentsServiceInterface {
-	List<ShipmentsResponseDto> getAllShipments();
 	
-	ShipmentsResponseDto getShipmentById(int shipmentId);
-	
-	ShipmentsResponseDto createShipment(ShipmentsRequestDto shipment);
+	// Retrieve all shipments
+    List<ShipmentsResponseDto> getAllShipments();
 
-	ShipmentsResponseDto updateShipment(int shipmentId, ShipmentsRequestDto shipment);
-	
-	String deleteShipment(int shipmentId);
-	
-	ShipmentsResponseDto updateShipmentStatus(int shipmentId, ShipmentStatus status);
-	
-	List<ShipmentsResponseDto> getShipmentByCustomerId(int customerId);
-	
-	List<ShipmentsResponseDto> getShipmentByStoreId(int storeId);
+    // Retrieve a shipment by its ID
+    ShipmentsResponseDto getShipmentById(int shipmentId);
 
-	List<ShipmentsResponseDto> getShipmentByStatus(ShipmentStatus status);
+    // Create a new shipment
+    ShipmentsResponseDto createShipment(ShipmentsRequestDto shipment);
+
+    // Update shipment details
+    ShipmentsResponseDto updateShipment(int shipmentId, ShipmentsRequestDto shipment);
+
+    // Delete shipment by ID
+    String deleteShipment(int shipmentId);
+
+    // Update shipment status with validation
+    ShipmentsResponseDto updateShipmentStatus(int shipmentId, ShipmentStatus status);
+
+    // Get shipments for a specific customer
+    List<ShipmentsResponseDto> getShipmentByCustomerId(int customerId);
+
+    // Get shipments for a specific store
+    List<ShipmentsResponseDto> getShipmentByStoreId(int storeId);
+
+    // Get shipments based on status
+    List<ShipmentsResponseDto> getShipmentByStatus(ShipmentStatus status);
 }
