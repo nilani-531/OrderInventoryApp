@@ -3,6 +3,7 @@ package com.sprintProject.OrderInventoryApplication.EntityClasses;
 
 import java.util.List;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -44,12 +45,12 @@ public class Customers {
 	 
         private String fullName;
     
-    @OneToMany (mappedBy = "customers")
+    @OneToMany (mappedBy = "customers", cascade = CascadeType.ALL)
     // One customer → many orders
     
         private List<Orders> orders;
     
-    @OneToMany(mappedBy = "customers")
+    @OneToMany(mappedBy = "customers", cascade = CascadeType.ALL)
     // One customer → many orders
     
         private List<Shipments> shipments;
