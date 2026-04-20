@@ -1,5 +1,6 @@
 package com.sprintProject.OrderInventoryApplication.EntityClasses;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,12 +21,10 @@ public class Inventory {
 	@ManyToOne
 	@JoinColumn(name = "store_id" ,nullable = false)
 	@NotNull
-	@Column(name="store_id")
 	private Stores stores;
 	@ManyToOne
 	@JoinColumn(name = "product_id",nullable = false)
 	@NotNull
-	@Column(name="product_id")
 	private Products products;
 	@NotNull
 	@Column(name="product_inventory")
