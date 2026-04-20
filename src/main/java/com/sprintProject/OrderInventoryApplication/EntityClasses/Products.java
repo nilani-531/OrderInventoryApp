@@ -1,5 +1,6 @@
 package com.sprintProject.OrderInventoryApplication.EntityClasses;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,19 +15,26 @@ public class Products {
 	@Id
 	@NotNull
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="product_id")
 	private int productId;
 
 	@NotNull
+	@Column(name="product_name")
 	private String productName;
 	@NotNull
+	@Column(name="unit_price")
 	private double unitPrice;
 	@NotNull
+	@Column(name="colour")
 	private String colour;
 	@NotNull
+	@Column(name="brand")
 	private String brand;
 	@NotNull
+	@Column(name="size")
 	private String size;
 	@NotNull
+	@Column(name="rating")
 	private int rating;
 
 	public int getProductId() {
