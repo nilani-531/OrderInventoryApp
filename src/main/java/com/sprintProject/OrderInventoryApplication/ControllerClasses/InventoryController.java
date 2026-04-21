@@ -21,7 +21,7 @@ import com.sprintProject.OrderInventoryApplication.ServiceLayer.InventoryService
 
 @RestController
 @RequestMapping("/inventory")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:4200/")
 public class InventoryController {
 
 	@Autowired
