@@ -20,7 +20,7 @@ import com.sprintProject.OrderInventoryApplication.EntityClasses.Inventory;
 import com.sprintProject.OrderInventoryApplication.ServiceLayer.InventoryService;
 
 @RestController
-@RequestMapping("/inventory")
+@RequestMapping("/api/inventory")
 @CrossOrigin(origins = "http://localhost:4200/")
 public class InventoryController {
 

@@ -20,8 +20,8 @@ import com.sprintProject.OrderInventoryApplication.EntityClasses.Products;
 import com.sprintProject.OrderInventoryApplication.ServiceLayer.ProductsService;
 
 @RestController
-@RequestMapping("/products")
-@CrossOrigin(origins = "http://localhost:4200/")
+@RequestMapping("/api/products")
+//@CrossOrigin(origins = "http://localhost:4200/")
 public class ProductsController {
 
 	@Autowired
