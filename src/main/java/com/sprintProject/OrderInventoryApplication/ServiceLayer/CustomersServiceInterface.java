@@ -7,6 +7,8 @@ import com.sprintProject.OrderInventoryApplication.EntityClasses.Orders;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Shipments;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.CustomersRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.CustomersResponseDto;
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.OrdersResponseDto;
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.ShipmentsResponseDto;
 
 public interface CustomersServiceInterface {
    
@@ -28,9 +30,9 @@ public interface CustomersServiceInterface {
 	CustomersResponseDto getCustomerByEmail(String customerEmail); 
 	// Fetch customer by email
 	
-	List<Orders> getCustomerOrders(int customerId);
+	List<OrdersResponseDto> getCustomerOrders(int customerId);
 	// Get all orders of a customer
 	
-    List<Shipments> getCustomerShipments(int customerId);
+    List<ShipmentsResponseDto> getCustomerShipments(int customerId);
     // Get all shipments of a customer
 }

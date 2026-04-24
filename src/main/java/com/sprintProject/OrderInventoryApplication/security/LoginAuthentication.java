@@ -37,7 +37,7 @@ public class LoginAuthentication {
                     .hasAnyRole("KARTHI", "ADMIN")
                 .requestMatchers("/api/customers/**")
                     .hasAnyRole("ABINAYA", "ADMIN")
-                .requestMatchers("/orders/**", "/api/order-items/**")
+                .requestMatchers("/api/orders/**", "/api/order-items/**")
                     .hasAnyRole("NILANI", "ADMIN")
                 .requestMatchers("/api/stores/**")
                     .hasAnyRole("POOJA", "ADMIN")
