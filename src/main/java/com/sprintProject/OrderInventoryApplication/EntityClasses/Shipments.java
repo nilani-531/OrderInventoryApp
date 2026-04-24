@@ -1,6 +1,8 @@
 package com.sprintProject.OrderInventoryApplication.EntityClasses;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Convert;
+import com.sprintProject.OrderInventoryApplication.serialization.ShipmentStatusType;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -31,7 +33,7 @@ public class Shipments {
 	private String deliveryAddress;
 	
 	@NotNull
-	@Enumerated(EnumType.STRING)
+	@Convert(converter = ShipmentStatusType.class)
 	@Column(name="shipment_status",nullable=false, length=100)
 	private ShipmentStatus shipmentStatus;
 	

@@ -1,5 +1,9 @@
 package com.sprintProject.OrderInventoryApplication.EntityClasses;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.sprintProject.OrderInventoryApplication.serialization.ShipmentStatusDeserializer;
+
+@JsonDeserialize(using = ShipmentStatusDeserializer.class)
 public enum ShipmentStatus {
 	CREATED,
 	SHIPPED,

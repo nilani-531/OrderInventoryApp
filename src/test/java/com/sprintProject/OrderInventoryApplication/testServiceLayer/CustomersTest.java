@@ -26,9 +26,12 @@ import com.sprintProject.OrderInventoryApplication.EntityClasses.Customers;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Orders;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Shipments;
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.CustomersRepository;
+import com.sprintProject.OrderInventoryApplication.RepositoryLayer.ShipmentsRepository;
 import com.sprintProject.OrderInventoryApplication.ServiceLayer.CustomersService;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.CustomersRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.CustomersResponseDto;
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.OrdersResponseDto;
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.ShipmentsResponseDto;
 
 
 @SpringBootTest
@@ -219,7 +222,7 @@ public class CustomersTest {
 	        customer.setOrders(List.of(new Orders()));
 	        
 	        when(customersRepository.findById(1)).thenReturn(Optional.of(customer));
-	        List<Orders> orders = customersService.getCustomerOrders(1);
+	        List<OrdersResponseDto> orders = customersService.getCustomerOrders(1);
 	        assertNotNull(orders);
 	    }
 
@@ -235,13 +238,12 @@ public class CustomersTest {
 	    @Test
 	    void testGetCustomerShipmentsSuccess() {
 	        Customers customer = new Customers();
-	        List<Shipments> shipmentList = new ArrayList<>();
+	        List<ShipmentsResponseDto> shipmentList = new ArrayList<>();
 	        
-	        shipmentList.add(new Shipments());
-	        customer.setShipments(shipmentList);
+	        customer.setShipments(List.of(new Shipments()));
 	        
 	        when(customersRepository.findById(1)).thenReturn(Optional.of(customer));
-	        List<Shipments> shipments = customersService.getCustomerShipments(1);
+	        List<ShipmentsResponseDto> shipments = customersService.getCustomerShipments(1);
 	       
 	        assertNotNull(shipments);
 	        assertFalse(shipments.isEmpty());
