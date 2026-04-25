@@ -143,17 +143,17 @@ public class StoresController {
 //
 //		return rs;
 //	}
-//	// GET /api/stores/{storeId}/inventory
-//
-//	@GetMapping("/{storeId}/inventory")
-//	public ResponseStructure<List<InventoryResponseDto>> getInventory(@PathVariable int storeId) {
-//		List<InventoryResponseDto> list = inventoryService.getInventoryByStore(storeId);
-//		ResponseStructure<List<InventoryResponseDto>> rs = new ResponseStructure<>();
-//		rs.setStatus(200);
-//		rs.setMsg("Inventory fetched successfully");
-//		rs.setData(list);
-//		return rs;
-//	}
+	// GET /api/stores/{storeId}/inventory
+
+	@GetMapping("/{storeId}/inventory")
+	public ResponseStructure<List<InventoryResponseDto>> getInventory(@PathVariable int storeId) {
+		List<InventoryResponseDto> list = inventoryService.getInventoryByStore(storeId);
+		ResponseStructure<List<InventoryResponseDto>> rs = new ResponseStructure<>();
+		rs.setStatus(200);
+		rs.setMsg("Inventory fetched successfully");
+		rs.setData(list);
+		return rs;
+	}
 
 	// GET /api/stores/{storeId}/orders
 	// BUG FIX: was calling ordersService.getOrdersByStore() which didn't exist

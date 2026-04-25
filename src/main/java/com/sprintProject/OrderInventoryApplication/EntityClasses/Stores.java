@@ -31,8 +31,11 @@ public class Stores {
     @Column(name = "longitude")
     private Double longitude;
 
-    @Lob
-    @Column(name = "logo" , columnDefinition = "BYTEA")
+//    @Lob
+//    @Column(name = "logo" , columnDefinition = "BYTEA")
+//    private byte[] logo;
+    
+    @Column(name = "logo", columnDefinition = "bytea")
     private byte[] logo;
 
     @Column(name = "logo_mime_type")
