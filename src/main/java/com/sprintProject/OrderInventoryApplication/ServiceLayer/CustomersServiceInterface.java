@@ -24,7 +24,7 @@ public interface CustomersServiceInterface {
 	CustomersResponseDto updateCustomer(int customerId, CustomersRequestDto customersRequestDto);
 	// Update existing customer
 	
-	String deleteCustomer(int customerId);
+	CustomersResponseDto deleteCustomer(int customerId);
 	// Delete customer
 	
 	CustomersResponseDto getCustomerByEmail(String customerEmail); 
