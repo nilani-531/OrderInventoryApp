@@ -140,8 +140,6 @@ public class CustomersController {
 		return new ResponseEntity<>(responseStructure, HttpStatus.OK);
 	}
 
-
-
 	@GetMapping("/{customerId}/shipments")
 	// Fetch all shipments of a customer
 
@@ -158,4 +156,3 @@ public class CustomersController {
 	}
 
 }
-
