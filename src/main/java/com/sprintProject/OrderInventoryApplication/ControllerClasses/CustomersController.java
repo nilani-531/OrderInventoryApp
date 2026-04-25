@@ -1,6 +1,5 @@
 package com.sprintProject.OrderInventoryApplication.ControllerClasses;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -23,7 +23,9 @@ import com.sprintProject.OrderInventoryApplication.EntityClasses.Shipments;
 import com.sprintProject.OrderInventoryApplication.ServiceLayer.CustomersService;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.CustomersRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.CustomersResponseDto;
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.OrdersResponseDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.ResponseStructure;
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.ShipmentsResponseDto;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200/")
@@ -31,139 +33,129 @@ import com.sprintProject.OrderInventoryApplication.dto.responseDto.ResponseStruc
 //base url
 
 public class CustomersController {
-	
+
 	@Autowired
 	private CustomersService customersService;
-	
+
 	@PostMapping
-    // Handles HTTP post request-> create new customer
-   
+	// Handles HTTP post request-> create new customer
+
 	public ResponseEntity<ResponseStructure<CustomersResponseDto>> createCustomer(
-            @RequestBody CustomersRequestDto dto) {
-        //@RequestBody → converts JSON input to Java object
-        
+			@RequestBody CustomersRequestDto dto) {
+		// @RequestBody → converts JSON input to Java object
+
 		CustomersResponseDto response = customersService.createCustomer(dto);
 
-        ResponseStructure<CustomersResponseDto> responseStructure = new ResponseStructure<>();
-        responseStructure.setStatus(HttpStatus.CREATED.value());
-        responseStructure.setMsg("Customer created successfully");
-        responseStructure.setData(response);
+		ResponseStructure<CustomersResponseDto> responseStructure = new ResponseStructure<>();
+		responseStructure.setStatus(HttpStatus.CREATED.value());
+		responseStructure.setMsg("Customer created successfully");
+		responseStructure.setData(response);
 
-        return new ResponseEntity<>(responseStructure, HttpStatus.CREATED);
-    }
+		return new ResponseEntity<>(responseStructure, HttpStatus.CREATED);
+	}
 
-    @GetMapping
-    // Handles HTTP GET request → fetch all customers
-   
-    public ResponseEntity<ResponseStructure<List<CustomersResponseDto>>> getAllCustomers() {
+	@GetMapping
+	// Handles HTTP GET request → fetch all customers
 
-        List<CustomersResponseDto> list = customersService.getAllCustomers();
+	public ResponseEntity<ResponseStructure<List<CustomersResponseDto>>> getAllCustomers() {
 
-        ResponseStructure<List<CustomersResponseDto>> structure = new ResponseStructure<>();
-        structure.setStatus(HttpStatus.OK.value());
-        structure.setMsg("Customers fetched successfully");
-        structure.setData(list);
+		List<CustomersResponseDto> list = customersService.getAllCustomers();
 
-        return new ResponseEntity<>(structure, HttpStatus.OK);
-    }
+		ResponseStructure<List<CustomersResponseDto>> structure = new ResponseStructure<>();
+		structure.setStatus(HttpStatus.OK.value());
+		structure.setMsg("Customers fetched successfully");
+		structure.setData(list);
 
- 
-    @GetMapping("/{customerId}")
-    // Fetch customer by ID from URL
-    
-    public ResponseEntity<ResponseStructure<CustomersResponseDto>> getCustomerById(
-            @PathVariable int customerId) {
+		return new ResponseEntity<>(structure, HttpStatus.OK);
+	}
 
-        CustomersResponseDto response = customersService.getCustomerById(customerId);
+	@GetMapping("/{customerId}")
+	// Fetch customer by ID from URL
 
-        ResponseStructure<CustomersResponseDto> responseStructure = new ResponseStructure<>();
-        responseStructure.setStatus(HttpStatus.OK.value());
-        responseStructure.setMsg("Customer fetched successfully");
-        responseStructure.setData(response);
+	public ResponseEntity<ResponseStructure<CustomersResponseDto>> getCustomerById(@PathVariable int customerId) {
 
-        return new ResponseEntity<>(responseStructure, HttpStatus.OK);
-    }
+		CustomersResponseDto response = customersService.getCustomerById(customerId);
 
-  
-    @GetMapping("/email/{customerEmail}")
-    // Fetch customer using email
-    
-    public ResponseEntity<ResponseStructure<CustomersResponseDto>> getCustomerByEmail(
-            @PathVariable String customerEmail) {
+		ResponseStructure<CustomersResponseDto> responseStructure = new ResponseStructure<>();
+		responseStructure.setStatus(HttpStatus.OK.value());
+		responseStructure.setMsg("Customer fetched successfully");
+		responseStructure.setData(response);
 
-        CustomersResponseDto response = customersService.getCustomerByEmail(customerEmail);
+		return new ResponseEntity<>(responseStructure, HttpStatus.OK);
+	}
 
-        ResponseStructure<CustomersResponseDto> responseStructure = new ResponseStructure<>();
-        responseStructure.setStatus(HttpStatus.OK.value());
-        responseStructure.setMsg("Customer fetched successfully");
-        responseStructure.setData(response);
+	@GetMapping("/search")
+	public ResponseEntity<ResponseStructure<CustomersResponseDto>> getCustomerByEmail(@RequestParam String email) {
+		CustomersResponseDto response = customersService.getCustomerByEmail(email);
+		ResponseStructure<CustomersResponseDto> responseStructure = new ResponseStructure<>();
+		responseStructure.setStatus(HttpStatus.OK.value());
+		responseStructure.setMsg("Customer fetched successfully");
+		responseStructure.setData(response);
+		return new ResponseEntity<>(responseStructure, HttpStatus.OK);
+	}
 
-        return new ResponseEntity<>(responseStructure, HttpStatus.OK);
-    }
+	@PutMapping("/{customerId}")
+	// Handles HTTP PUT → update existing customer
 
-    @PutMapping("/{customerId}")
-    // Handles HTTP PUT → update existing customer
-    
-    public ResponseEntity<ResponseStructure<CustomersResponseDto>> updateCustomer(
-            @PathVariable int customerId,
-            @RequestBody CustomersRequestDto dto) {
+	public ResponseEntity<ResponseStructure<CustomersResponseDto>> updateCustomer(@PathVariable int customerId,
+			@RequestBody CustomersRequestDto dto) {
 
-        CustomersResponseDto response = customersService.updateCustomer(customerId, dto);
+		CustomersResponseDto response = customersService.updateCustomer(customerId, dto);
 
-        ResponseStructure<CustomersResponseDto> responseStructure = new ResponseStructure<>();
-        responseStructure.setStatus(HttpStatus.OK.value());
-        responseStructure.setMsg("Customer updated successfully");
-        responseStructure.setData(response);
+		ResponseStructure<CustomersResponseDto> responseStructure = new ResponseStructure<>();
+		responseStructure.setStatus(HttpStatus.OK.value());
+		responseStructure.setMsg("Customer updated successfully");
+		responseStructure.setData(response);
 
-        return new ResponseEntity<>(responseStructure, HttpStatus.OK);
-    }
+		return new ResponseEntity<>(responseStructure, HttpStatus.OK);
+	}
 
-    @DeleteMapping("/{customerId}")
-    // Handles HTTP DELETE → remove customer
-    
-    public ResponseEntity<ResponseStructure<String>> deleteCustomer(
-            @PathVariable int customerId) {
+	@DeleteMapping("/{customerId}")
+	// Handles HTTP DELETE → remove customer
 
-        customersService.deleteCustomer(customerId);
+	public ResponseEntity<ResponseStructure<CustomersResponseDto>> deleteCustomer(@PathVariable int customerId) {
 
-        ResponseStructure<String> responseStructure = new ResponseStructure<>();
-        responseStructure.setStatus(HttpStatus.OK.value());
-        responseStructure.setMsg("Customer deleted successfully");
-        responseStructure.setData("Deleted");
+		CustomersResponseDto deletedCustomer=customersService.deleteCustomer(customerId);
 
-        return new ResponseEntity<>(responseStructure, HttpStatus.OK);
-    }
-	
-    @GetMapping("/{customerId}/orders")
-    // Fetch all orders of a specific customer
-    
-    public ResponseEntity<ResponseStructure<List<Orders>>> getCustomerOrders(
-            @PathVariable int customerId) {
+		ResponseStructure<CustomersResponseDto> responseStructure = new ResponseStructure<>();
+		responseStructure.setStatus(HttpStatus.OK.value());
+		responseStructure.setMsg("Customer deleted successfully");
+		responseStructure.setData(deletedCustomer);
 
-        List<Orders> orders = customersService.getCustomerOrders(customerId);
+		return new ResponseEntity<>(responseStructure, HttpStatus.OK);
+	}
 
-        ResponseStructure<List<Orders>> responseStructure = new ResponseStructure<>();
-        responseStructure.setStatus(HttpStatus.OK.value());
-        responseStructure.setMsg("Customer orders fetched successfully");
-        responseStructure.setData(orders);
+	@GetMapping("/{customerId}/orders")
+	// Fetch all orders of a specific customer
 
-        return new ResponseEntity<>(responseStructure, HttpStatus.OK);
-    }
-    
-    @GetMapping("/{customerId}/shipments")
-    // Fetch all shipments of a customer
-    
-    public ResponseEntity<ResponseStructure<List<Shipments>>> getCustomerShipments(
-            @PathVariable int customerId) {
+	public ResponseEntity<ResponseStructure<List<OrdersResponseDto>>> getCustomerOrders(@PathVariable int customerId) {
 
-        List<Shipments> shipments = customersService.getCustomerShipments(customerId);
+		List<OrdersResponseDto> orders = customersService.getCustomerOrders(customerId);
 
-        ResponseStructure<List<Shipments>> responseStructure = new ResponseStructure<>();
-        responseStructure.setStatus(HttpStatus.OK.value());
-        responseStructure.setMsg("Customer shipments fetched successfully");
-        responseStructure.setData(shipments);
+		ResponseStructure<List<OrdersResponseDto>> responseStructure = new ResponseStructure<>();
+		responseStructure.setStatus(HttpStatus.OK.value());
+		responseStructure.setMsg("Customer orders fetched successfully");
+		responseStructure.setData(orders);
 
-        return new ResponseEntity<>(responseStructure, HttpStatus.OK);
-    }
+		return new ResponseEntity<>(responseStructure, HttpStatus.OK);
+	}
+
+
+
+	@GetMapping("/{customerId}/shipments")
+	// Fetch all shipments of a customer
+
+	public ResponseEntity<ResponseStructure<List<ShipmentsResponseDto>>> getCustomerShipments(@PathVariable int customerId) {
+
+		List<ShipmentsResponseDto> shipments = customersService.getCustomerShipments(customerId);
+
+		ResponseStructure<List<ShipmentsResponseDto>> responseStructure = new ResponseStructure<>();
+		responseStructure.setStatus(HttpStatus.OK.value());
+		responseStructure.setMsg("Customer shipments fetched successfully");
+		responseStructure.setData(shipments);
+
+		return new ResponseEntity<>(responseStructure, HttpStatus.OK);
+	}
 
 }
+

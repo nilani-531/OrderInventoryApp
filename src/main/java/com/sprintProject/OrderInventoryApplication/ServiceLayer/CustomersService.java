@@ -8,12 +8,17 @@ import org.springframework.stereotype.Service;
 import com.sprintProject.OrderInventoryApplication.CustomExceptions.CustomerEmailAlreadyExistException;
 import com.sprintProject.OrderInventoryApplication.CustomExceptions.CustomerEmailNotFoundException;
 import com.sprintProject.OrderInventoryApplication.CustomExceptions.CustomerIdNotFoundException;
+import com.sprintProject.OrderInventoryApplication.CustomExceptions.OrderNotFoundException;
+import com.sprintProject.OrderInventoryApplication.CustomExceptions.ShipmentNotFoundException;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Customers;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Orders;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Shipments;
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.CustomersRepository;
+import com.sprintProject.OrderInventoryApplication.RepositoryLayer.ShipmentsRepository;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.CustomersRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.CustomersResponseDto;
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.OrdersResponseDto;
+import com.sprintProject.OrderInventoryApplication.dto.responseDto.ShipmentsResponseDto;
 
 @Service
 //Marks this class as Service layer (business logic)
@@ -22,7 +27,8 @@ public class CustomersService implements CustomersServiceInterface {
 
     @Autowired
     private CustomersRepository customersRepository;
-
+    
+  
     // Get all Customers
     public List<CustomersResponseDto> getAllCustomers() {
         return customersRepository.findAll().stream().map(this::convertToResponseDto).toList();
@@ -76,11 +82,18 @@ public class CustomersService implements CustomersServiceInterface {
     }
 
     // Delete the Customer
-    public String deleteCustomer(int customerId) {
-        Customers existingCustomer=customersRepository.findById(customerId).orElseThrow(()-> new CustomerIdNotFoundException("Customer not found with id:"+customerId));
-        customersRepository.delete(existingCustomer);
-        return "Account Removed successfully";
+    public CustomersResponseDto deleteCustomer(int customerId) {
 
+        Customers existingCustomer = customersRepository.findById(customerId)
+            .orElseThrow(() -> new CustomerIdNotFoundException(
+                "Customer not found with id: " + customerId));
+
+        // Convert BEFORE deleting
+        CustomersResponseDto deletedCustomer = convertToResponseDto(existingCustomer);
+
+        customersRepository.delete(existingCustomer);
+
+        return deletedCustomer;
     }
    
     // Get Customer By Email
@@ -93,15 +106,28 @@ public class CustomersService implements CustomersServiceInterface {
     }
 
    // Fetch orders from relationship
-    public List<Orders> getCustomerOrders(int customerId) {
+    public List<OrdersResponseDto> getCustomerOrders(int customerId) {
         Customers existingCustomer =customersRepository.findById(customerId) .orElseThrow(()->new CustomerIdNotFoundException("Customer not found with id:"+customerId));
-        return existingCustomer.getOrders();
+        List<Orders> ordersList= existingCustomer.getOrders();
+        if (ordersList == null || ordersList.isEmpty()) {
+            throw new OrderNotFoundException(
+                    "No Orders found for Customer id: " + customerId);
+        }
+        return ordersList.stream()
+                .map(this::convertToOrderDto)
+                .toList();
     }
 
     // Fetch shipments from relationship
-    public List<Shipments> getCustomerShipments(int customerId) {
+    public List<ShipmentsResponseDto> getCustomerShipments(int customerId) {
         Customers existingCustomer =customersRepository.findById(customerId) .orElseThrow(()->new CustomerIdNotFoundException("Customer not found with id:"+customerId)); 
-        return existingCustomer.getShipments();
+        List<Shipments> shipmentsList= existingCustomer.getShipments();
+        if( shipmentsList ==null ||shipmentsList.isEmpty()) {
+        	throw new ShipmentNotFoundException("No Shipment found for Customer id: "+customerId);
+        }
+        return shipmentsList.stream()
+                .map(this::convertToShipmentDto)
+                .toList();
     }
     
     // ResponseDto conversion
@@ -112,9 +138,40 @@ public class CustomersService implements CustomersServiceInterface {
     	customersResponseDto.setFullName(customers.getFullName());
     	return customersResponseDto;
     }
-
-
-
-	
     
+    // OrderResponse conversion
+    private OrdersResponseDto convertToOrderDto(Orders order) {
+        OrdersResponseDto dto = new OrdersResponseDto();
+
+        dto.setOrderId(order.getOrderId());
+        dto.setOrderTms(order.getOrderTms());
+        dto.setOrderStatusS(order.getOrderStatus());
+        if (order.getCustomers() != null) {
+            dto.setCustomerId(order.getCustomers().getCustomerId()); 
+        }
+        if (order.getStores() != null) {
+            dto.setStoreId(order.getStores().getStoreId());
+            
+        }
+        return dto;
+    }
+    
+    // ShipmentsResponse Conversion
+    private ShipmentsResponseDto convertToShipmentDto(Shipments shipment) {
+
+        ShipmentsResponseDto dto = new ShipmentsResponseDto();
+
+        dto.setShipmentId(shipment.getShipmentId());
+        dto.setShipmentStatus(shipment.getShipmentStatus());
+        dto.setDeliveryAddress(shipment.getDeliveryAddress());
+
+        if (shipment.getCustomers() != null) {
+            dto.setCustomerId(shipment.getCustomers().getCustomerId());
+            
+        }
+        if (shipment.getStores() != null) {
+            dto.setStoreId(shipment.getStores().getStoreId());   
+        }
+        return dto;
+    }
 }
