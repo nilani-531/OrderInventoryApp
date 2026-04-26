@@ -28,7 +28,7 @@ import com.sprintProject.OrderInventoryApplication.dto.responseDto.ResponseStruc
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.ShipmentsResponseDto;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200/")
+
 @RequestMapping("/api/customers")
 //base url
 
@@ -85,8 +85,12 @@ public class CustomersController {
 	}
 
 	@GetMapping("/search")
+	// Fetch Customer by Email 
+	
 	public ResponseEntity<ResponseStructure<CustomersResponseDto>> getCustomerByEmail(@RequestParam String email) {
+		
 		CustomersResponseDto response = customersService.getCustomerByEmail(email);
+		
 		ResponseStructure<CustomersResponseDto> responseStructure = new ResponseStructure<>();
 		responseStructure.setStatus(HttpStatus.OK.value());
 		responseStructure.setMsg("Customer fetched successfully");
