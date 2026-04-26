@@ -111,6 +111,20 @@ public class StoresController {
 		rs.setData(list);
 		return rs;
 	}
+	
+	// Get Store by Name
+	@GetMapping("/name/{storeName}")
+	public ResponseStructure<StoresResponseDto> getStoreByName(@PathVariable String storeName) {
+
+		StoresResponseDto response = service.getStoreByName(storeName);
+
+		ResponseStructure<StoresResponseDto> rs = new ResponseStructure<>();
+		rs.setStatus(200);
+		rs.setMsg("Store fetched successfully by name");
+		rs.setData(response);
+
+		return rs;
+	}
 
 	// GET /api/stores/{storeId}/orders
 	// BUG FIX: was calling ordersService.getOrdersByStore() which didn't exist
