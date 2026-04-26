@@ -29,6 +29,9 @@ public interface OrdersServiceInterface {
     // Update Order by Order id,Customer id
     OrdersResponseDto updateOrderCustomer(int orderId, int customerId);
 
+    // Update Order timestamp
+    OrdersResponseDto updateOrderTms(int orderId, LocalDateTime orderTms);
+
     //Get Order by Customer
     List<OrdersResponseDto> getOrdersByCustomerId(int customerId);
     

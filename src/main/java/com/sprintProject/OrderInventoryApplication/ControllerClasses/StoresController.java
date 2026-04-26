@@ -101,59 +101,16 @@ public class StoresController {
 		return rs;
 	}
 
-//	// get inventory by store id
-//	@GetMapping("/{storeId}/inventory")
-//	public ResponseStructure<List<Inventory>> getInventory(@PathVariable int storeId) {
-//
-//		List<Inventory> list = inventoryService.getInventoryByStore(storeId);
-//
-//		ResponseStructure<List<Inventory>> rs = new ResponseStructure<>();
-//		rs.setStatus(200);
-//		rs.setMsg("Inventory fetched successfully");
-//		rs.setData(list);
-//
-//		return rs;
-//	}
-//
-//	// get orders by store id
-//	@GetMapping("/{storeId}/orders")
-//	public ResponseStructure<List<OrdersResponseDto>> getOrders(@PathVariable int storeId) {
-//
-//		// Service returns DTOs
-//		List<OrdersResponseDto> data = ordersService.getOrdersByStore(storeId);
-//
-//		ResponseStructure<List<OrdersResponseDto>> rs = new ResponseStructure<>();
-//		rs.setStatus(200);
-//		rs.setMsg("Orders fetched successfully");
-//		rs.setData(data);
-//
-//		return rs;
-//	}
-//
-//	// Get Store by Name
-//	@GetMapping("/name/{storeName}")
-//	public ResponseStructure<StoresResponseDto> getStoreByName(@PathVariable String storeName) {
-//
-//		StoresResponseDto response = service.getStoreByName(storeName);
-//
-//		ResponseStructure<StoresResponseDto> rs = new ResponseStructure<>();
-//		rs.setStatus(200);
-//		rs.setMsg("Store fetched successfully by name");
-//		rs.setData(response);
-//
-//		return rs;
-//	}
-//	// GET /api/stores/{storeId}/inventory
-//
-//	@GetMapping("/{storeId}/inventory")
-//	public ResponseStructure<List<InventoryResponseDto>> getInventory(@PathVariable int storeId) {
-//		List<InventoryResponseDto> list = inventoryService.getInventoryByStore(storeId);
-//		ResponseStructure<List<InventoryResponseDto>> rs = new ResponseStructure<>();
-//		rs.setStatus(200);
-//		rs.setMsg("Inventory fetched successfully");
-//		rs.setData(list);
-//		return rs;
-//	}
+	// GET /api/stores/{storeId}/inventory
+	@GetMapping("/{storeId}/inventory")
+	public ResponseStructure<List<InventoryResponseDto>> getInventory(@PathVariable int storeId) {
+		List<InventoryResponseDto> list = inventoryService.getInventoryByStore(storeId);
+		ResponseStructure<List<InventoryResponseDto>> rs = new ResponseStructure<>();
+		rs.setStatus(200);
+		rs.setMsg("Inventory fetched successfully");
+		rs.setData(list);
+		return rs;
+	}
 
 	// GET /api/stores/{storeId}/orders
 	// BUG FIX: was calling ordersService.getOrdersByStore() which didn't exist
@@ -180,14 +137,5 @@ public class StoresController {
 		return rs;
 	}
 
-	// GET /api/stores/name/{storeName} (convenience endpoint, not in spec)
-	@GetMapping("/name/{storeName}")
-	public ResponseStructure<StoresResponseDto> getStoreByName(@PathVariable String storeName) {
-		StoresResponseDto response = service.getStoreByName(storeName);
-		ResponseStructure<StoresResponseDto> rs = new ResponseStructure<>();
-		rs.setStatus(200);
-		rs.setMsg("Store fetched successfully by name");
-		rs.setData(response);
-		return rs;
-	}
+
 }

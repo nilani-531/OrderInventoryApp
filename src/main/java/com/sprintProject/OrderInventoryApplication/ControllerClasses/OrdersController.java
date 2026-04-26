@@ -85,18 +85,22 @@ public class OrdersController {
 		return rs;
 	}
 
-	// Update Order status
+	// Update Order - storeId, customerId, or orderTms
 	@PutMapping("/{orderId}")
 	public ResponseStructure<OrdersResponseDto> updateOrder(@PathVariable int orderId,
-			@RequestParam(required = false) Integer storeId, @RequestParam(required = false) Integer customerId) {
+			@RequestParam(required = false) Integer storeId,
+			@RequestParam(required = false) Integer customerId,
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime orderTms) {
 
 		OrdersResponseDto response;
 		if (storeId != null) {
 			response = ordersServiceInterface.updateOrderStore(orderId, storeId);
 		} else if (customerId != null) {
 			response = ordersServiceInterface.updateOrderCustomer(orderId, customerId);
+		} else if (orderTms != null) {
+			response = ordersServiceInterface.updateOrderTms(orderId, orderTms);
 		} else {
-			throw new RuntimeException("Provide at least storeId or customerId to update");
+			throw new RuntimeException("Provide at least storeId, customerId, or orderTms to update");
 		}
 
 		ResponseStructure<OrdersResponseDto> rs = new ResponseStructure<>();
