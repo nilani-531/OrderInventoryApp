@@ -4,6 +4,10 @@ public class InventoryResponseDto {
 
 	private int inventoryId;
 
+	private int storeId;
+
+	private int productId;
+
 	private int productInventory;
 
 	public int getInventoryId() {
@@ -12,6 +16,22 @@ public class InventoryResponseDto {
 
 	public void setInventoryId(int inventoryId) {
 		this.inventoryId = inventoryId;
+	}
+
+	public int getStoreId() {
+		return storeId;
+	}
+
+	public void setStoreId(int storeId) {
+		this.storeId = storeId;
+	}
+
+	public int getProductId() {
+		return productId;
+	}
+
+	public void setProductId(int productId) {
+		this.productId = productId;
 	}
 
 	public int getProductInventory() {

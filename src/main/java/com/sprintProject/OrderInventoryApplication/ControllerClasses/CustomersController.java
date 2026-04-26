@@ -113,14 +113,14 @@ public class CustomersController {
 	@DeleteMapping("/{customerId}")
 	// Handles HTTP DELETE → remove customer
 
-	public ResponseEntity<ResponseStructure<String>> deleteCustomer(@PathVariable int customerId) {
+	public ResponseEntity<ResponseStructure<CustomersResponseDto>> deleteCustomer(@PathVariable int customerId) {
 
-		customersService.deleteCustomer(customerId);
+		CustomersResponseDto deletedCustomer=customersService.deleteCustomer(customerId);
 
-		ResponseStructure<String> responseStructure = new ResponseStructure<>();
+		ResponseStructure<CustomersResponseDto> responseStructure = new ResponseStructure<>();
 		responseStructure.setStatus(HttpStatus.OK.value());
 		responseStructure.setMsg("Customer deleted successfully");
-		responseStructure.setData("Deleted");
+		responseStructure.setData(deletedCustomer);
 
 		return new ResponseEntity<>(responseStructure, HttpStatus.OK);
 	}

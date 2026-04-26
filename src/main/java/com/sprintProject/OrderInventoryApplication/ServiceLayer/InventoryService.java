@@ -36,6 +36,12 @@ public class InventoryService implements InventoryServiceInterface {
 		InventoryResponseDto dto = new InventoryResponseDto();
 		dto.setInventoryId(inventory.getInventoryId());
 		dto.setProductInventory(inventory.getProductInventory());
+		if (inventory.getStores() != null) {
+			dto.setStoreId(inventory.getStores().getStoreId());
+		}
+		if (inventory.getProducts() != null) {
+			dto.setProductId(inventory.getProducts().getProductId());
+		}
 
 		return dto;
 	}

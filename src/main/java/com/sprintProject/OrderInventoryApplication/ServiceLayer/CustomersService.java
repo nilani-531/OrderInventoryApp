@@ -82,11 +82,18 @@ public class CustomersService implements CustomersServiceInterface {
     }
 
     // Delete the Customer
-    public String deleteCustomer(int customerId) {
-        Customers existingCustomer=customersRepository.findById(customerId).orElseThrow(()-> new CustomerIdNotFoundException("Customer not found with id:"+customerId));
-        customersRepository.delete(existingCustomer);
-        return "Account Removed successfully";
+    public CustomersResponseDto deleteCustomer(int customerId) {
 
+        Customers existingCustomer = customersRepository.findById(customerId)
+            .orElseThrow(() -> new CustomerIdNotFoundException(
+                "Customer not found with id: " + customerId));
+
+        // Convert BEFORE deleting
+        CustomersResponseDto deletedCustomer = convertToResponseDto(existingCustomer);
+
+        customersRepository.delete(existingCustomer);
+
+        return deletedCustomer;
     }
    
     // Get Customer By Email
@@ -167,4 +174,5 @@ public class CustomersService implements CustomersServiceInterface {
         }
         return dto;
     }
+
 }

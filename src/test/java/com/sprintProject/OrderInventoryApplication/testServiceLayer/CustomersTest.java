@@ -201,7 +201,7 @@ public class CustomersTest {
 	    void testDeleteCustomerSuccess() {
 	        Customers customer = new Customers();
 	        when(customersRepository.findById(1)).thenReturn(Optional.of(customer));
-	        String result = customersService.deleteCustomer(1);
+	        CustomersResponseDto result = customersService.deleteCustomer(1);
 	        assertEquals("Account Removed successfully", result);
 	    }
 
