@@ -26,6 +26,7 @@ import com.sprintProject.OrderInventoryApplication.EntityClasses.Customers;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Orders;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Shipments;
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.CustomersRepository;
+import com.sprintProject.OrderInventoryApplication.RepositoryLayer.ShipmentsRepository;
 import com.sprintProject.OrderInventoryApplication.ServiceLayer.CustomersService;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.CustomersRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.CustomersResponseDto;
@@ -237,7 +238,8 @@ import com.sprintProject.OrderInventoryApplication.dto.responseDto.ShipmentsResp
 	    @Test
 	    void testGetCustomerShipmentsSuccess() {
 	        Customers customer = new Customers();
-      
+	        List<ShipmentsResponseDto> shipmentList = new ArrayList<>();
+	        
 	        customer.setShipments(List.of(new Shipments()));
 	        
 	        when(customersRepository.findById(1)).thenReturn(Optional.of(customer));

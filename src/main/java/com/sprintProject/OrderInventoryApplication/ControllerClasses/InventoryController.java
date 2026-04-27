@@ -88,6 +88,7 @@ public class InventoryController {
 		return rs;
 	}
 
+	
 	@GetMapping("/store/{storeId}")
 	public ResponseStructure<List<InventoryResponseDto>> getInventoryByStore(@PathVariable int storeId) {
 		List<InventoryResponseDto> list = inventoryService.getInventoryByStore(storeId);

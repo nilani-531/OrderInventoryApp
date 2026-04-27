@@ -17,7 +17,7 @@ public class ShipmentStatusType implements AttributeConverter<ShipmentStatus, St
         if (attribute == null) {
             return null;
         }
-        return attribute.name();
+        return attribute.name().replace("_", "-");
     }
 
     @Override
