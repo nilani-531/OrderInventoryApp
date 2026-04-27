@@ -1,4 +1,4 @@
-package com.sprintProject.OrderInventoryApplication;
+package com.sprintProject.orderinventoryapplication;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -29,4 +29,6 @@ public class OrderInventoryApplication {
 	}
 
 }
+
+
 

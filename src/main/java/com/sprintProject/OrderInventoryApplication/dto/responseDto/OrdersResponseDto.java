@@ -1,8 +1,8 @@
-package com.sprintProject.OrderInventoryApplication.dto.responseDto;
+package com.sprintProject.orderinventoryapplication.dto.responseDto;
 
 import java.time.LocalDateTime;
 
-import com.sprintProject.OrderInventoryApplication.EntityClasses.OrderStatus;
+import com.sprintProject.orderinventoryapplication.entity.OrderStatus;
 
 public class OrdersResponseDto {
 
@@ -57,3 +57,4 @@ public class OrdersResponseDto {
         this.orderTms = orderTms;
     }
 }
+

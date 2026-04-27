@@ -1,22 +1,20 @@
-package com.sprintProject.OrderInventoryApplication;
+package com.sprintProject.orderinventoryapplication;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-
 import java.time.LocalDateTime;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Customers;
-import com.sprintProject.OrderInventoryApplication.EntityClasses.OrderStatus;
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Orders;
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Stores;
-import com.sprintProject.OrderInventoryApplication.RepositoryLayer.OrdersRepository;
-import com.sprintProject.OrderInventoryApplication.RepositoryLayer.CustomersRepository; // Add this
-import com.sprintProject.OrderInventoryApplication.RepositoryLayer.StoresRepository; // Add this
+import com.sprintProject.orderinventoryapplication.entity.Customers;
+import com.sprintProject.orderinventoryapplication.entity.OrderStatus;
+import com.sprintProject.orderinventoryapplication.entity.Orders;
+import com.sprintProject.orderinventoryapplication.entity.Stores;
+import com.sprintProject.orderinventoryapplication.repository.OrdersRepository;
+import com.sprintProject.orderinventoryapplication.repository.CustomersRepository; // Add this
+import com.sprintProject.orderinventoryapplication.repository.StoresRepository; // Add this
 
 @SpringBootTest
 @Transactional
@@ -63,3 +61,4 @@ class OrderInventoryApplicationTests {
 		System.out.println("Green Bar Expected! Saved Order ID: " + savedOrder.getOrderId());
 	}
 }
+

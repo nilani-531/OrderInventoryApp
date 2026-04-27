@@ -1,4 +1,4 @@
-package com.sprintProject.OrderInventoryApplication.dto.requestDto;
+package com.sprintProject.orderinventoryapplication.dto.requestDto;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -131,3 +131,4 @@ public class StoresRequestDto {
 
 
 }
+

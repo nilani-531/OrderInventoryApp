@@ -1,4 +1,4 @@
-package com.sprintProject.OrderInventoryApplication.dto.responseDto;
+package com.sprintProject.orderinventoryapplication.dto.responseDto;
 
 public class OrderItemsResponseDto {
 
@@ -54,4 +54,6 @@ public class OrderItemsResponseDto {
         return "OrderItemsResponseDto [lineItemId=" + lineItemId + ", orderId=" + orderId + ", productId=" + productId + ", quantity=" + quantity + ", unitPrice=" + unitPrice + "]";
     }
 }
+
+
 

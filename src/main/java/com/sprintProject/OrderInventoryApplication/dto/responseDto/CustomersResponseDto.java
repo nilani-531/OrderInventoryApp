@@ -1,4 +1,4 @@
-package com.sprintProject.OrderInventoryApplication.dto.responseDto;
+package com.sprintProject.orderinventoryapplication.dto.responseDto;
 
 import java.util.Objects;
 
@@ -56,3 +56,5 @@ public class CustomersResponseDto {
 	 
 	 
 }
+
+

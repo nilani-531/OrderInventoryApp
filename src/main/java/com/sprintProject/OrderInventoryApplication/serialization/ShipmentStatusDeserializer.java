@@ -1,9 +1,9 @@
-package com.sprintProject.OrderInventoryApplication.serialization;
+package com.sprintProject.orderinventoryapplication.serialization;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.sprintProject.OrderInventoryApplication.EntityClasses.ShipmentStatus;
+import com.sprintProject.orderinventoryapplication.entity.ShipmentStatus;
 import java.io.IOException;
 
 /**
@@ -31,3 +31,5 @@ public class ShipmentStatusDeserializer extends JsonDeserializer<ShipmentStatus>
         }
     }
 }
+
+

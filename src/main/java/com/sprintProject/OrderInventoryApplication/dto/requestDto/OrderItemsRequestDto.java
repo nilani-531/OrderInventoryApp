@@ -1,4 +1,4 @@
-package com.sprintProject.OrderInventoryApplication.dto.requestDto;
+package com.sprintProject.orderinventoryapplication.dto.requestDto;
 
 public class OrderItemsRequestDto {
 
@@ -30,4 +30,6 @@ public class OrderItemsRequestDto {
         this.unitPrice = unitPrice;
     }
 }
+
+
 

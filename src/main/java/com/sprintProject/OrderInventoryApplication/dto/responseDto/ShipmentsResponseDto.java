@@ -1,8 +1,8 @@
-package com.sprintProject.OrderInventoryApplication.dto.responseDto;
+package com.sprintProject.orderinventoryapplication.dto.responseDto;
 
 import java.util.Objects;
 
-import com.sprintProject.OrderInventoryApplication.EntityClasses.ShipmentStatus;
+import com.sprintProject.orderinventoryapplication.entity.ShipmentStatus;
 
 public class ShipmentsResponseDto {
 
@@ -67,3 +67,5 @@ public class ShipmentsResponseDto {
 	}
 	
 }
+
+

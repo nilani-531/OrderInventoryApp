@@ -1,4 +1,4 @@
-package com.sprintProject.OrderInventoryApplication.dto.requestDto;
+package com.sprintProject.orderinventoryapplication.dto.requestDto;
 
 
 
@@ -74,3 +74,5 @@ public class ProductsRequestDto {
 
 	private int rating;
 }
+
+

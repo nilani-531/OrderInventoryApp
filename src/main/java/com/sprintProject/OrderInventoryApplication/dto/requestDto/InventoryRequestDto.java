@@ -1,4 +1,4 @@
-package com.sprintProject.OrderInventoryApplication.dto.requestDto;
+package com.sprintProject.orderinventoryapplication.dto.requestDto;
 
 
 public class InventoryRequestDto {
@@ -24,4 +24,6 @@ public class InventoryRequestDto {
 	}
 
 }
+
+
 

@@ -1,4 +1,4 @@
-package com.sprintProject.OrderInventoryApplication.dto.responseDto;
+package com.sprintProject.orderinventoryapplication.dto.responseDto;
 
 public class ResponseStructure<T> 
 {
@@ -28,3 +28,5 @@ public void setData(T data) {
 	this.data = data;
 }
 }
+
+

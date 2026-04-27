@@ -1,4 +1,4 @@
-package com.sprintProject.OrderInventoryApplication.dto.requestDto;
+package com.sprintProject.orderinventoryapplication.dto.requestDto;
 
 public class CustomersRequestDto {
 	// DTO = Data Transfer Object → used to transfer data from client to server
@@ -23,3 +23,5 @@ public class CustomersRequestDto {
 	
 
 }
+
+

@@ -1,4 +1,4 @@
-package com.sprintProject.OrderInventoryApplication.dto.responseDto;
+package com.sprintProject.orderinventoryapplication.dto.responseDto;
 
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -146,3 +146,4 @@ public class StoresResponseDto {
                 '}';
     }
 }
+

@@ -1,6 +1,6 @@
-package com.sprintProject.OrderInventoryApplication.serialization;
+package com.sprintProject.orderinventoryapplication.serialization;
 
-import com.sprintProject.OrderInventoryApplication.EntityClasses.ShipmentStatus;
+import com.sprintProject.orderinventoryapplication.entity.ShipmentStatus;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
@@ -38,4 +38,6 @@ public class ShipmentStatusType implements AttributeConverter<ShipmentStatus, St
         }
     }
 }
+
+
 

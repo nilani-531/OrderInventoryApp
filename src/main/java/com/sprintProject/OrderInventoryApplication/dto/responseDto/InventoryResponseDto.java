@@ -1,4 +1,4 @@
-package com.sprintProject.OrderInventoryApplication.dto.responseDto;
+package com.sprintProject.orderinventoryapplication.dto.responseDto;
 
 public class InventoryResponseDto {
 
@@ -43,3 +43,5 @@ public class InventoryResponseDto {
 	}
 
 }
+
+
