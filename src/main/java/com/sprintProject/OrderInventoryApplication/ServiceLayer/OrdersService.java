@@ -6,12 +6,14 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Customers;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Orders;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.OrderStatus;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Stores;
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.CustomersRepository;
+import com.sprintProject.OrderInventoryApplication.RepositoryLayer.OrderItemsRepository;
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.OrdersRepository;
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.StoresRepository;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.OrdersRequestDto;
@@ -24,6 +26,9 @@ public class OrdersService implements OrdersServiceInterface {
     private OrdersRepository ordersRepository;
 
     @Autowired
+    private OrderItemsRepository orderItemsRepository;
+
+    @Autowired
     private CustomersRepository customersRepository;
 
     @Autowired
@@ -34,6 +39,12 @@ public class OrdersService implements OrdersServiceInterface {
         dto.setOrderId(order.getOrderId());
         dto.setOrderStatusS(order.getOrderStatus());
         dto.setOrderTms(order.getOrderTms());
+        if (order.getCustomers() != null) {
+            dto.setCustomerId(order.getCustomers().getCustomerId());
+        }
+        if (order.getStores() != null) {
+            dto.setStoreId(order.getStores().getStoreId());
+        }
         return dto;
     }
 
@@ -61,7 +72,7 @@ public class OrdersService implements OrdersServiceInterface {
         return ordersRepository.findAll()
                 .stream()
                 .map(this::mapToResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     // Get By Order id
@@ -72,10 +83,19 @@ public class OrdersService implements OrdersServiceInterface {
         return mapToResponse(order);
     }
 
-    // Delete the Order
+    // Delete the Order (deletes related order items first to avoid FK constraint)
     @Override
+    @Transactional
     public void deleteOrder(int orderId) {
-        ordersRepository.deleteById(orderId);
+        Orders order = ordersRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found: " + orderId));
+
+        // Bulk-delete all associated order items in a single SQL statement
+        // (avoids Hibernate "Duplicate identifier" session conflict)
+        orderItemsRepository.deleteAllByOrderId(orderId);
+
+        // Now safe to delete the order
+        ordersRepository.delete(order);
     }
 
     // Update Order status with lifecycle validation
@@ -127,17 +147,27 @@ public class OrdersService implements OrdersServiceInterface {
         return mapToResponse(ordersRepository.save(order));
     }
 
-    // GET /api/orders/customer/{customerId}
+    // Update Order timestamp
+    @Override
+    public OrdersResponseDto updateOrderTms(int orderId, LocalDateTime orderTms) {
+        Orders order = ordersRepository.findById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found"));
+
+        order.setOrderTms(orderTms);
+        return mapToResponse(ordersRepository.save(order));
+    }
+
+
     // BUG FIX: was using findAll() + in-memory filter — replaced with JPA query
     @Override
     public List<OrdersResponseDto> getOrdersByCustomerId(int customerId) {
         return ordersRepository.findByCustomerId(customerId)
                 .stream()
                 .map(this::mapToResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    // GET /api/orders/store/{storeId}
+   
     // BUG FIX: was using findAll() + in-memory filter — replaced with JPA query
     // Also: StoresController called getOrdersByStore() which didn't match method name —
     // method is now exposed via getOrdersByStoreId() and aliased below.
@@ -146,27 +176,27 @@ public class OrdersService implements OrdersServiceInterface {
         return ordersRepository.findByStoreId(storeId)
                 .stream()
                 .map(this::mapToResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    // GET /api/orders/status/{status}
+
     // BUG FIX: was using findAll() + in-memory filter — replaced with JPA query
     @Override
     public List<OrdersResponseDto> getOrdersByStatus(OrderStatus status) {
         return ordersRepository.findByStatus(status)
                 .stream()
                 .map(this::mapToResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    // GET /api/orders/date-range?from=&to=
+   
     // BUG FIX: was using findAll() + in-memory filter — replaced with JPA query
     @Override
     public List<OrdersResponseDto> getOrdersBetweenDates(LocalDateTime start, LocalDateTime end) {
         return ordersRepository.findByDateRange(start, end)
                 .stream()
                 .map(this::mapToResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     // Count orders by status

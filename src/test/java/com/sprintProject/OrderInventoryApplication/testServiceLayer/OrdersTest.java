@@ -19,7 +19,7 @@ import com.sprintProject.OrderInventoryApplication.dto.requestDto.OrdersRequestD
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.OrdersResponseDto;
 
 @SpringBootTest
-public class OrdersTest {
+class OrdersTest {
 
     @InjectMocks
     private OrdersService service;

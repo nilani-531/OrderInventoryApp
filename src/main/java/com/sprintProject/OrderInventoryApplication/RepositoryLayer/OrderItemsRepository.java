@@ -2,6 +2,7 @@ package com.sprintProject.OrderInventoryApplication.RepositoryLayer;
 
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,11 @@ public interface OrderItemsRepository extends JpaRepository<OrderItems, Integer>
 	// Replaced with a proper JPA query to avoid full table scans.
 	@Query("SELECT oi FROM OrderItems oi WHERE oi.orders.orderId = :orderId")
 	List<OrderItems> findByOrderId(@Param("orderId") int orderId);
+
+	// Bulk delete all order items for a given order (avoids Hibernate session conflict)
+	@Modifying
+	@Query("DELETE FROM OrderItems oi WHERE oi.orders.orderId = :orderId")
+	void deleteAllByOrderId(@Param("orderId") int orderId);
 
 	// Get all items by productId
 	@Query("SELECT oi FROM OrderItems oi WHERE oi.products.productId = :productId")

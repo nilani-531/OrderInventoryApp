@@ -48,7 +48,7 @@ public class OrderItemsController {
         return rs;
     }
 
-    // PUT /api/orders/{orderId}/items/{lineItemId}
+   
     @PutMapping("/{lineItemId}")
     public ResponseStructure<OrderItemsResponseDto> updateItem(
             @PathVariable int orderId,
@@ -63,7 +63,7 @@ public class OrderItemsController {
         return rs;
     }
 
-    // DELETE /api/orders/{orderId}/items/{lineItemId}
+   
     @DeleteMapping("/{lineItemId}")
     public ResponseStructure<String> deleteItem(
             @PathVariable int orderId,

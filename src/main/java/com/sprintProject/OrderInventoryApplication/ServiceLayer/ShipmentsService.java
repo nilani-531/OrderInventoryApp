@@ -123,12 +123,18 @@ public class ShipmentsService implements ShipmentsServiceInterface{
     
     // Fetch shipments filtered by customerId
     public List<ShipmentsResponseDto> getShipmentByCustomerId(int customerId) {
-        return shipmentsRepository.findByCustomersCustomerId(customerId).stream().map(this::mapToResponse).toList();
+    	if (!customersRepository.existsById(customerId)) {
+	        throw new ShipmentNotFoundException("Customer not found: " + customerId);
+	    }
+    	return shipmentsRepository.findByCustomersCustomerId(customerId).stream().map(this::mapToResponse).toList();
     }
     
     // Fetch shipments filtered by storeId
     public List<ShipmentsResponseDto> getShipmentByStoreId(int storeId) {
-        return shipmentsRepository.findByStoresStoreId(storeId).stream().map(this::mapToResponse).toList();
+    	if (!storesRepository.existsById(storeId)) {
+            throw new ShipmentNotFoundException("Store not found: " + storeId);
+        }
+    	return shipmentsRepository.findByStoresStoreId(storeId).stream().map(this::mapToResponse).toList();
     }
     
     // Fetch shipments filtered by shipment status

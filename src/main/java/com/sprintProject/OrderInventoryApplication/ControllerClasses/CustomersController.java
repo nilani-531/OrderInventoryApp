@@ -14,12 +14,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Customers;
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Orders;
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Shipments;
 import com.sprintProject.OrderInventoryApplication.ServiceLayer.CustomersService;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.CustomersRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.CustomersResponseDto;
@@ -113,14 +108,14 @@ public class CustomersController {
 	@DeleteMapping("/{customerId}")
 	// Handles HTTP DELETE → remove customer
 
-	public ResponseEntity<ResponseStructure<String>> deleteCustomer(@PathVariable int customerId) {
+	public ResponseEntity<ResponseStructure<CustomersResponseDto>> deleteCustomer(@PathVariable int customerId) {
 
-		customersService.deleteCustomer(customerId);
+		CustomersResponseDto deletedCustomer=customersService.deleteCustomer(customerId);
 
-		ResponseStructure<String> responseStructure = new ResponseStructure<>();
+		ResponseStructure<CustomersResponseDto> responseStructure = new ResponseStructure<>();
 		responseStructure.setStatus(HttpStatus.OK.value());
 		responseStructure.setMsg("Customer deleted successfully");
-		responseStructure.setData("Deleted");
+		responseStructure.setData(deletedCustomer);
 
 		return new ResponseEntity<>(responseStructure, HttpStatus.OK);
 	}

@@ -14,7 +14,6 @@ import com.sprintProject.OrderInventoryApplication.EntityClasses.Customers;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Orders;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Shipments;
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.CustomersRepository;
-import com.sprintProject.OrderInventoryApplication.RepositoryLayer.ShipmentsRepository;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.CustomersRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.CustomersResponseDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.OrdersResponseDto;
@@ -82,11 +81,18 @@ public class CustomersService implements CustomersServiceInterface {
     }
 
     // Delete the Customer
-    public String deleteCustomer(int customerId) {
-        Customers existingCustomer=customersRepository.findById(customerId).orElseThrow(()-> new CustomerIdNotFoundException("Customer not found with id:"+customerId));
-        customersRepository.delete(existingCustomer);
-        return "Account Removed successfully";
+    public CustomersResponseDto deleteCustomer(int customerId) {
 
+        Customers existingCustomer = customersRepository.findById(customerId)
+            .orElseThrow(() -> new CustomerIdNotFoundException(
+                "Customer not found with id: " + customerId));
+
+        // Convert BEFORE deleting
+        CustomersResponseDto deletedCustomer = convertToResponseDto(existingCustomer);
+
+        customersRepository.delete(existingCustomer);
+
+        return deletedCustomer;
     }
    
     // Get Customer By Email
@@ -167,4 +173,5 @@ public class CustomersService implements CustomersServiceInterface {
         }
         return dto;
     }
+
 }

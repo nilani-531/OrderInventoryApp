@@ -85,18 +85,22 @@ public class OrdersController {
 		return rs;
 	}
 
-	// Update Order status
+	// Update Order - storeId, customerId, or orderTms
 	@PutMapping("/{orderId}")
 	public ResponseStructure<OrdersResponseDto> updateOrder(@PathVariable int orderId,
-			@RequestParam(required = false) Integer storeId, @RequestParam(required = false) Integer customerId) {
+			@RequestParam(required = false) Integer storeId,
+			@RequestParam(required = false) Integer customerId,
+			@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime orderTms) {
 
 		OrdersResponseDto response;
 		if (storeId != null) {
 			response = ordersServiceInterface.updateOrderStore(orderId, storeId);
 		} else if (customerId != null) {
 			response = ordersServiceInterface.updateOrderCustomer(orderId, customerId);
+		} else if (orderTms != null) {
+			response = ordersServiceInterface.updateOrderTms(orderId, orderTms);
 		} else {
-			throw new RuntimeException("Provide at least storeId or customerId to update");
+			throw new RuntimeException("Provide at least storeId, customerId, or orderTms to update");
 		}
 
 		ResponseStructure<OrdersResponseDto> rs = new ResponseStructure<>();
@@ -120,7 +124,6 @@ public class OrdersController {
 		return responseStructure;
 	}
 
-	// GET /api/orders/customer/{customerId}
 	// BUG FIX: was missing from controller even though service method existed
 	@GetMapping("/customer/{customerId}")
 	public ResponseStructure<List<OrdersResponseDto>> getOrdersByCustomer(@PathVariable int customerId) {
@@ -132,7 +135,6 @@ public class OrdersController {
 		return rs;
 	}
 
-	// GET /api/orders/store/{storeId}
 	// BUG FIX: was missing from controller even though service method existed
 	@GetMapping("/store/{storeId}")
 	public ResponseStructure<List<OrdersResponseDto>> getOrdersByStore(@PathVariable int storeId) {
@@ -144,7 +146,7 @@ public class OrdersController {
 		return rs;
 	}
 
-	// GET /api/orders/status/{status}
+	
 	// BUG FIX: was missing from controller even though service method existed
 	@GetMapping("/status/{status}")
 	public ResponseStructure<List<OrdersResponseDto>> getOrdersByStatus(@PathVariable OrderStatus status) {
@@ -156,7 +158,7 @@ public class OrdersController {
 		return rs;
 	}
 
-	// GET /api/orders/date-range?from=&to=
+	
 	// BUG FIX: was missing from controller even though service method existed
 	@GetMapping("/date-range")
 	public ResponseStructure<List<OrdersResponseDto>> getOrdersByDateRange(
@@ -171,9 +173,6 @@ public class OrdersController {
 		return rs;
 	}
 
-	// ─── STATUS LIFECYCLE ────────────────────────────────────────────────────
-
-	// PATCH /api/orders/{orderId}/status
 	// BUG FIX: was @PutMapping — spec requires PATCH for status-only update
 	@PatchMapping("/{orderId}/status")
 	public ResponseStructure<OrdersResponseDto> updateStatus(@PathVariable int orderId,

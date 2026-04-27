@@ -26,7 +26,6 @@ import com.sprintProject.OrderInventoryApplication.EntityClasses.Customers;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Orders;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Shipments;
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.CustomersRepository;
-import com.sprintProject.OrderInventoryApplication.RepositoryLayer.ShipmentsRepository;
 import com.sprintProject.OrderInventoryApplication.ServiceLayer.CustomersService;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.CustomersRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.CustomersResponseDto;
@@ -36,7 +35,7 @@ import com.sprintProject.OrderInventoryApplication.dto.responseDto.ShipmentsResp
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class CustomersTest {
+ class CustomersTest {
 	    @Mock
 	    private CustomersRepository customersRepository;
 
@@ -201,7 +200,7 @@ public class CustomersTest {
 	    void testDeleteCustomerSuccess() {
 	        Customers customer = new Customers();
 	        when(customersRepository.findById(1)).thenReturn(Optional.of(customer));
-	        String result = customersService.deleteCustomer(1);
+	        CustomersResponseDto result = customersService.deleteCustomer(1);
 	        assertEquals("Account Removed successfully", result);
 	    }
 
@@ -238,8 +237,7 @@ public class CustomersTest {
 	    @Test
 	    void testGetCustomerShipmentsSuccess() {
 	        Customers customer = new Customers();
-	        List<ShipmentsResponseDto> shipmentList = new ArrayList<>();
-	        
+      
 	        customer.setShipments(List.of(new Shipments()));
 	        
 	        when(customersRepository.findById(1)).thenReturn(Optional.of(customer));

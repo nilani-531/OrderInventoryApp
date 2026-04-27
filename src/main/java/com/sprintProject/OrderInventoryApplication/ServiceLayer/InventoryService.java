@@ -36,6 +36,12 @@ public class InventoryService implements InventoryServiceInterface {
 		InventoryResponseDto dto = new InventoryResponseDto();
 		dto.setInventoryId(inventory.getInventoryId());
 		dto.setProductInventory(inventory.getProductInventory());
+		if (inventory.getStores() != null) {
+			dto.setStoreId(inventory.getStores().getStoreId());
+		}
+		if (inventory.getProducts() != null) {
+			dto.setProductId(inventory.getProducts().getProductId());
+		}
 
 		return dto;
 	}
@@ -126,7 +132,7 @@ public class InventoryService implements InventoryServiceInterface {
 		return "Inventory deleted successfully with id : " + inventoryId;
 	}
 
-	// GET /api/inventory/store/{storeId}
+
 
 	public List<InventoryResponseDto> getInventoryByStore(int storeId) {
 		storesRepository.findById(storeId)
@@ -134,8 +140,6 @@ public class InventoryService implements InventoryServiceInterface {
 
 		return inventoryRepository.findByStoresStoreId(storeId).stream().map(this::mapToResponseDto).toList();
 	}
-
-	// GET /api/inventory/product/{productId}
 
 	public List<InventoryResponseDto> getInventoryByProduct(int productId) {
 		productsRepository.findById(productId)

@@ -1,5 +1,4 @@
 package com.sprintProject.OrderInventoryApplication.EntityClasses;
-import java.util.List;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;

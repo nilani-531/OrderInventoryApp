@@ -2,7 +2,15 @@ package com.sprintProject.OrderInventoryApplication.ServiceLayer;
 
 import com.sprintProject.OrderInventoryApplication.CustomExceptions.InvalidDataException;
 import com.sprintProject.OrderInventoryApplication.CustomExceptions.StoreNotFoundException;
+import com.sprintProject.OrderInventoryApplication.EntityClasses.Inventory;
+import com.sprintProject.OrderInventoryApplication.EntityClasses.Orders;
+import com.sprintProject.OrderInventoryApplication.EntityClasses.OrderItems;
+import com.sprintProject.OrderInventoryApplication.EntityClasses.Shipments;
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Stores;
+import com.sprintProject.OrderInventoryApplication.RepositoryLayer.InventoryRepository;
+import com.sprintProject.OrderInventoryApplication.RepositoryLayer.OrderItemsRepository;
+import com.sprintProject.OrderInventoryApplication.RepositoryLayer.OrdersRepository;
+import com.sprintProject.OrderInventoryApplication.RepositoryLayer.ShipmentsRepository;
 import com.sprintProject.OrderInventoryApplication.RepositoryLayer.StoresRepository;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.StoresRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.StoresResponseDto;
@@ -11,6 +19,7 @@ import com.sprintProject.OrderInventoryApplication.CustomExceptions.DuplicateRes
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +29,18 @@ public class StoresService implements StoresServiceInterface{
 
     @Autowired
     private StoresRepository repository;
+
+    @Autowired
+    private OrdersRepository ordersRepository;
+
+    @Autowired
+    private OrderItemsRepository orderItemsRepository;
+
+    @Autowired
+    private ShipmentsRepository shipmentsRepository;
+
+    @Autowired
+    private InventoryRepository inventoryRepository;
 
     // Create a new store after validating input and checking duplicates
     @Override
@@ -120,7 +141,9 @@ public class StoresService implements StoresServiceInterface{
     }
 
     // Delete a store by ID after checking existence
+    // Cascade order: inventory → shipments → order_items → orders → store
     @Override
+    @Transactional
     public void deleteStore(int storeId) {
 
         // Check if store exists
@@ -128,7 +151,23 @@ public class StoresService implements StoresServiceInterface{
             throw new ResourceNotFoundException("Store not found");
         }
 
-        // Delete store
+        // 1. Delete inventory records referencing this store
+        List<Inventory> inventoryRecords = inventoryRepository.findByStoresStoreId(storeId);
+        inventoryRepository.deleteAll(inventoryRecords);
+
+        // 2. Delete shipments referencing this store
+        List<Shipments> shipments = shipmentsRepository.findByStoresStoreId(storeId);
+        shipmentsRepository.deleteAll(shipments);
+
+        // 3. Delete order items then orders referencing this store
+        List<Orders> storeOrders = ordersRepository.findByStoreId(storeId);
+        for (Orders order : storeOrders) {
+            List<OrderItems> items = orderItemsRepository.findByOrderId(order.getOrderId());
+            orderItemsRepository.deleteAll(items);
+            ordersRepository.delete(order);
+        }
+
+        // 4. Now safe to delete the store
         repository.deleteById(storeId);
     }
 

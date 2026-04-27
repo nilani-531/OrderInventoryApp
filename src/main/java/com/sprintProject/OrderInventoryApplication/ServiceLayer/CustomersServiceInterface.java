@@ -1,10 +1,6 @@
 package com.sprintProject.OrderInventoryApplication.ServiceLayer;
 
 import java.util.List;
-
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Customers;
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Orders;
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Shipments;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.CustomersRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.CustomersResponseDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.OrdersResponseDto;
@@ -24,7 +20,7 @@ public interface CustomersServiceInterface {
 	CustomersResponseDto updateCustomer(int customerId, CustomersRequestDto customersRequestDto);
 	// Update existing customer
 	
-	String deleteCustomer(int customerId);
+	CustomersResponseDto deleteCustomer(int customerId);
 	// Delete customer
 	
 	CustomersResponseDto getCustomerByEmail(String customerEmail); 

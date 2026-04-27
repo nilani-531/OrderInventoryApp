@@ -30,7 +30,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-public class InventoryTest {
+ class InventoryTest {
 
     @Mock
     private InventoryRepository inventoryRepository;

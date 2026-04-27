@@ -3,7 +3,7 @@ package com.sprintProject.OrderInventoryApplication.RepositoryLayer;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+
 
 import com.sprintProject.OrderInventoryApplication.EntityClasses.Customers;
 
