@@ -132,7 +132,7 @@ public class InventoryService implements InventoryServiceInterface {
 		return "Inventory deleted successfully with id : " + inventoryId;
 	}
 
-	// GET /api/inventory/store/{storeId}
+
 
 	public List<InventoryResponseDto> getInventoryByStore(int storeId) {
 		storesRepository.findById(storeId)
@@ -140,8 +140,6 @@ public class InventoryService implements InventoryServiceInterface {
 
 		return inventoryRepository.findByStoresStoreId(storeId).stream().map(this::mapToResponseDto).toList();
 	}
-
-	// GET /api/inventory/product/{productId}
 
 	public List<InventoryResponseDto> getInventoryByProduct(int productId) {
 		productsRepository.findById(productId)

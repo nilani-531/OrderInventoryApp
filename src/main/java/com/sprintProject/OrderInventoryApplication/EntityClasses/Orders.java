@@ -3,8 +3,6 @@ package com.sprintProject.OrderInventoryApplication.EntityClasses;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity

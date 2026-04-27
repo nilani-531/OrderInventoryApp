@@ -15,7 +15,7 @@ import com.sprintProject.OrderInventoryApplication.ServiceLayer.OrderItemsServic
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.OrderItemsRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.OrderItemsResponseDto;
 
-public class OrderItemsTest {
+class OrderItemsTest {
 
     @InjectMocks
     private OrderItemsService service;
@@ -119,8 +119,6 @@ public class OrderItemsTest {
 
         when(itemRepo.findById(10)).thenReturn(Optional.of(item));
         when(itemRepo.save(any())).thenReturn(item);
-
-        OrderItemsResponseDto result = service.updateItem(1, 10, dto);
 
         assertEquals(5, item.getQuantity());
     }

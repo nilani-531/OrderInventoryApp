@@ -23,10 +23,9 @@ public interface InventoryServiceInterface {
 	// Deletes an inventory record by its ID
 	String deleteInventory(int inventoryId);
 
-	// GET /api/inventory/store/{storeId}
+	
 	List<InventoryResponseDto> getInventoryByStore(int storeId);
 
-	// GET /api/inventory/product/{productId}
 	List<InventoryResponseDto> getInventoryByProduct(int productId);
 
 }

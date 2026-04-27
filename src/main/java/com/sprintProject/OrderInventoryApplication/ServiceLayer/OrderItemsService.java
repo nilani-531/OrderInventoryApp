@@ -1,8 +1,6 @@
 package com.sprintProject.OrderInventoryApplication.ServiceLayer;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +30,7 @@ public class OrderItemsService implements OrderItemsServiceInterface {
 	@Override
 	public List<OrderItemsResponseDto> getItemsByOrderId(int orderId) {
 		return orderItemsRepository.findByOrderId(orderId).stream().map(this::mapToResponse)
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 	// Add item to order
@@ -114,7 +112,7 @@ public class OrderItemsService implements OrderItemsServiceInterface {
 		productsRepository.findById(productId).orElseThrow(() -> new RuntimeException("Product not found"));
 
 		return orderItemsRepository.findItemsByProductId(productId).stream().map(this::mapToResponse)
-				.collect(Collectors.toList());
+				.toList();
 	}
 
 	// Get total quantity of a product across all orders

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.ResponseStructure;
 import com.sprintProject.OrderInventoryApplication.dto.requestDto.InventoryRequestDto;
 import com.sprintProject.OrderInventoryApplication.dto.responseDto.InventoryResponseDto;
-import com.sprintProject.OrderInventoryApplication.EntityClasses.Inventory;
 import com.sprintProject.OrderInventoryApplication.ServiceLayer.InventoryService;
 
 @RestController
@@ -89,7 +88,7 @@ public class InventoryController {
 		return rs;
 	}
 
-	// GET /api/inventory/store/{storeId}
+	
 	@GetMapping("/store/{storeId}")
 	public ResponseStructure<List<InventoryResponseDto>> getInventoryByStore(@PathVariable int storeId) {
 		List<InventoryResponseDto> list = inventoryService.getInventoryByStore(storeId);
@@ -100,7 +99,7 @@ public class InventoryController {
 		return rs;
 	}
 
-	// GET /api/inventory/product/{productId}
+	
 	@GetMapping("/product/{productId}")
 	public ResponseStructure<List<InventoryResponseDto>> getInventoryByProduct(@PathVariable int productId) {
 		List<InventoryResponseDto> list = inventoryService.getInventoryByProduct(productId);

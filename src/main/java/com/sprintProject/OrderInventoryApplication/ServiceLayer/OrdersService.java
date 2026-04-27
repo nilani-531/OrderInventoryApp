@@ -72,7 +72,7 @@ public class OrdersService implements OrdersServiceInterface {
         return ordersRepository.findAll()
                 .stream()
                 .map(this::mapToResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     // Get By Order id
@@ -157,17 +157,17 @@ public class OrdersService implements OrdersServiceInterface {
         return mapToResponse(ordersRepository.save(order));
     }
 
-    // GET /api/orders/customer/{customerId}
+
     // BUG FIX: was using findAll() + in-memory filter — replaced with JPA query
     @Override
     public List<OrdersResponseDto> getOrdersByCustomerId(int customerId) {
         return ordersRepository.findByCustomerId(customerId)
                 .stream()
                 .map(this::mapToResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    // GET /api/orders/store/{storeId}
+   
     // BUG FIX: was using findAll() + in-memory filter — replaced with JPA query
     // Also: StoresController called getOrdersByStore() which didn't match method name —
     // method is now exposed via getOrdersByStoreId() and aliased below.
@@ -176,27 +176,27 @@ public class OrdersService implements OrdersServiceInterface {
         return ordersRepository.findByStoreId(storeId)
                 .stream()
                 .map(this::mapToResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    // GET /api/orders/status/{status}
+
     // BUG FIX: was using findAll() + in-memory filter — replaced with JPA query
     @Override
     public List<OrdersResponseDto> getOrdersByStatus(OrderStatus status) {
         return ordersRepository.findByStatus(status)
                 .stream()
                 .map(this::mapToResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
-    // GET /api/orders/date-range?from=&to=
+   
     // BUG FIX: was using findAll() + in-memory filter — replaced with JPA query
     @Override
     public List<OrdersResponseDto> getOrdersBetweenDates(LocalDateTime start, LocalDateTime end) {
         return ordersRepository.findByDateRange(start, end)
                 .stream()
                 .map(this::mapToResponse)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     // Count orders by status

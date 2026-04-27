@@ -36,7 +36,7 @@ import com.sprintProject.OrderInventoryApplication.dto.responseDto.ShipmentsResp
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
-public class CustomersTest {
+ class CustomersTest {
 	    @Mock
 	    private CustomersRepository customersRepository;
 

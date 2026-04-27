@@ -38,3 +38,4 @@ public class ShipmentStatusType implements AttributeConverter<ShipmentStatus, St
         }
     }
 }
+

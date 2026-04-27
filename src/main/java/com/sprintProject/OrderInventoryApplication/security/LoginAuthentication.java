@@ -10,13 +10,11 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.RequestMethod;
-
 
 @Configuration
 public class LoginAuthentication {
 
-
+   String adminId="ADMIN";
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -34,15 +32,15 @@ public class LoginAuthentication {
                 // Let OPTIONS preflight requests through without authentication
                 .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
                 .requestMatchers("/api/products/**", "/api/inventory/**")
-                    .hasAnyRole("KARTHI", "ADMIN")
+                    .hasAnyRole("KARTHI", adminId)
                 .requestMatchers("/api/customers/**")
-                    .hasAnyRole("ABINAYA", "ADMIN")
+                    .hasAnyRole("ABINAYA", adminId)
                 .requestMatchers("/api/orders/**", "/api/order-items/**")
-                    .hasAnyRole("NILANI", "ADMIN")
+                    .hasAnyRole("NILANI", adminId)
                 .requestMatchers("/api/stores/**")
-                    .hasAnyRole("POOJA", "ADMIN")
+                    .hasAnyRole("POOJA", adminId)
                 .requestMatchers("/api/shipments/**")
-                    .hasAnyRole("YAMINI", "ADMIN")
+                    .hasAnyRole("YAMINI", adminId)
                 .requestMatchers(
                         "/v3/api-docs/**",
                         "/swagger-ui/**",
@@ -89,7 +87,7 @@ public class LoginAuthentication {
         UserDetails admin = User
                 .withUsername("admin")
                 .password(encoder.encode("admin123"))
-                .roles("ADMIN")
+                .roles(adminId)
                 .build();
 
         return new InMemoryUserDetailsManager(
