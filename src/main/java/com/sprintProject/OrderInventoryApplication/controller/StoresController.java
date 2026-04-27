@@ -1,15 +1,15 @@
 package com.sprintProject.orderinventoryapplication.controller;
 
 import java.util.List;
-import com.sprintProject.orderinventoryapplication.service.InventoryService;
-import com.sprintProject.orderinventoryapplication.service.OrdersService;
-import com.sprintProject.orderinventoryapplication.service.ShipmentsService;
+import com.sprintProject.orderinventoryapplication.service.InventoryServiceInterface;
+import com.sprintProject.orderinventoryapplication.service.OrdersServiceInterface;
+import com.sprintProject.orderinventoryapplication.service.ShipmentsServiceInterface;
 import com.sprintProject.orderinventoryapplication.dto.responseDto.InventoryResponseDto;
 import com.sprintProject.orderinventoryapplication.dto.responseDto.OrdersResponseDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.sprintProject.orderinventoryapplication.service.StoresService;
+import com.sprintProject.orderinventoryapplication.service.StoresServiceInterface;
 import com.sprintProject.orderinventoryapplication.dto.requestDto.StoresRequestDto;
 import com.sprintProject.orderinventoryapplication.dto.responseDto.ResponseStructure;
 import com.sprintProject.orderinventoryapplication.dto.responseDto.ShipmentsResponseDto;
@@ -21,21 +21,21 @@ import com.sprintProject.orderinventoryapplication.dto.responseDto.StoresRespons
 public class StoresController {
 
 	@Autowired
-	private StoresService service;
+	private StoresServiceInterface storesServiceInterface;
 
 	@Autowired
-	private InventoryService inventoryService;
+	private InventoryServiceInterface inventoryServiceInterface;
 
 	@Autowired
-	private OrdersService ordersService;
+	private OrdersServiceInterface ordersServiceInterface;
 
 	@Autowired
-	private ShipmentsService shipmentsService;
+	private ShipmentsServiceInterface shipmentsServiceInterface;
 
 	// Create Store
 	@PostMapping
 	public ResponseStructure<StoresResponseDto> createStore(@RequestBody StoresRequestDto dto) {
-		StoresResponseDto response = service.createStore(dto);
+		StoresResponseDto response = storesServiceInterface.createStore(dto);
 
 		ResponseStructure<StoresResponseDto> rs = new ResponseStructure<>();
 		rs.setStatus(201);
@@ -48,7 +48,7 @@ public class StoresController {
 	// Get Store by ID
 	@GetMapping("/{id}")
 	public ResponseStructure<StoresResponseDto> getStore(@PathVariable int id) {
-		StoresResponseDto response = service.getStoreById(id);
+		StoresResponseDto response = storesServiceInterface.getStoreById(id);
 
 		ResponseStructure<StoresResponseDto> rs = new ResponseStructure<>();
 		rs.setStatus(200);
@@ -61,7 +61,7 @@ public class StoresController {
 	// Get All Stores
 	@GetMapping
 	public ResponseStructure<List<StoresResponseDto>> getAllStores() {
-		List<StoresResponseDto> list = service.getAllStores();
+		List<StoresResponseDto> list = storesServiceInterface.getAllStores();
 
 		ResponseStructure<List<StoresResponseDto>> rs = new ResponseStructure<>();
 		rs.setStatus(200);
@@ -75,7 +75,7 @@ public class StoresController {
 	@PutMapping("/{id}")
 	public ResponseStructure<StoresResponseDto> updateStore(@PathVariable int id, @RequestBody StoresRequestDto dto) {
 
-		StoresResponseDto response = service.updateStore(id, dto);
+		StoresResponseDto response = storesServiceInterface.updateStore(id, dto);
 
 		ResponseStructure<StoresResponseDto> rs = new ResponseStructure<>();
 		rs.setStatus(200);
@@ -88,7 +88,7 @@ public class StoresController {
 	// Delete Store
 	@DeleteMapping("/{id}")
 	public ResponseStructure<String> deleteStore(@PathVariable int id) {
-		service.deleteStore(id);
+		storesServiceInterface.deleteStore(id);
 
 		ResponseStructure<String> rs = new ResponseStructure<>();
 		rs.setStatus(200);
@@ -101,7 +101,7 @@ public class StoresController {
 	// GET /api/stores/{storeId}/inventory
 	@GetMapping("/{storeId}/inventory")
 	public ResponseStructure<List<InventoryResponseDto>> getInventory(@PathVariable int storeId) {
-		List<InventoryResponseDto> list = inventoryService.getInventoryByStore(storeId);
+		List<InventoryResponseDto> list = inventoryServiceInterface.getInventoryByStore(storeId);
 		ResponseStructure<List<InventoryResponseDto>> rs = new ResponseStructure<>();
 		rs.setStatus(200);
 		rs.setMsg("Inventory fetched successfully");
@@ -113,7 +113,7 @@ public class StoresController {
 	@GetMapping("/name/{storeName}")
 	public ResponseStructure<StoresResponseDto> getStoreByName(@PathVariable String storeName) {
 
-		StoresResponseDto response = service.getStoreByName(storeName);
+		StoresResponseDto response = storesServiceInterface.getStoreByName(storeName);
 
 		ResponseStructure<StoresResponseDto> rs = new ResponseStructure<>();
 		rs.setStatus(200);
@@ -126,7 +126,7 @@ public class StoresController {
 	// Get orders by store ID
 	@GetMapping("/{storeId}/orders")
 	public ResponseStructure<List<OrdersResponseDto>> getOrders(@PathVariable int storeId) {
-		List<OrdersResponseDto> data = ordersService.getOrdersByStoreId(storeId);
+		List<OrdersResponseDto> data = ordersServiceInterface.getOrdersByStoreId(storeId);
 		ResponseStructure<List<OrdersResponseDto>> rs = new ResponseStructure<>();
 		rs.setStatus(200);
 		rs.setMsg("Orders fetched successfully");
@@ -137,7 +137,7 @@ public class StoresController {
 	// Get shipments by store ID
 	@GetMapping("/{storeId}/shipments")
 	public ResponseStructure<List<ShipmentsResponseDto>> getShipments(@PathVariable int storeId) {
-		List<ShipmentsResponseDto> data = shipmentsService.getShipmentByStoreId(storeId);
+		List<ShipmentsResponseDto> data = shipmentsServiceInterface.getShipmentByStoreId(storeId);
 		ResponseStructure<List<ShipmentsResponseDto>> rs = new ResponseStructure<>();
 		rs.setStatus(200);
 		rs.setMsg("Shipments fetched successfully");

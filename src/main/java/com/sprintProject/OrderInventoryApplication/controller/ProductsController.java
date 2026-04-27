@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sprintProject.orderinventoryapplication.dto.responseDto.ResponseStructure;
 import com.sprintProject.orderinventoryapplication.dto.requestDto.ProductsRequestDto;
 import com.sprintProject.orderinventoryapplication.dto.responseDto.ProductsResponseDto;
-import com.sprintProject.orderinventoryapplication.service.ProductsService;
+import com.sprintProject.orderinventoryapplication.service.ProductsServiceInterface;
 
 @RestController
 @RequestMapping("/api/products")
@@ -23,12 +23,12 @@ import com.sprintProject.orderinventoryapplication.service.ProductsService;
 public class ProductsController {
 
 	@Autowired
-	private ProductsService productsService;
+	private ProductsServiceInterface productsServiceInterface;
 
 	// Get all products
 	@GetMapping
 	public ResponseStructure<List<ProductsResponseDto>> getAllProducts() {
-		List<ProductsResponseDto> list = productsService.getAllProducts();
+		List<ProductsResponseDto> list = productsServiceInterface.getAllProducts();
         ResponseStructure<List<ProductsResponseDto>> rs = new ResponseStructure<>();
         rs.setStatus(200);
         rs.setMsg("Products fetched successfully");
@@ -39,7 +39,7 @@ public class ProductsController {
 	// Get product by ID
 	@GetMapping("/{productId}")
 	public  ResponseStructure<ProductsResponseDto> getProductById(@PathVariable int productId) {
-		ProductsResponseDto response = productsService.getProductById(productId);
+		ProductsResponseDto response = productsServiceInterface.getProductById(productId);
         ResponseStructure<ProductsResponseDto> rs = new ResponseStructure<>();
         rs.setStatus(200);
         rs.setMsg("Product fetched successfully");
@@ -50,7 +50,7 @@ public class ProductsController {
 	// Create new product
 	@PostMapping
 	public ResponseStructure<ProductsResponseDto> createProduct(@RequestBody ProductsRequestDto product) {
-		ProductsResponseDto response = productsService.createProduct(product);
+		ProductsResponseDto response = productsServiceInterface.createProduct(product);
         ResponseStructure<ProductsResponseDto> rs = new ResponseStructure<>();
         rs.setStatus(201);
         rs.setMsg("Product created successfully");
@@ -61,7 +61,7 @@ public class ProductsController {
 	// Update product
 	@PutMapping("/{productId}")
 	public ResponseStructure<ProductsResponseDto> updateProduct(@PathVariable int productId, @RequestBody ProductsRequestDto product) {
-		ProductsResponseDto response = productsService.updateProduct(productId, product);
+		ProductsResponseDto response = productsServiceInterface.updateProduct(productId, product);
         ResponseStructure<ProductsResponseDto> rs = new ResponseStructure<>();
         rs.setStatus(200);
         rs.setMsg("Product updated successfully");
@@ -72,7 +72,7 @@ public class ProductsController {
 	// Delete product
 	@DeleteMapping("/{productId}")
 	public ResponseStructure<String> deleteProduct(@PathVariable int productId) {
-		productsService.deleteProduct(productId);
+		productsServiceInterface.deleteProduct(productId);
         ResponseStructure<String> rs = new ResponseStructure<>();
         rs.setStatus(200);
         rs.setMsg("Product deleted successfully");

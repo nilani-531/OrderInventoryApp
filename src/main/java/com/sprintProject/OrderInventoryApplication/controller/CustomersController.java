@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.sprintProject.orderinventoryapplication.service.CustomersService;
+import com.sprintProject.orderinventoryapplication.service.CustomersServiceInterface;
 import com.sprintProject.orderinventoryapplication.dto.requestDto.CustomersRequestDto;
 import com.sprintProject.orderinventoryapplication.dto.responseDto.CustomersResponseDto;
 import com.sprintProject.orderinventoryapplication.dto.responseDto.OrdersResponseDto;
@@ -31,7 +31,7 @@ import com.sprintProject.orderinventoryapplication.dto.responseDto.ShipmentsResp
 public class CustomersController {
 
 	@Autowired
-	private CustomersService customersService;
+	private CustomersServiceInterface customersServiceInterface;
 
 	
 	// Handles HTTP post request-> create new customer
@@ -40,7 +40,7 @@ public class CustomersController {
 			@RequestBody CustomersRequestDto dto) {
 		// @RequestBody → converts JSON input to Java object
 
-		CustomersResponseDto response = customersService.createCustomer(dto);
+		CustomersResponseDto response = customersServiceInterface.createCustomer(dto);
 
 		ResponseStructure<CustomersResponseDto> responseStructure = new ResponseStructure<>();
 		responseStructure.setStatus(HttpStatus.CREATED.value());
@@ -55,7 +55,7 @@ public class CustomersController {
     @GetMapping 
 	public ResponseEntity<ResponseStructure<List<CustomersResponseDto>>> getAllCustomers() {
 
-		List<CustomersResponseDto> list = customersService.getAllCustomers();
+		List<CustomersResponseDto> list = customersServiceInterface.getAllCustomers();
 
 		ResponseStructure<List<CustomersResponseDto>> structure = new ResponseStructure<>();
 		structure.setStatus(HttpStatus.OK.value());
@@ -69,7 +69,7 @@ public class CustomersController {
     	@GetMapping("/{customerId}")
 	public ResponseEntity<ResponseStructure<CustomersResponseDto>> getCustomerById(@PathVariable int customerId) {
 
-		CustomersResponseDto response = customersService.getCustomerById(customerId);
+		CustomersResponseDto response = customersServiceInterface.getCustomerById(customerId);
 
 		ResponseStructure<CustomersResponseDto> responseStructure = new ResponseStructure<>();
 		responseStructure.setStatus(HttpStatus.OK.value());
@@ -83,7 +83,7 @@ public class CustomersController {
 	// Fetch customer by email address
    @GetMapping("/search")
 	public ResponseEntity<ResponseStructure<CustomersResponseDto>> getCustomerByEmail(@RequestParam String email) {
-		CustomersResponseDto response = customersService.getCustomerByEmail(email);
+		CustomersResponseDto response = customersServiceInterface.getCustomerByEmail(email);
 		ResponseStructure<CustomersResponseDto> responseStructure = new ResponseStructure<>();
 		responseStructure.setStatus(HttpStatus.OK.value());
 		responseStructure.setMsg("Customer fetched successfully");
@@ -97,7 +97,7 @@ public class CustomersController {
 	public ResponseEntity<ResponseStructure<CustomersResponseDto>> updateCustomer(@PathVariable int customerId,
 			@RequestBody CustomersRequestDto dto) {
 
-		CustomersResponseDto response = customersService.updateCustomer(customerId, dto);
+		CustomersResponseDto response = customersServiceInterface.updateCustomer(customerId, dto);
 
 		ResponseStructure<CustomersResponseDto> responseStructure = new ResponseStructure<>();
 		responseStructure.setStatus(HttpStatus.OK.value());
@@ -111,7 +111,7 @@ public class CustomersController {
 	@DeleteMapping("/{customerId}")
 		public ResponseEntity<ResponseStructure<CustomersResponseDto>> deleteCustomer(@PathVariable int customerId) {
 
-		CustomersResponseDto deletedCustomer=customersService.deleteCustomer(customerId);
+		CustomersResponseDto deletedCustomer=customersServiceInterface.deleteCustomer(customerId);
 
 		ResponseStructure<CustomersResponseDto> responseStructure = new ResponseStructure<>();
 		responseStructure.setStatus(HttpStatus.OK.value());
@@ -126,7 +126,7 @@ public class CustomersController {
     @GetMapping("/{customerId}/orders")
 	public ResponseEntity<ResponseStructure<List<OrdersResponseDto>>> getCustomerOrders(@PathVariable int customerId) {
 
-		List<OrdersResponseDto> orders = customersService.getCustomerOrders(customerId);
+		List<OrdersResponseDto> orders = customersServiceInterface.getCustomerOrders(customerId);
 
 		ResponseStructure<List<OrdersResponseDto>> responseStructure = new ResponseStructure<>();
 		responseStructure.setStatus(HttpStatus.OK.value());
@@ -140,7 +140,7 @@ public class CustomersController {
 	@GetMapping("/{customerId}/shipments")
 	public ResponseEntity<ResponseStructure<List<ShipmentsResponseDto>>> getCustomerShipments(@PathVariable int customerId) {
 
-		List<ShipmentsResponseDto> shipments = customersService.getCustomerShipments(customerId);
+		List<ShipmentsResponseDto> shipments = customersServiceInterface.getCustomerShipments(customerId);
 
 		ResponseStructure<List<ShipmentsResponseDto>> responseStructure = new ResponseStructure<>();
 		responseStructure.setStatus(HttpStatus.OK.value());

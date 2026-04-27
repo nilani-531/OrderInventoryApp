@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.sprintProject.orderinventoryapplication.dto.responseDto.ResponseStructure;
 import com.sprintProject.orderinventoryapplication.dto.requestDto.InventoryRequestDto;
 import com.sprintProject.orderinventoryapplication.dto.responseDto.InventoryResponseDto;
-import com.sprintProject.orderinventoryapplication.service.InventoryService;
+import com.sprintProject.orderinventoryapplication.service.InventoryServiceInterface;
 
 @RestController
 @RequestMapping("/api/inventory")
@@ -24,12 +24,12 @@ import com.sprintProject.orderinventoryapplication.service.InventoryService;
 public class InventoryController {
 
 	@Autowired
-	private InventoryService inventoryService;
+	private InventoryServiceInterface inventoryServiceInterface;
 
 	// Get all inventory
 	@GetMapping
 	public ResponseStructure<List<InventoryResponseDto>> getAllInventory() {
-		List<InventoryResponseDto> list = inventoryService.getAllInventory();
+		List<InventoryResponseDto> list = inventoryServiceInterface.getAllInventory();
 		ResponseStructure<List<InventoryResponseDto>> rs = new ResponseStructure<>();
 		rs.setStatus(200);
 		rs.setMsg("Inventory fetched successfully");
@@ -41,7 +41,7 @@ public class InventoryController {
 	// Get inventory by ID
 	@GetMapping("/{inventoryId}")
 	public ResponseStructure<InventoryResponseDto> getInventoryById(@PathVariable int inventoryId) {
-		InventoryResponseDto response = inventoryService.getInventoryById(inventoryId);
+		InventoryResponseDto response = inventoryServiceInterface.getInventoryById(inventoryId);
 		ResponseStructure<InventoryResponseDto> rs = new ResponseStructure<>();
 		rs.setStatus(200);
 		rs.setMsg("Inventory fetched successfully");
@@ -55,7 +55,7 @@ public class InventoryController {
 			@org.springframework.web.bind.annotation.RequestParam int storeId,
 			@org.springframework.web.bind.annotation.RequestParam int productId,
 			@RequestBody InventoryRequestDto inventory) {
-		InventoryResponseDto response = inventoryService.createInventory(storeId, productId, inventory);
+		InventoryResponseDto response = inventoryServiceInterface.createInventory(storeId, productId, inventory);
 		ResponseStructure<InventoryResponseDto> rs = new ResponseStructure<>();
 		rs.setStatus(201);
 		rs.setMsg("Inventory created successfully");
@@ -69,7 +69,7 @@ public class InventoryController {
 			@org.springframework.web.bind.annotation.RequestParam int storeId,
 			@org.springframework.web.bind.annotation.RequestParam int productId,
 			@RequestBody InventoryRequestDto inventory) {
-		InventoryResponseDto response = inventoryService.updateInventory(inventoryId, storeId, productId, inventory);
+		InventoryResponseDto response = inventoryServiceInterface.updateInventory(inventoryId, storeId, productId, inventory);
 		ResponseStructure<InventoryResponseDto> rs = new ResponseStructure<>();
 		rs.setStatus(200);
 		rs.setMsg("Inventory updated successfully");
@@ -80,7 +80,7 @@ public class InventoryController {
 	// Delete inventory
 	@DeleteMapping("/{inventoryId}")
 	public ResponseStructure<String> deleteInventory(@PathVariable int inventoryId) {
-		inventoryService.deleteInventory(inventoryId);
+		inventoryServiceInterface.deleteInventory(inventoryId);
 		ResponseStructure<String> rs = new ResponseStructure<>();
 		rs.setStatus(200);
 		rs.setMsg("Inventory deleted successfully");
@@ -91,7 +91,7 @@ public class InventoryController {
 	// Get inventory by store ID
 	@GetMapping("/store/{storeId}")
 	public ResponseStructure<List<InventoryResponseDto>> getInventoryByStore(@PathVariable int storeId) {
-		List<InventoryResponseDto> list = inventoryService.getInventoryByStore(storeId);
+		List<InventoryResponseDto> list = inventoryServiceInterface.getInventoryByStore(storeId);
 		ResponseStructure<List<InventoryResponseDto>> rs = new ResponseStructure<>();
 		rs.setStatus(200);
 		rs.setMsg("Inventory fetched by store");
@@ -102,7 +102,7 @@ public class InventoryController {
 	// Get inventory by product ID
 	@GetMapping("/product/{productId}")
 	public ResponseStructure<List<InventoryResponseDto>> getInventoryByProduct(@PathVariable int productId) {
-		List<InventoryResponseDto> list = inventoryService.getInventoryByProduct(productId);
+		List<InventoryResponseDto> list = inventoryServiceInterface.getInventoryByProduct(productId);
 		ResponseStructure<List<InventoryResponseDto>> rs = new ResponseStructure<>();
 		rs.setStatus(200);
 		rs.setMsg("Inventory fetched by product");
