@@ -28,8 +28,9 @@ import com.sprintProject.orderinventoryapplication.dto.responseDto.ShipmentsResp
 
 @ExtendWith(MockitoExtension.class)
 public class ShipmentsTest {
-	
-	@InjectMocks
+
+    // Injecting mocked dependencies into service
+    @InjectMocks
     private ShipmentsService service;
 
     @Mock
@@ -45,18 +46,16 @@ public class ShipmentsTest {
     private Customers customers;
     private Stores stores;
 
+    // Setup common test data
     @BeforeEach
     void setup() {
 
-        // creating sample customer for tests
         customers = new Customers();
         customers.setCustomerId(1);
 
-        // creating sample store for tests
         stores = new Stores();
         stores.setStoreId(1);
 
-        // sample shipment data used in multiple tests
         shipments = new Shipments();
         shipments.setShipmentId(1);
         shipments.setCustomers(customers);
@@ -65,8 +64,7 @@ public class ShipmentsTest {
         shipments.setShipmentStatus(ShipmentStatus.CREATED);
     }
 
-    // CREATE SHIPMENT
-    // positive case: shipment created successfully when customer and store exist
+    // Test creating shipment successfully
     @Test
     void createShipmentSuccess() {
 
@@ -74,161 +72,187 @@ public class ShipmentsTest {
         dto.setCustomerId(1);
         dto.setStoreId(1);
         dto.setDeliveryAddress("Chennai");
+
         when(customersRepository.findById(1)).thenReturn(Optional.of(customers));
         when(storesRepository.findById(1)).thenReturn(Optional.of(stores));
         when(shipmentsRepository.save(any())).thenReturn(shipments);
+
         ShipmentsResponseDto result = service.createShipment(dto);
+
         assertNotNull(result);
         assertEquals("Chennai", result.getDeliveryAddress());
+        assertEquals(ShipmentStatus.CREATED, result.getShipmentStatus());
     }
 
-    // negative case: customer not found while creating shipment
+    // Test create shipment when customer not found
     @Test
     void createShipmentCustomerNotFound() {
 
         ShipmentsRequestDto dto = new ShipmentsRequestDto();
         dto.setCustomerId(99);
+
         when(customersRepository.findById(99)).thenReturn(Optional.empty());
-        assertThrows(ShipmentNotFoundException.class, () -> service.createShipment(dto));
+
+        assertThrows(ShipmentNotFoundException.class,
+                () -> service.createShipment(dto));
     }
 
-    // negative case: store not found while creating shipment
+    // Test fetching shipments by customer id successfully (+ve case)
+    @Test
+    void getShipmentByCustomerId() {
+
+        when(customersRepository.existsById(1)).thenReturn(true);
+        when(shipmentsRepository.findByCustomersCustomerId(1))
+                .thenReturn(List.of(shipments));
+
+        List<ShipmentsResponseDto> result =
+                service.getShipmentByCustomerId(1);
+
+        assertEquals(1, result.size());
+    }
+    
+    // Test create shipment when store not found
     @Test
     void createShipmentStoreNotFound() {
 
         ShipmentsRequestDto dto = new ShipmentsRequestDto();
         dto.setCustomerId(1);
         dto.setStoreId(99);
+
         when(customersRepository.findById(1)).thenReturn(Optional.of(customers));
         when(storesRepository.findById(99)).thenReturn(Optional.empty());
-        assertThrows(ShipmentNotFoundException.class, () -> service.createShipment(dto));
+
+        assertThrows(ShipmentNotFoundException.class,
+                () -> service.createShipment(dto));
     }
 
-    // GET SHIPMENT BY ID 
-    // positive case: shipment found by id
+    // Test fetching shipment by id successfully
     @Test
     void getShipmentByIdSuccess() {
 
         when(shipmentsRepository.findById(1)).thenReturn(Optional.of(shipments));
+
         ShipmentsResponseDto result = service.getShipmentById(1);
+
         assertEquals(1, result.getShipmentId());
     }
 
-    // negative case: shipment id does not exist
+    // Test fetching shipment by id when not found
     @Test
     void getShipmentByIdNotFound() {
 
         when(shipmentsRepository.findById(1)).thenReturn(Optional.empty());
-        assertThrows(ShipmentNotFoundException.class, () -> service.getShipmentById(1));
+
+        assertThrows(ShipmentNotFoundException.class,
+                () -> service.getShipmentById(1));
     }
 
-    // UPDATE SHIPMENT 
-    // positive case: update shipment delivery address successfully
+    // Test updating shipment delivery address
     @Test
     void updateShipmentSuccess() {
 
         ShipmentsRequestDto dto = new ShipmentsRequestDto();
         dto.setDeliveryAddress("Updated");
-        Shipments updated = new Shipments();
-        updated.setShipmentId(1);
-        updated.setCustomers(customers);
-        updated.setStores(stores);
-        updated.setDeliveryAddress("Updated");
-        updated.setShipmentStatus(ShipmentStatus.CREATED);
+
         when(shipmentsRepository.findById(1)).thenReturn(Optional.of(shipments));
-        when(shipmentsRepository.save(any())).thenReturn(updated);
+        when(shipmentsRepository.save(any())).thenReturn(shipments);
+
         ShipmentsResponseDto result = service.updateShipment(1, dto);
+
         assertEquals("Updated", result.getDeliveryAddress());
     }
 
-    // negative case: updating shipment that doesn't exist
+    // Test updating shipment when not found
     @Test
     void updateShipmentNotFound() {
 
         when(shipmentsRepository.findById(1)).thenReturn(Optional.empty());
-        assertThrows(ShipmentNotFoundException.class, () -> service.updateShipment(1, new ShipmentsRequestDto()));
+
+        assertThrows(ShipmentNotFoundException.class,
+                () -> service.updateShipment(1, new ShipmentsRequestDto()));
     }
 
-    // DELETE SHIPMENT 
-    // positive case: shipment deleted successfully
+    // Test deleting shipment successfully
     @Test
     void deleteShipmentSuccess() {
 
         when(shipmentsRepository.existsById(1)).thenReturn(true);
+
         String result = service.deleteShipment(1);
-        assertNotNull(result);
+
+        assertEquals("Shipment deleted successfully with id: 1", result);
+        verify(shipmentsRepository, times(1)).deleteById(1);
     }
 
-    // negative case: trying to delete non-existing shipment
+    // Test deleting shipment when not found
     @Test
     void deleteShipmentNotFound() {
 
         when(shipmentsRepository.existsById(1)).thenReturn(false);
-        assertThrows(ShipmentNotFoundException.class, () -> service.deleteShipment(1));
+
+        assertThrows(ShipmentNotFoundException.class,
+                () -> service.deleteShipment(1));
     }
 
-    // STATUS UPDATE
-    // positive case: valid status change from CREATED to SHIPPED
+    // Test valid status transition
     @Test
     void validStatusTransition() {
 
-    	shipments.setShipmentStatus(ShipmentStatus.CREATED);
-        Shipments updated = new Shipments();
-        updated.setShipmentId(1);
-        updated.setCustomers(customers);   
-        updated.setStores(stores);        
-        updated.setDeliveryAddress("Chennai");
-        updated.setShipmentStatus(ShipmentStatus.SHIPPED);
+        shipments.setShipmentStatus(ShipmentStatus.CREATED);
+
         when(shipmentsRepository.findById(1)).thenReturn(Optional.of(shipments));
-        when(shipmentsRepository.save(any())).thenReturn(updated);
-        ShipmentsResponseDto result = service.updateShipmentStatus(1, ShipmentStatus.SHIPPED);
+        when(shipmentsRepository.save(any())).thenReturn(shipments);
+
+        ShipmentsResponseDto result =
+                service.updateShipmentStatus(1, ShipmentStatus.SHIPPED);
+
         assertEquals(ShipmentStatus.SHIPPED, result.getShipmentStatus());
     }
 
-    // negative case: invalid status change not allowed
+    // Test invalid status transition
     @Test
     void invalidStatusTransition() {
 
         shipments.setShipmentStatus(ShipmentStatus.CREATED);
+
         when(shipmentsRepository.findById(1)).thenReturn(Optional.of(shipments));
-        assertThrows(InvalidStatusTransitionException.class, () -> service.updateShipmentStatus(1, ShipmentStatus.DELIVERED));
+
+        assertThrows(InvalidStatusTransitionException.class,
+                () -> service.updateShipmentStatus(1, ShipmentStatus.DELIVERED));
     }
 
-    // negative case: status update for non-existing shipment
+    // Test status update when shipment not found
     @Test
     void updateStatusShipmentNotFound() {
 
         when(shipmentsRepository.findById(1)).thenReturn(Optional.empty());
-        assertThrows(ShipmentNotFoundException.class, () -> service.updateShipmentStatus(1, ShipmentStatus.SHIPPED));
+
+        assertThrows(ShipmentNotFoundException.class,
+                () -> service.updateShipmentStatus(1, ShipmentStatus.SHIPPED));
     }
 
-    // FETCHING DATA 
-    // positive case: fetch all shipments
+    // Test fetching all shipments
     @Test
     void getAllShipments() {
 
         when(shipmentsRepository.findAll()).thenReturn(List.of(shipments));
+
         List<ShipmentsResponseDto> result = service.getAllShipments();
+
         assertFalse(result.isEmpty());
-    }
-
-    // positive case: fetch shipments by customer id
-    @Test
-    void getShipmentByCustomerId() {
-
-        when(shipmentsRepository.findByCustomersCustomerId(1)).thenReturn(List.of(shipments));
-        List<ShipmentsResponseDto> result = service.getShipmentByCustomerId(1);
         assertEquals(1, result.size());
     }
 
-    // positive case: fetch shipments by status
+    // Test fetching shipments by status
     @Test
     void getShipmentByStatus() {
 
-        when(shipmentsRepository.findByShipmentStatus(ShipmentStatus.CREATED)).thenReturn(List.of(shipments));
-        List<ShipmentsResponseDto> result = service.getShipmentByStatus(ShipmentStatus.CREATED);
+        when(shipmentsRepository.findByShipmentStatus(ShipmentStatus.CREATED))
+                .thenReturn(List.of(shipments));
+
+        List<ShipmentsResponseDto> result =
+                service.getShipmentByStatus(ShipmentStatus.CREATED);
+
         assertEquals(1, result.size());
     }
 }
-
-

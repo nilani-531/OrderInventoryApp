@@ -1,11 +1,12 @@
 package com.sprintProject.orderinventoryapplication.testservice;
 
 import com.sprintProject.orderinventoryapplication.customexception.*;
-import com.sprintProject.orderinventoryapplication.entity.Stores;
-import com.sprintProject.orderinventoryapplication.repository.StoresRepository;
+import com.sprintProject.orderinventoryapplication.entity.*;
+import com.sprintProject.orderinventoryapplication.repository.*;
 import com.sprintProject.orderinventoryapplication.service.StoresService;
 import com.sprintProject.orderinventoryapplication.dto.requestDto.StoresRequestDto;
 import com.sprintProject.orderinventoryapplication.dto.responseDto.StoresResponseDto;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,20 +21,33 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class StoresServiceTest {
+class StoresTest {
 
-    // Mocking repository (we don't hit real DB in unit tests)
+    // Main repository
     @Mock
     private StoresRepository repository;
 
-    // Injecting mock repository into service
+    // Cascade dependencies (IMPORTANT for deleteStore)
+    @Mock
+    private OrdersRepository ordersRepository;
+
+    @Mock
+    private OrderItemsRepository orderItemsRepository;
+
+    @Mock
+    private ShipmentsRepository shipmentsRepository;
+
+    @Mock
+    private InventoryRepository inventoryRepository;
+
+    // Inject all mocks into service
     @InjectMocks
     private StoresService service;
 
     private StoresRequestDto dto;
     private Stores store;
 
-    // Common test data setup before each test
+    // Common test data
     @BeforeEach
     void setup() {
         dto = new StoresRequestDto();
@@ -52,70 +66,46 @@ class StoresServiceTest {
         store.setLongitude(80.22);
     }
 
-
-    // Test creating a store successfully
+    // Create store - success
     @Test
     void createStore_success() {
-        // Arrange: store does NOT exist
         when(repository.existsByStoreName(dto.getStoreName())).thenReturn(false);
         when(repository.save(any())).thenReturn(store);
 
-        // Act
         StoresResponseDto res = service.createStore(dto);
 
-        // Assert
         assertNotNull(res);
         assertEquals("Test Store", res.getStoreName());
     }
 
-    // Test fetching store by name successfully
-    @Test
-    void getStoreByName_success() {
-
-        // Arrange: mock repository to return a store for given name
-        when(repository.findStoreByName("ABC Store")).thenReturn(store);
-
-        // Act: call service method
-        StoresResponseDto res = service.getStoreByName("ABC Store");
-
-        // Assert: verify response is correct
-        assertNotNull(res);
-        assertEquals("ABC Store", res.getStoreName());
-    }
-
+    // Create store - duplicate
     @Test
     void createStore_duplicateStore_shouldThrowException() {
-        // Arrange: store already exists
         when(repository.existsByStoreName(dto.getStoreName())).thenReturn(true);
 
-        // Act & Assert
         assertThrows(DuplicateResourceException.class,
                 () -> service.createStore(dto));
     }
 
-    // Test creating store with null name should throw exception
+    // Create store - null name
     @Test
     void createStore_nullStoreName_shouldThrowException() {
-        // Arrange: invalid input (null name)
         dto.setStoreName(null);
 
-        // Act & Assert
         assertThrows(InvalidDataException.class,
                 () -> service.createStore(dto));
     }
 
-    // Test creating store with blank name should throw exception
+    // Create store - blank name
     @Test
     void createStore_blankStoreName_shouldThrowException() {
-        // Arrange: invalid input (blank name)
         dto.setStoreName("   ");
 
-        // Act & Assert
         assertThrows(InvalidDataException.class,
                 () -> service.createStore(dto));
     }
 
-    // Test getting store by ID successfully
+    // Get store by ID - success
     @Test
     void getStoreById_success() {
         when(repository.findById(1)).thenReturn(Optional.of(store));
@@ -125,8 +115,8 @@ class StoresServiceTest {
         assertEquals(1, res.getStoreId());
     }
 
-    // Test getting store by ID when not found should throw exception        assertEquals(1, res.getStoreId());
-     @Test
+    // Get store by ID - not found
+    @Test
     void getStoreById_notFound_shouldThrowException() {
         when(repository.findById(1)).thenReturn(Optional.empty());
 
@@ -134,7 +124,18 @@ class StoresServiceTest {
                 () -> service.getStoreById(1));
     }
 
-    // Test getting all stores successfully
+    // Get store by name - success
+    @Test
+    void getStoreByName_success() {
+        when(repository.findStoreByName("Test Store")).thenReturn(store);
+
+        StoresResponseDto res = service.getStoreByName("Test Store");
+
+        assertNotNull(res);
+        assertEquals("Test Store", res.getStoreName());
+    }
+
+    // Get all stores - non-empty
     @Test
     void getAllStores_success() {
         when(repository.findAll()).thenReturn(List.of(store));
@@ -144,8 +145,8 @@ class StoresServiceTest {
         assertEquals(1, res.size());
     }
 
-    // Test getting all stores returns empty list        assertEquals(1, res.size());
-      @Test
+    // Get all stores - empty
+    @Test
     void getAllStores_emptyList() {
         when(repository.findAll()).thenReturn(List.of());
 
@@ -154,7 +155,7 @@ class StoresServiceTest {
         assertTrue(res.isEmpty());
     }
 
-    // Test updating store successfully
+    // Update store - success
     @Test
     void updateStore_success() {
         when(repository.findById(1)).thenReturn(Optional.of(store));
@@ -165,7 +166,7 @@ class StoresServiceTest {
         assertEquals("Test Store", res.getStoreName());
     }
 
-    // Test updating store when not found should throw exception
+    // Update store - not found
     @Test
     void updateStore_storeNotFound_shouldThrowException() {
         when(repository.findById(1)).thenReturn(Optional.empty());
@@ -174,7 +175,7 @@ class StoresServiceTest {
                 () -> service.updateStore(1, dto));
     }
 
-    // Test updating store with null name should throw exception
+    // Update store - null name
     @Test
     void updateStore_nullName_shouldThrowException() {
         dto.setStoreName(null);
@@ -184,25 +185,34 @@ class StoresServiceTest {
                 () -> service.updateStore(1, dto));
     }
 
-    // Test updating store with blank name should throw exception                () -> service.updateStore(1, dto));
-    
-
+    // Update store - blank name
     @Test
     void updateStore_blankName_shouldThrowException() {
         dto.setStoreName(" ");
         when(repository.findById(1)).thenReturn(Optional.of(store));
+
+        assertThrows(InvalidDataException.class,
+                () -> service.updateStore(1, dto));
     }
 
-    // Test deleting store successfully
+    // Delete store - success (with cascade mocks)
     @Test
     void deleteStore_success() {
         when(repository.existsById(1)).thenReturn(true);
+
+        // Mock cascade calls
+        when(inventoryRepository.findByStoresStoreId(1)).thenReturn(List.of());
+        when(shipmentsRepository.findByStoresStoreId(1)).thenReturn(List.of());
+        when(ordersRepository.findByStoreId(1)).thenReturn(List.of());
+
         doNothing().when(repository).deleteById(1);
 
         assertDoesNotThrow(() -> service.deleteStore(1));
+
+        verify(repository, times(1)).deleteById(1);
     }
 
-    // Test deleting store when not found should throw exception
+    // Delete store - not found
     @Test
     void deleteStore_notFound_shouldThrowException() {
         when(repository.existsById(1)).thenReturn(false);
@@ -211,7 +221,7 @@ class StoresServiceTest {
                 () -> service.deleteStore(1));
     }
 
-    // Test repository save failure should throw exception
+    // Repository save failure
     @Test
     void repositorySaveFailure_shouldThrowException() {
         when(repository.existsByStoreName(dto.getStoreName())).thenReturn(false);
@@ -219,15 +229,9 @@ class StoresServiceTest {
 
         assertThrows(RuntimeException.class,
                 () -> service.createStore(dto));
-    
-
-        when(repository.save(any())).thenThrow(new RuntimeException("DB failure"));
-
-        assertThrows(RuntimeException.class,
-                () -> service.createStore(dto));
     }
 
-    // Test repository update failure should throw exception
+    // Repository update failure
     @Test
     void updateRepositoryFailure_shouldThrowException() {
         when(repository.findById(1)).thenReturn(Optional.of(store));
@@ -236,5 +240,24 @@ class StoresServiceTest {
         assertThrows(RuntimeException.class,
                 () -> service.updateStore(1, dto));
     }
-}
 
+    // Advanced: verify cascade delete logic
+    @Test
+    void deleteStore_withOrders_shouldDeleteOrderItemsAndOrders() {
+
+        Orders order = new Orders();
+        order.setOrderId(1);
+
+        when(repository.existsById(1)).thenReturn(true);
+        when(inventoryRepository.findByStoresStoreId(1)).thenReturn(List.of());
+        when(shipmentsRepository.findByStoresStoreId(1)).thenReturn(List.of());
+        when(ordersRepository.findByStoreId(1)).thenReturn(List.of(order));
+        when(orderItemsRepository.findByOrderId(1)).thenReturn(List.of());
+
+        service.deleteStore(1);
+
+        verify(orderItemsRepository).deleteAll(any());
+        verify(ordersRepository).delete(order);
+        verify(repository).deleteById(1);
+    }
+}
