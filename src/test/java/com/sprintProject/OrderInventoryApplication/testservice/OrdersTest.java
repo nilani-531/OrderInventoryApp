@@ -1,6 +1,5 @@
 package com.sprintProject.orderinventoryapplication.testservice;
 
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -10,15 +9,14 @@ import java.util.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import com.sprintProject.orderinventoryapplication.entity.*;
 import com.sprintProject.orderinventoryapplication.repository.*;
 import com.sprintProject.orderinventoryapplication.service.OrdersService;
 import com.sprintProject.orderinventoryapplication.dto.requestDto.OrdersRequestDto;
 import com.sprintProject.orderinventoryapplication.dto.responseDto.OrdersResponseDto;
+import com.sprintProject.orderinventoryapplication.customexception.StoreNotFoundException;
 
-@SpringBootTest
 class OrdersTest {
 
     @InjectMocks
@@ -32,6 +30,9 @@ class OrdersTest {
 
     @Mock
     private StoresRepository storeRepo;
+
+    @Mock
+    private OrderItemsRepository orderItemsRepo;
 
     private Customers customer;
     private Stores store;
@@ -55,7 +56,9 @@ class OrdersTest {
         order.setOrderTms(LocalDateTime.now());
     }
 
-    // 1. CREATE ORDER - SUCCESS
+    // ------------------ POSITIVE ------------------
+
+    // 1 CREATE ORDER SUCCESS
     @Test
     void testCreateOrderSuccess() {
         OrdersRequestDto dto = new OrdersRequestDto();
@@ -72,7 +75,65 @@ class OrdersTest {
         assertEquals(OrderStatus.OPEN, result.getOrderStatusS());
     }
 
-    // 2. CREATE ORDER - CUSTOMER NOT FOUND
+    // 2  GET ALL ORDERS
+    @Test
+    void testGetAllOrders() {
+        when(repo.findAll()).thenReturn(List.of(order));
+
+        assertEquals(1, service.getAllOrders().size());
+    }
+
+    // 3  GET ORDER BY ID
+    @Test
+    void testGetOrderByIdSuccess() {
+        when(repo.findById(1)).thenReturn(Optional.of(order));
+
+        assertEquals(1, service.getOrderById(1).getOrderId());
+    }
+
+    // 4  DELETE ORDER SUCCESS
+    @Test
+    void testDeleteOrderSuccess() {
+        when(repo.findById(1)).thenReturn(Optional.of(order));
+
+        service.deleteOrder(1);
+
+        verify(orderItemsRepo).deleteAllByOrderId(1);
+        verify(repo).delete(order);
+    }
+
+    // 5  VALID STATUS TRANSITION
+    @Test
+    void testUpdateOrderStatusValid() {
+        when(repo.findById(1)).thenReturn(Optional.of(order));
+        when(repo.save(any())).thenReturn(order);
+
+        OrdersResponseDto result = service.updateOrderStatus(1, OrderStatus.PAID);
+
+        assertEquals(OrderStatus.PAID, result.getOrderStatusS());
+    }
+
+    // 6  UPDATE STORE SUCCESS
+    @Test
+    void testUpdateOrderStoreSuccess() {
+        when(repo.findById(1)).thenReturn(Optional.of(order));
+        when(storeRepo.findById(1)).thenReturn(Optional.of(store));
+        when(repo.save(any())).thenReturn(order);
+
+        assertNotNull(service.updateOrderStore(1, 1));
+    }
+
+    // 7  GET ORDERS BY CUSTOMER
+    @Test
+    void testGetOrdersByCustomerId() {
+        when(repo.findByCustomerId(1)).thenReturn(List.of(order));
+
+        assertEquals(1, service.getOrdersByCustomerId(1).size());
+    }
+
+    // ------------------ NEGATIVE ------------------
+
+    // 8  CREATE ORDER - CUSTOMER NOT FOUND
     @Test
     void testCreateOrderCustomerNotFound() {
         OrdersRequestDto dto = new OrdersRequestDto();
@@ -84,7 +145,7 @@ class OrdersTest {
         assertThrows(RuntimeException.class, () -> service.createOrder(dto));
     }
 
-    // 3. CREATE ORDER - STORE NOT FOUND
+    // 9  CREATE ORDER - STORE NOT FOUND
     @Test
     void testCreateOrderStoreNotFound() {
         OrdersRequestDto dto = new OrdersRequestDto();
@@ -97,27 +158,7 @@ class OrdersTest {
         assertThrows(RuntimeException.class, () -> service.createOrder(dto));
     }
 
-    // 4. GET ALL ORDERS
-    @Test
-    void testGetAllOrders() {
-        when(repo.findAll()).thenReturn(List.of(order));
-
-        List<OrdersResponseDto> result = service.getAllOrders();
-
-        assertEquals(1, result.size());
-    }
-
-    // 5. GET ORDER BY ID - SUCCESS
-    @Test
-    void testGetOrderByIdSuccess() {
-        when(repo.findById(1)).thenReturn(Optional.of(order));
-
-        OrdersResponseDto result = service.getOrderById(1);
-
-        assertEquals(1, result.getOrderId());
-    }
-
-    // 6. GET ORDER BY ID - NOT FOUND
+    // 10  GET ORDER NOT FOUND
     @Test
     void testGetOrderByIdNotFound() {
         when(repo.findById(1)).thenReturn(Optional.empty());
@@ -125,32 +166,17 @@ class OrdersTest {
         assertThrows(RuntimeException.class, () -> service.getOrderById(1));
     }
 
-    // 7. DELETE ORDER
+    // 11  DELETE ORDER NOT FOUND
     @Test
-    void testDeleteOrder() {
-        doNothing().when(repo).deleteById(1);
+    void testDeleteOrderNotFound() {
+        when(repo.findById(1)).thenReturn(Optional.empty());
 
-        service.deleteOrder(1);
-
-        verify(repo, times(1)).deleteById(1);
+        assertThrows(RuntimeException.class, () -> service.deleteOrder(1));
     }
 
-    // 8. UPDATE STATUS - VALID TRANSITION
+    // 12  INVALID STATUS TRANSITION
     @Test
-    void testUpdateOrderStatusValid() {
-        order.setOrderStatus(OrderStatus.OPEN);
-
-        when(repo.findById(1)).thenReturn(Optional.of(order));
-        when(repo.save(any())).thenReturn(order);
-
-        OrdersResponseDto result = service.updateOrderStatus(1, OrderStatus.PAID);
-
-        assertEquals(OrderStatus.PAID, result.getOrderStatusS());
-    }
-
-    // 9. UPDATE STATUS - INVALID TRANSITION
-    @Test
-    void testUpdateOrderStatusInvalid() {
+    void testInvalidStatusTransition() {
         order.setOrderStatus(OrderStatus.SHIPPED);
 
         when(repo.findById(1)).thenReturn(Optional.of(order));
@@ -159,19 +185,7 @@ class OrdersTest {
                 () -> service.updateOrderStatus(1, OrderStatus.OPEN));
     }
 
-    // 10. UPDATE STORE - SUCCESS
-    @Test
-    void testUpdateOrderStoreSuccess() {
-        when(repo.findById(1)).thenReturn(Optional.of(order));
-        when(storeRepo.findById(1)).thenReturn(Optional.of(store));
-        when(repo.save(any())).thenReturn(order);
-
-        OrdersResponseDto result = service.updateOrderStore(1, 1);
-
-        assertNotNull(result);
-    }
-
-    // 11. UPDATE STORE - STORE NOT FOUND
+    // 13  UPDATE STORE NOT FOUND
     @Test
     void testUpdateOrderStoreNotFound() {
         when(repo.findById(1)).thenReturn(Optional.of(order));
@@ -181,50 +195,19 @@ class OrdersTest {
                 () -> service.updateOrderStore(1, 1));
     }
 
-    // 12. UPDATE CUSTOMER - SUCCESS
+    // 14  GET ORDERS BY STORE NOT FOUND
     @Test
-    void testUpdateOrderCustomerSuccess() {
-        when(repo.findById(1)).thenReturn(Optional.of(order));
-        when(customerRepo.findById(1)).thenReturn(Optional.of(customer));
-        when(repo.save(any())).thenReturn(order);
+    void testGetOrdersByStoreNotFound() {
+        when(storeRepo.existsById(1)).thenReturn(false);
 
-        OrdersResponseDto result = service.updateOrderCustomer(1, 1);
-
-        assertNotNull(result);
+        assertThrows(StoreNotFoundException.class,
+                () -> service.getOrdersByStoreId(1));
     }
 
-    // 13. UPDATE CUSTOMER - CUSTOMER NOT FOUND
+    // 15  COUNT STATUS NULL
     @Test
-    void testUpdateOrderCustomerNotFound() {
-        when(repo.findById(1)).thenReturn(Optional.of(order));
-        when(customerRepo.findById(1)).thenReturn(Optional.empty());
-
+    void testCountByStatusNull() {
         assertThrows(RuntimeException.class,
-                () -> service.updateOrderCustomer(1, 1));
-    }
-
-    // 14. GET ORDERS BY CUSTOMER ID
-    @Test
-    void testGetOrdersByCustomerId() {
-        when(repo.findAll()).thenReturn(List.of(order));
-
-        List<OrdersResponseDto> result = service.getOrdersByCustomerId(1);
-
-        assertEquals(1, result.size());
-    }
-
-    // 15. GET ORDERS BETWEEN DATES
-    @Test
-    void testGetOrdersBetweenDates() {
-        when(repo.findAll()).thenReturn(List.of(order));
-
-        List<OrdersResponseDto> result = service.getOrdersBetweenDates(
-                LocalDateTime.now().minusDays(1),
-                LocalDateTime.now().plusDays(1)
-        );
-
-        assertEquals(1, result.size());
+                () -> service.getOrdersCountByStatus(null));
     }
 }
-
-

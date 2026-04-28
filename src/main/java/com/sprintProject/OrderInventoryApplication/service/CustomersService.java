@@ -14,7 +14,6 @@ import com.sprintProject.orderinventoryapplication.entity.Customers;
 import com.sprintProject.orderinventoryapplication.entity.Orders;
 import com.sprintProject.orderinventoryapplication.entity.Shipments;
 import com.sprintProject.orderinventoryapplication.repository.CustomersRepository;
-import com.sprintProject.orderinventoryapplication.repository.ShipmentsRepository;
 import com.sprintProject.orderinventoryapplication.dto.requestDto.CustomersRequestDto;
 import com.sprintProject.orderinventoryapplication.dto.responseDto.CustomersResponseDto;
 import com.sprintProject.orderinventoryapplication.dto.responseDto.OrdersResponseDto;
