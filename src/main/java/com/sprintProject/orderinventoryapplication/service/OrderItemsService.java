@@ -26,20 +26,33 @@ public class OrderItemsService implements OrderItemsServiceInterface {
 	@Autowired
 	private ProductsRepository productsRepository;
 
-	// Get items by Order id
+	//Get Item By orderId
 	@Override
 	public List<OrderItemsResponseDto> getItemsByOrderId(int orderId) {
-		return orderItemsRepository.findByOrderId(orderId).stream().map(this::mapToResponse)
-				.toList();
+
+	    //  Check order exists
+	    ordersRepository.findById(orderId)
+	        .orElseThrow(() -> new InvalidDataException("Order not found"));
+
+	    //  Fetch items
+	    List<OrderItems> items = orderItemsRepository.findByOrderId(orderId);
+
+	    //  Optional check (if no items)
+	    if (items.isEmpty()) {
+	        throw new InvalidDataException("No items found for this order");
+	    }
+
+	    return items.stream().map(this::mapToResponse).toList();
 	}
 
 	// Add item to order
 	@Override
 	public OrderItemsResponseDto addItem(int orderId, int productId, OrderItemsRequestDto dto) {
-		Orders order = ordersRepository.findById(orderId).orElseThrow(() -> new RuntimeException("Order not found"));
+		Orders order = ordersRepository.findById(orderId).orElseThrow(() -> new OrderItemNotFoundException("Order not found"));
 
+		
 		Products product = productsRepository.findById(productId)
-				.orElseThrow(() -> new RuntimeException("Product not found"));
+				.orElseThrow(() -> new OrderItemNotFoundException("Product not found"));
 
 		if (dto.getQuantity() <= 0) {
 			throw new InvalidDataException("Quantity must be greater than 0");
@@ -58,7 +71,7 @@ public class OrderItemsService implements OrderItemsServiceInterface {
 	@Override
 	public OrderItemsResponseDto updateItem(int orderId, int lineItemId, OrderItemsRequestDto dto) {
 		OrderItems item = orderItemsRepository.findById(lineItemId)
-				.orElseThrow(() -> new RuntimeException("Item not found"));
+				.orElseThrow(() -> new OrderItemNotFoundException("Item not found"));
 
 		if (item.getOrders() == null || item.getOrders().getOrderId() != orderId) {
 			throw new InvalidDataException("Item does not belong to this order");
@@ -85,7 +98,7 @@ public class OrderItemsService implements OrderItemsServiceInterface {
 	@Override
 	public void deleteItem(int orderId, int lineItemId) {
 		OrderItems item = orderItemsRepository.findById(lineItemId)
-				.orElseThrow(() -> new RuntimeException("Item not found"));
+				.orElseThrow(() -> new InvalidDataException("Item not found"));
 
 		if (item.getOrders() == null || item.getOrders().getOrderId() != orderId) {
 			throw new InvalidDataException("Item does not belong to this order");
@@ -123,4 +136,3 @@ public class OrderItemsService implements OrderItemsServiceInterface {
 		return total != null ? total : 0;
 	}
 }
-

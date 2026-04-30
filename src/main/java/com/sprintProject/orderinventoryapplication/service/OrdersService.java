@@ -19,7 +19,10 @@ import com.sprintProject.orderinventoryapplication.repository.StoresRepository;
 import com.sprintProject.orderinventoryapplication.dto.requestDto.OrdersRequestDto;
 import com.sprintProject.orderinventoryapplication.dto.responseDto.OrdersResponseDto;
 import com.sprintProject.orderinventoryapplication.customexception.StoreNotFoundException;
-
+import com.sprintProject.orderinventoryapplication.customexception.OrderNotFoundException;
+import com.sprintProject.orderinventoryapplication.customexception.CustomerIdNotFoundException;
+import com.sprintProject.orderinventoryapplication.customexception.InvalidStatusTransitionException;
+import com.sprintProject.orderinventoryapplication.customexception.InvalidInputException;
 @Service
 public class OrdersService implements OrdersServiceInterface {
 
@@ -54,10 +57,10 @@ public class OrdersService implements OrdersServiceInterface {
     @Override
     public OrdersResponseDto createOrder(OrdersRequestDto dto) {
         Customers customer = customersRepository.findById(dto.getCustomerId())
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new CustomerIdNotFoundException("Customer not found"));
 
         Stores store = storesRepository.findById(dto.getStoreId())
-                .orElseThrow(() -> new RuntimeException("Store not found"));
+                .orElseThrow(() -> new StoreNotFoundException("Store not found"));
 
         Orders order = new Orders();
         order.setCustomers(customer);
@@ -81,7 +84,7 @@ public class OrdersService implements OrdersServiceInterface {
     @Override
     public OrdersResponseDto getOrderById(int orderId) {
         Orders order = ordersRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+                .orElseThrow(() -> new OrderNotFoundException("Order not found"));
         return mapToResponse(order);
     }
 
@@ -90,7 +93,7 @@ public class OrdersService implements OrdersServiceInterface {
     @Transactional
     public void deleteOrder(int orderId) {
         Orders order = ordersRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found: " + orderId));
+                .orElseThrow(() -> new OrderNotFoundException("Order not found: " + orderId));
 
         // Bulk-delete all associated order items in a single SQL statement
         // (avoids Hibernate "Duplicate identifier" session conflict)
@@ -104,7 +107,7 @@ public class OrdersService implements OrdersServiceInterface {
     @Override
     public OrdersResponseDto updateOrderStatus(int orderId, OrderStatus newStatus) {
         Orders order = ordersRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+                .orElseThrow(() -> new OrderNotFoundException("Order not found"));
 
         OrderStatus current = order.getOrderStatus();
 
@@ -115,7 +118,7 @@ public class OrdersService implements OrdersServiceInterface {
                         (current == OrderStatus.SHIPPED && newStatus == OrderStatus.COMPLETE);
 
         if (!valid) {
-            throw new RuntimeException(
+            throw new InvalidStatusTransitionException(
                     "Invalid status transition: " + current + " → " + newStatus);
         }
 
@@ -127,10 +130,10 @@ public class OrdersService implements OrdersServiceInterface {
     @Override
     public OrdersResponseDto updateOrderStore(int orderId, int storeId) {
         Orders order = ordersRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+                .orElseThrow(() -> new OrderNotFoundException("Order not found"));
 
         Stores store = storesRepository.findById(storeId)
-                .orElseThrow(() -> new RuntimeException("Store not found"));
+                .orElseThrow(() -> new StoreNotFoundException("Store not found"));
 
         order.setStores(store);
         return mapToResponse(ordersRepository.save(order));
@@ -140,10 +143,10 @@ public class OrdersService implements OrdersServiceInterface {
     @Override
     public OrdersResponseDto updateOrderCustomer(int orderId, int customerId) {
         Orders order = ordersRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+                .orElseThrow(() -> new OrderNotFoundException("Order not found"));
 
         Customers customer = customersRepository.findById(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+                .orElseThrow(() -> new CustomerIdNotFoundException("Customer not found"));
 
         order.setCustomers(customer);
         return mapToResponse(ordersRepository.save(order));
@@ -153,7 +156,7 @@ public class OrdersService implements OrdersServiceInterface {
     @Override
     public OrdersResponseDto updateOrderTms(int orderId, LocalDateTime orderTms) {
         Orders order = ordersRepository.findById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found"));
+                .orElseThrow(() -> new OrderNotFoundException("Order not found"));
 
         order.setOrderTms(orderTms);
         return mapToResponse(ordersRepository.save(order));
@@ -203,7 +206,7 @@ public class OrdersService implements OrdersServiceInterface {
     @Override
     public long getOrdersCountByStatus(OrderStatus status) {
         if (status == null) {
-            throw new RuntimeException("Order status cannot be null");
+            throw new InvalidInputException("Order status cannot be null");
         }
         return ordersRepository.countOrdersByStatus(status);
     }
