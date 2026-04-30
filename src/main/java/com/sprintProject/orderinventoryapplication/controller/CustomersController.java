@@ -17,11 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.sprintProject.orderinventoryapplication.service.CustomersServiceInterface;
-
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
-
 import com.sprintProject.orderinventoryapplication.dto.requestDto.CustomersRequestDto;
 import com.sprintProject.orderinventoryapplication.dto.responseDto.CustomersResponseDto;
 import com.sprintProject.orderinventoryapplication.dto.responseDto.OrdersResponseDto;

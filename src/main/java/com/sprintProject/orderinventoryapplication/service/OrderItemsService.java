@@ -48,6 +48,8 @@ public class OrderItemsService implements OrderItemsServiceInterface {
 	// Add item to order
 	@Override
 	public OrderItemsResponseDto addItem(Integer orderId, Integer productId, OrderItemsRequestDto dto) {
+
+
 		Orders order = ordersRepository.findById(orderId).orElseThrow(() -> new OrderItemNotFoundException("Order not found"));
 
 		
@@ -136,6 +138,8 @@ public class OrderItemsService implements OrderItemsServiceInterface {
 		return total != null ? total : 0;
 	}
 
+
 	
 }
+
 
