@@ -1,0 +1,24 @@
+package com.sprintProject.orderinventoryapplication.service;
+
+import java.util.List;
+
+import com.sprintProject.orderinventoryapplication.dto.requestDto.ProductsRequestDto;
+import com.sprintProject.orderinventoryapplication.dto.responseDto.ProductsResponseDto;
+
+public interface ProductsServiceInterface {
+	
+	// Retrieves all products
+    List<ProductsResponseDto> getAllProducts();
+    // Retrieves a product by its ID
+    ProductsResponseDto getProductById(Integer productId);
+    // Creates a new product
+    ProductsResponseDto createProduct(ProductsRequestDto productRequestDto);
+    // Updates an existing product
+    ProductsResponseDto updateProduct(Integer productId, ProductsRequestDto productRequestDto);
+    // Deletes a product by its ID
+    String deleteProduct(Integer productId);
+}
+
+
+
+
