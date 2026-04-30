@@ -145,10 +145,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ResponseStructure<String>> handleInvalidData(InvalidDataException ex) {
 
         ResponseStructure<String> response = new ResponseStructure<>();
-        response.setStatus(HttpStatus.BAD_REQUEST.value());
+        response.setStatus(HttpStatus.NOT_FOUND.value());
         response.setMsg(ex.getMessage());
 
-        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
     //STORE NOT FOUND
     @ExceptionHandler(StoreNotFoundException.class)
@@ -196,4 +196,3 @@ public class GlobalExceptionHandler {
    
 
 }
-

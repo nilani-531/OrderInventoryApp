@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.sprintProject.orderinventoryapplication.service.CustomersServiceInterface;
+
+import jakarta.validation.Valid;
+
 import com.sprintProject.orderinventoryapplication.dto.requestDto.CustomersRequestDto;
 import com.sprintProject.orderinventoryapplication.dto.responseDto.CustomersResponseDto;
 import com.sprintProject.orderinventoryapplication.dto.responseDto.OrdersResponseDto;
@@ -37,7 +40,7 @@ public class CustomersController {
 	// Handles HTTP post request-> create new customer
     @PostMapping
 	public ResponseEntity<ResponseStructure<CustomersResponseDto>> createCustomer(
-			@RequestBody CustomersRequestDto dto) {
+		@Valid	@RequestBody CustomersRequestDto dto) {
 		// @RequestBody → converts JSON input to Java object
 
 		CustomersResponseDto response = customersServiceInterface.createCustomer(dto);
